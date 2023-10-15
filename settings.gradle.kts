@@ -4,6 +4,7 @@ include(":cdoApp")
 include(":dealerApp")
 include(":staffApp")
 include(":shared")
+include(":decomposerouter")
 
 pluginManagement {
     repositories {

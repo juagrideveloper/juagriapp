@@ -9,7 +9,12 @@ kotlin {
     sourceSets {
         val androidMain by getting {
             dependencies {
+                implementation(libs.androidx.activity.ktx)
+                implementation(libs.androidx.activity.compose)
+                implementation(libs.androidx.fragment.ktx)
+                implementation(compose.material3)
                 implementation(project(":shared"))
+                implementation(project(":decomposerouter"))
             }
         }
     }

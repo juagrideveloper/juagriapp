@@ -21,18 +21,31 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(project(":decomposerouter"))
+
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+
+                implementation(libs.essenty.parcelable)
+                implementation(libs.decompose)
+                implementation(libs.decompose.compose.multiplatform)
             }
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.activity:activity-compose:1.7.2")
+                /*api("androidx.activity:activity-compose:1.7.2")
                 api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.core:core-ktx:1.10.1")
+                api("androidx.core:core-ktx:1.10.1")*/
+
+                implementation(compose.material3)
+                implementation(libs.decompose)
+                implementation(libs.decompose.compose.multiplatform)
+                implementation(libs.androidx.activity.ktx)
+                implementation(libs.androidx.activity.compose)
+                implementation(libs.androidx.fragment.ktx)
             }
         }
         val iosX64Main by getting
@@ -49,7 +62,7 @@ kotlin {
 
 android {
     compileSdk = (findProperty("android.compileSdk") as String).toInt()
-    namespace = "com.myapplication.common"
+    namespace = "com.juagri.shared"
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
