@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "607158302425",
+    "firebase_url": "https://jucdo-53500-default-rtdb.firebaseio.com",
+    "project_id": "jucdo-53500",
+    "storage_bucket": "jucdo-53500.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607158302425:android:34c28bab0fb8aea46f70c8",
+        "android_client_info": {
+          "package_name": "com.juagri.jucdo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "607158302425-qrpthoqc85qje62opkai537ppfl3qgd3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.juagri.jucdo",
+            "certificate_hash": "835f0103ff616af0c647319f4e6de0a4309fac02"
+          }
+        },
+        {
+          "client_id": "607158302425-vmr4apk20972j8ce7c6jv9qmrltfm6ur.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG2qggFJhUpyXpL59CrsZ1agPpA9kigLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "607158302425-vmr4apk20972j8ce7c6jv9qmrltfm6ur.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

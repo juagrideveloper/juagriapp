@@ -1,6 +1,5 @@
 package com.juagri.judealer
 
-import AppTheme
 import MainView
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,6 +10,7 @@ import androidx.core.view.WindowCompat
 import io.github.xxfast.decompose.router.LocalRouterContext
 import io.github.xxfast.decompose.router.RouterContext
 import io.github.xxfast.decompose.router.defaultRouterContext
+import theme.AppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

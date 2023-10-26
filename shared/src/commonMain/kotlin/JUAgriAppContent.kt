@@ -12,8 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-
+import theme.AppTheme
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.firestore.firestore
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import navigation.AppInitNav
+import ui.splash.SplashScreen
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
@@ -39,7 +43,57 @@ fun JUAgriAppContent() {
                 )
             }
         }*/
-        ListContent(onItemClick = {  })
+        //ListContent(onItemClick = {  })
+        /*var loading by remember { mutableStateOf(false) }
+        Button(onClick = { loading = true }, enabled = !loading) {
+            Text("Start loading")
+        }
+        ProgressDialog(loading,{})*/
+        SplashScreen {}
+
+
+
+        //AppInitNav()
+
+        /*Column(Modifier.fillMaxWidth()) {
+            var list by remember { mutableStateOf(listOf<String>()) }
+            LaunchedEffect(Unit) {
+                list = getUsers()
+            }
+            LazyColumn {
+                items(list) {
+                    Text(
+                        text = it,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    )
+                }
+            }
+        }*/
+    }
+}
+
+suspend fun getUsers(): List<String> {
+    val firebaseFirestore = Firebase.firestore
+    try {
+        val userResponse =
+            firebaseFirestore.collection("AppMaster").get()
+        return userResponse.documents.map {
+            it.data()
+        }
+    } catch (e: Exception) {
+       return listOf("UserApp - "+ e.message)
+    }
+    //return listOf("UserApp")
+}
+
+@Composable
+fun UserItem(user: String) {
+    Column {
+        Text(
+            text = user
+        )
     }
 }
 

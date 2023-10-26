@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "494851729603",
+    "firebase_url": "https://judealer-a7f0e.firebaseio.com",
+    "project_id": "judealer-a7f0e",
+    "storage_bucket": "judealer-a7f0e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494851729603:android:55e10ec6ceb968bfc4da76",
+        "android_client_info": {
+          "package_name": "com.juagri.judealer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "494851729603-n7l95is8ukcutm8rahot49e13vr1pl48.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.juagri.judealer",
+            "certificate_hash": "3ace3bb50257a18550b3325fa29f287fc9a9742a"
+          }
+        },
+        {
+          "client_id": "494851729603-4ik0pmjb22bpich9kr5hkqdh4ecvcuqe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtd6rLTJK_0X4ibzZztquJ1LvErGZf2ks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "494851729603-4ik0pmjb22bpich9kr5hkqdh4ecvcuqe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

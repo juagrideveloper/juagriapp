@@ -2,6 +2,8 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("org.jetbrains.compose")
+    kotlin("plugin.serialization") version "1.9.0"
+    id("kotlin-parcelize")
 }
 
 kotlin {
@@ -32,6 +34,14 @@ kotlin {
                 implementation(libs.essenty.parcelable)
                 implementation(libs.decompose)
                 implementation(libs.decompose.compose.multiplatform)
+
+                implementation("io.ktor:ktor-client-core:2.3.5")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+                implementation("dev.gitlive:firebase-firestore:1.8.1") // This line
+                implementation("dev.gitlive:firebase-common:1.8.1")// This line
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+
+                implementation("io.insert-koin:koin-core:3.2.0")
             }
         }
         val androidMain by getting {
@@ -56,6 +66,9 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+            dependencies {
+                implementation("io.ktor:ktor-client-ios:2.3.5")
+            }
         }
     }
 }
