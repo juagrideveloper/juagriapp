@@ -35,13 +35,20 @@ kotlin {
                 implementation(libs.decompose)
                 implementation(libs.decompose.compose.multiplatform)
 
-                implementation("io.ktor:ktor-client-core:2.3.5")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-                implementation("dev.gitlive:firebase-firestore:1.8.1") // This line
-                implementation("dev.gitlive:firebase-common:1.8.1")// This line
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+                implementation(libs.ktor.core)
 
-                implementation("io.insert-koin:koin-core:3.2.0")
+                api(libs.kotlinx.coroutines.core)
+                api(libs.kotlinx.serialization)
+
+                api(libs.firebase.firestore)
+                api(libs.firebase.common)
+
+                api(libs.koin.core)
+                api(libs.koin.compose)
+
+                api(libs.precompose)
+                api(libs.precompose.viewmodel)
+                api(libs.precompose.koin)
             }
         }
         val androidMain by getting {
@@ -56,6 +63,8 @@ kotlin {
                 implementation(libs.androidx.activity.ktx)
                 implementation(libs.androidx.activity.compose)
                 implementation(libs.androidx.fragment.ktx)
+                implementation("androidx.camera:camera-lifecycle:1.3.0")
+                implementation("io.coil-kt:coil-compose:2.2.1")
             }
         }
         val iosX64Main by getting
@@ -67,7 +76,7 @@ kotlin {
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
             dependencies {
-                implementation("io.ktor:ktor-client-ios:2.3.5")
+                implementation(libs.ktor.ios)
             }
         }
     }

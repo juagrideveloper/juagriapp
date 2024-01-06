@@ -49,11 +49,13 @@ fun JUAgriAppContent() {
             Text("Start loading")
         }
         ProgressDialog(loading,{})*/
-        SplashScreen {}
+
+
+        //SplashScreen {}
 
 
 
-        //AppInitNav()
+        AppInitNav()
 
         /*Column(Modifier.fillMaxWidth()) {
             var list by remember { mutableStateOf(listOf<String>()) }

@@ -1,28 +1,32 @@
 package components.fields
 
 import AppTypography
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 
 @Composable
-fun SmallText(text: String = "",modifier :Modifier = Modifier) = Text(
+fun TextSmall(text: String = "", modifier :Modifier = Modifier, color: Color = MaterialTheme.colorScheme.onBackground) = Text(
     text,
     style = AppTypography.labelSmall,
-    modifier = modifier
+    modifier = modifier,
+    color = color
 )
 
 @Composable
-fun MediumText(text: String = "",modifier :Modifier = Modifier) = Text(
+fun TextMedium(text: String = "", modifier :Modifier = Modifier, color: Color = MaterialTheme.colorScheme.onBackground) = Text(
     text,
     style = AppTypography.labelMedium,
-    modifier = modifier
+    modifier = modifier,
+    color = color
 )
 
 @Composable
-fun TitleText(text: String = "",modifier :Modifier = Modifier) = Text(
+fun TextTitle(text: String = "", modifier :Modifier = Modifier, color: Color = MaterialTheme.colorScheme.onBackground) = Text(
     text,
     style = AppTypography.labelLarge,
-    modifier = modifier
+    modifier = modifier,
+    color = color
 )

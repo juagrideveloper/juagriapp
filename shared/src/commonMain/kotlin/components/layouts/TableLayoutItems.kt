@@ -1,5 +1,6 @@
 package components.layouts
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,14 +17,19 @@ import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun RowScope.SplashImageColumn() = Column(
-    modifier = Modifier.weight(1f),
-    verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.CenterHorizontally
-){
-    Image(
-        painterResource("ic_launcher_logo.xml"),
-        null,
-        modifier = Modifier.height(150.dp)
-    )
-}
+fun RowScope.SplashImageColumn(imageName: String = "", visible: Boolean) =
+    Column(
+        modifier = Modifier.weight(1f),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        if (imageName.isNotEmpty()) {
+            AnimatedVisibility(visible) {
+                Image(
+                    painterResource(imageName),
+                    null,
+                    modifier = Modifier.height(150.dp)
+                )
+            }
+        }
+    }

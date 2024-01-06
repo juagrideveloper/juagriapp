@@ -6,7 +6,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.pred
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
 import com.arkivanov.decompose.router.stack.pop
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.replaceCurrent
 import io.github.xxfast.decompose.router.LocalRouterContext
 import io.github.xxfast.decompose.router.Router
 import io.github.xxfast.decompose.router.content.RoutedContent
@@ -32,9 +32,9 @@ fun AppInitNav() {
         when (screen) {
             AppInitScreens.Splash -> SplashScreen { mode ->
                 if (mode == 1) {
-                    router.push(AppInitScreens.Login)
+                    router.replaceCurrent(AppInitScreens.Login)
                 } else {
-                    router.push(AppInitScreens.Home)
+                    router.replaceCurrent(AppInitScreens.Home)
                 }
             }
             AppInitScreens.Login -> LoginScreen { router.pop() }

@@ -2,6 +2,7 @@ package components.layouts
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,7 +26,7 @@ fun ScreenLayoutWithActionBar(
             ActionBarLayout(title) { onBackPressed?.invoke() }
         }) { paddingValues ->
         Layout(
-            modifier = modifier.padding(paddingValues).background(color = Color.White),
+            modifier = modifier.padding(paddingValues).background(color = MaterialTheme.colorScheme.background),
             content = content
         ) { measurables, constraints ->
             // Don't constrain child views further, measure them with given constraints
@@ -61,7 +62,7 @@ fun ScreenLayoutWithoutActionBar(
     content: @Composable() () -> Unit
 ) {
     Layout(
-        modifier = modifier.padding(vertical = 16.dp).background(color = Color.White),
+        modifier = modifier.padding(vertical = 16.dp).background(color = MaterialTheme.colorScheme.background),
         content = content
     ) { measurables, constraints ->
         // Don't constrain child views further, measure them with given constraints
