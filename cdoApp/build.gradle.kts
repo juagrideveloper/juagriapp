@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("com.android.application")
     id("org.jetbrains.compose")
+    id("com.google.gms.google-services")
 }
 
 kotlin {
@@ -15,6 +16,9 @@ kotlin {
                 implementation(compose.material3)
                 implementation(project(":shared"))
                 implementation(project(":decomposerouter"))
+
+                implementation(platform("com.google.firebase:firebase-bom:31.3.0"))
+                implementation("com.google.firebase:firebase-firestore-ktx")
             }
         }
     }

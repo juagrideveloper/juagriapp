@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "682652433203",
+    "firebase_url": "https://justaff-950e6.firebaseio.com",
+    "project_id": "justaff-950e6",
+    "storage_bucket": "justaff-950e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682652433203:android:72d8aab357fd716e",
+        "android_client_info": {
+          "package_name": "com.juagri.staff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "682652433203-15t5ag5os0mol2rd269gtkgv8vhmrcqj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.juagri.staff",
+            "certificate_hash": "70f23884e07924cc16cdf7275c5bdd616f67da53"
+          }
+        },
+        {
+          "client_id": "682652433203-8paaolbiie5oqdvoqbjf49esgqdb4bbt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtdzZuN1behWFexKzVKebogyrrDQji3S0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "682652433203-8paaolbiie5oqdvoqbjf49esgqdb4bbt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

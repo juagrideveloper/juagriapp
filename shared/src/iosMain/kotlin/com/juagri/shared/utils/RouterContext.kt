@@ -1,4 +1,4 @@
-package utils
+package com.juagri.shared.utils
 
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry

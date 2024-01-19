@@ -2,6 +2,9 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("org.jetbrains.compose")
+    kotlin("plugin.serialization") version "1.9.0"
+    id("kotlin-parcelize")
+    id("app.cash.sqldelight")
 }
 
 kotlin {
@@ -32,6 +35,23 @@ kotlin {
                 implementation(libs.essenty.parcelable)
                 implementation(libs.decompose)
                 implementation(libs.decompose.compose.multiplatform)
+
+                implementation(libs.ktor.core)
+                implementation(libs.ktor.logs)
+                api(libs.kotlinx.coroutines.core)
+                api(libs.kotlinx.serialization)
+
+                api(libs.firebase.firestore)
+                api(libs.firebase.common)
+
+                api(libs.koin.core)
+                api(libs.koin.compose)
+
+                api(libs.precompose)
+                api(libs.precompose.viewmodel)
+                api(libs.precompose.koin)
+                //api(libs.kamel.image)
+                implementation(libs.sqldelight.coroutines)
             }
         }
         val androidMain by getting {
@@ -46,6 +66,9 @@ kotlin {
                 implementation(libs.androidx.activity.ktx)
                 implementation(libs.androidx.activity.compose)
                 implementation(libs.androidx.fragment.ktx)
+                implementation("androidx.camera:camera-lifecycle:1.3.0")
+                implementation("io.coil-kt:coil-compose:2.2.1")
+                implementation(libs.sqldelight.android)
             }
         }
         val iosX64Main by getting
@@ -56,6 +79,19 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+            dependencies {
+                implementation(libs.ktor.ios)
+                implementation(libs.sqldelight.ios)
+                implementation(libs.touchlab.state)
+            }
+        }
+    }
+}
+
+sqldelight {
+    databases {
+        create("JUDatabase") {
+            packageName.set("com.juagri.shared")
         }
     }
 }
