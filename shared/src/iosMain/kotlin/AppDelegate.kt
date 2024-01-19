@@ -1,3 +1,4 @@
+import MainViewController
 import com.arkivanov.essenty.lifecycle.destroy
 import com.arkivanov.essenty.lifecycle.resume
 import com.arkivanov.essenty.lifecycle.stop
@@ -12,7 +13,7 @@ import platform.UIKit.UIResponder
 import platform.UIKit.UIResponderMeta
 import platform.UIKit.UIScreen
 import platform.UIKit.UIWindow
-import utils.registry
+import com.juagri.shared.utils.registry
 
 @OptIn(BetaInteropApi::class)
 class AppDelegate @OverrideInit constructor() : UIResponder(), UIApplicationDelegateProtocol {

@@ -1,0 +1,24 @@
+import kotlin.Boolean;
+
+CREATE TABLE Table2 (
+    id INTEGER NOT NULL PRIMARY KEY,
+    title TEXT NOT NULL
+);
+
+getTable2:
+SELECT title FROM Table2;
+
+getAll:
+SELECT a.title AS Title1,b.title AS Title2 FROM Table1 AS a LEFT JOIN Table2 AS b ON a.id = b.id;
+
+insertTable2:
+    INSERT OR REPLACE INTO Table2(id, title)
+    VALUES(?, ?);
+
+deleteTable2:
+DELETE FROM Table2;
+
+updateTable2:
+UPDATE Table2
+SET title = :title
+WHERE id = :id;

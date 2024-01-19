@@ -1,3 +1,5 @@
+package com.juagri.shared
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,12 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import theme.AppTheme
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.firestore.firestore
+import com.juagri.shared.com.juagri.shared.ui.navigation.AppInitNav
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import navigation.AppInitNav
-import ui.splash.SplashScreen
+import com.juagri.shared.com.juagri.shared.ui.theme.AppTheme
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
@@ -128,5 +129,3 @@ fun DetailsContent(text: String, onBack: () -> Unit) {
         }
     }
 }
-
-expect fun getPlatformName(): String

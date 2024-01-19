@@ -9,6 +9,11 @@ import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.jetbrains.PredictiveBackGestureIcon
 import com.arkivanov.decompose.extensions.compose.jetbrains.PredictiveBackGestureOverlay
 import com.arkivanov.essenty.backhandler.BackDispatcher
+import com.juagri.shared.JUAgriAppContent
+import com.juagri.shared.data.local.database.DriverFactory
+import com.juagri.shared.data.local.session.SessionContext
+import com.juagri.shared.data.local.session.SessionPreference
+import com.juagri.shared.di.initKoin
 import io.github.xxfast.decompose.router.LocalRouterContext
 import io.github.xxfast.decompose.router.RouterContext
 import kotlinx.cinterop.BetaInteropApi
@@ -17,11 +22,13 @@ import kotlinx.cinterop.autoreleasepool
 import kotlinx.cinterop.cstr
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.toCValues
+import moe.tlaster.precompose.PreComposeApplication
 import platform.Foundation.NSStringFromClass
 import platform.UIKit.UIApplicationMain
 import platform.UIKit.UIViewController
+import platform.darwin.NSObject
 
-actual fun getPlatformName(): String = "iOS"
+//actual fun getPlatformName(): String = "iOS"
 
 fun MainViewController() = ComposeUIViewController { JUAgriAppContent() }
 
@@ -38,10 +45,11 @@ fun main() {
 }
 
 @OptIn(ExperimentalDecomposeApi::class)
-fun MainUIController(routerContext: RouterContext): UIViewController = ComposeUIViewController {
+fun MainUIController(routerContext: RouterContext): UIViewController = PreComposeApplication {
     CompositionLocalProvider(
         LocalRouterContext provides routerContext,
     ) {
+        initKoin(SessionPreference(context =NSObject()),DriverFactory().createDriver())
         MaterialTheme {
             PredictiveBackGestureOverlay(
                 backDispatcher = routerContext.backHandler as BackDispatcher, // Use the same BackDispatcher as above
@@ -57,4 +65,8 @@ fun MainUIController(routerContext: RouterContext): UIViewController = ComposeUI
             }
         }
     }
+}
+
+fun MainKoinInit(context: NSObject){
+    //initKoin(SessionPreference(context))
 }
