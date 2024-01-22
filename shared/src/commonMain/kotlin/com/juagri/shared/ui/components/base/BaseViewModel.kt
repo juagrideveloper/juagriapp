@@ -1,4 +1,4 @@
-package com.juagri.shared.com.juagri.shared.ui.components.base
+package com.juagri.shared.ui.components.base
 
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.viewmodel.ViewModel
@@ -10,7 +10,7 @@ open class BaseViewModel: ViewModel() {
         println("12312312312: $msg")
     }
 
-    fun withScope(block:()->Unit){
+    fun withScope(block:suspend ()->Unit){
         viewModelScope.launch {
             block.invoke()
         }

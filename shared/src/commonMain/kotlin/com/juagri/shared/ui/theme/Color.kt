@@ -1,4 +1,4 @@
-package com.juagri.shared.com.juagri.shared.ui.theme
+package com.juagri.shared.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val md_theme_light_primary = Color(0xFF38B91B)

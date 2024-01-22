@@ -1,7 +1,5 @@
 package com.juagri.shared.data.local.session
 
-import com.juagri.shared.data.local.session.SessionContext
-
 expect fun SessionContext.putInt(key: String, value: Int)
 
 expect fun SessionContext.getInt(key: String, default: Int): Int

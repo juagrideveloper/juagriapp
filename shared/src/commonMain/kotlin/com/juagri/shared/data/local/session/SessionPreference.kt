@@ -1,5 +1,6 @@
 package com.juagri.shared.data.local.session
 
+import com.juagri.shared.utils.value
 
 class SessionPreference(private val context: SessionContext) {
 
@@ -23,5 +24,43 @@ class SessionPreference(private val context: SessionContext) {
 
     fun getBool(key: String, default: Boolean): Boolean =
         context.getBool(key, default)
+
+    fun setAlreadyLoggedIn(alreadyLogin: Boolean) {
+        context.putBool(IS_ALREADY_LOGGED_IN, alreadyLogin)
+    }
+
+    fun isAlreadyLoggedIn() = context.getBool(IS_ALREADY_LOGGED_IN, false)
+
+    fun setEmpCode(empCode: String){
+        context.putString(EMP_CODE,empCode)
+    }
+
+    fun empCode(): String = context.getString(EMP_CODE).value()
+
+    fun setEmpName(empName: String){
+        context.putString(EMP_NAME,empName)
+    }
+
+    fun empName(): String = context.getString(EMP_NAME).value()
+
+    fun setEmpMobile(empName: String){
+        context.putString(EMP_MOBILE,empName)
+    }
+
+    fun empMobile(): String = context.getString(EMP_MOBILE).value()
+
+    fun setEmpRoleId(empRoleID: String){
+        context.putString(EMP_ROLE_ID,empRoleID)
+    }
+
+    fun empRoleId(): String = context.getString(EMP_ROLE_ID).value()
+
+    private companion object {
+        const val IS_ALREADY_LOGGED_IN = "isAlreadyLoggedIn"
+        const val EMP_CODE = "emp_code"
+        const val EMP_NAME = "emp_name"
+        const val EMP_MOBILE = "emp_mobile"
+        const val EMP_ROLE_ID = "emp_role_id"
+    }
 
 }

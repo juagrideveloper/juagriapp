@@ -1,4 +1,4 @@
-package com.juagri.shared.com.juagri.shared.ui.navigation
+package com.juagri.shared.ui.navigation
 
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize

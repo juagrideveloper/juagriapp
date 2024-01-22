@@ -15,7 +15,7 @@ precompose = "1.5.0"
 koin-core = "3.5.0"
 koin-compose = "1.0.4"
 firebase = "1.11.0"
-ktor = "2.3.5"
+ktor = "2.3.7"
 kamel-image="0.9.1"
 sqldelight="2.0.1"
 touchlab="2.0.5"
@@ -35,6 +35,7 @@ horologist-compose-layouts = { module = "com.google.android.horologist:horologis
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 wear-compose-foundation = { module = "androidx.wear.compose:compose-foundation", version.ref = "wear-compose" }
 wear-compose-material = { module = "androidx.wear.compose:compose-material", version.ref = "wear-compose" }
@@ -48,6 +49,10 @@ firebase-common = { module = "dev.gitlive:firebase-common", version.ref = "fireb
 firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase" }
 firebase-storage = { module = "dev.gitlive:firebase-storage", version.ref = "firebase" }
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-ios = { module = "io.ktor:ktor-client-ios", version.ref = "ktor" }
 ktor-logs = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 kamel-image = { module = "media.kamel:kamel-image", version.ref = "kamel-image" }

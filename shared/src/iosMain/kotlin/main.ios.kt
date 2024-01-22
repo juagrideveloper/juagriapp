@@ -1,7 +1,6 @@
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.ComposeUIViewController
@@ -11,7 +10,6 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.PredictiveBackGestur
 import com.arkivanov.essenty.backhandler.BackDispatcher
 import com.juagri.shared.JUAgriAppContent
 import com.juagri.shared.data.local.database.DriverFactory
-import com.juagri.shared.data.local.session.SessionContext
 import com.juagri.shared.data.local.session.SessionPreference
 import com.juagri.shared.di.initKoin
 import io.github.xxfast.decompose.router.LocalRouterContext
@@ -27,8 +25,6 @@ import platform.Foundation.NSStringFromClass
 import platform.UIKit.UIApplicationMain
 import platform.UIKit.UIViewController
 import platform.darwin.NSObject
-
-//actual fun getPlatformName(): String = "iOS"
 
 fun MainViewController() = ComposeUIViewController { JUAgriAppContent() }
 
@@ -49,24 +45,18 @@ fun MainUIController(routerContext: RouterContext): UIViewController = PreCompos
     CompositionLocalProvider(
         LocalRouterContext provides routerContext,
     ) {
-        initKoin(SessionPreference(context =NSObject()),DriverFactory().createDriver())
-        MaterialTheme {
-            PredictiveBackGestureOverlay(
-                backDispatcher = routerContext.backHandler as BackDispatcher, // Use the same BackDispatcher as above
-                backIcon = { progress, _ ->
-                    PredictiveBackGestureIcon(
-                        imageVector = Icons.Default.ArrowBack,
-                        progress = progress,
-                    )
-                },
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                JUAgriAppContent()
-            }
+        initKoin(SessionPreference(context = NSObject()), DriverFactory().createDriver())
+        PredictiveBackGestureOverlay(
+            backDispatcher = routerContext.backHandler as BackDispatcher, // Use the same BackDispatcher as above
+            backIcon = { progress, _ ->
+                PredictiveBackGestureIcon(
+                    imageVector = Icons.Default.ArrowBack,
+                    progress = progress,
+                )
+            },
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            JUAgriAppContent()
         }
     }
-}
-
-fun MainKoinInit(context: NSObject){
-    //initKoin(SessionPreference(context))
 }

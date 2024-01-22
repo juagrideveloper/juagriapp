@@ -1,4 +1,4 @@
-package com.juagri.shared.com.juagri.shared.ui.components.dialogs
+package com.juagri.shared.ui.components.dialogs
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
