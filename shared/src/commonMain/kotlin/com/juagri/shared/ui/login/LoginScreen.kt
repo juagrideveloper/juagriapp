@@ -29,8 +29,8 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.juagri.shared.com.juagri.shared.ui.components.dialogs.ConfirmDialog
-import com.juagri.shared.com.juagri.shared.utils.UIState
+import com.juagri.shared.ui.components.dialogs.ConfirmDialog
+import com.juagri.shared.utils.UIState
 import com.juagri.shared.ui.components.dialogs.ProgressDialog
 import com.juagri.shared.ui.components.fields.ButtonNormal
 import com.juagri.shared.ui.components.fields.SpaceMedium

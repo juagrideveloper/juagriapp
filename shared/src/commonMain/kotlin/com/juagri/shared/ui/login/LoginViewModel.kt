@@ -2,9 +2,9 @@ package com.juagri.shared.ui.login
 
 import com.juagri.shared.data.local.session.SessionPreference
 import com.juagri.shared.data.local.session.datamanager.DataManager
-import com.juagri.shared.com.juagri.shared.domain.usecase.EmployeeUseCase
-import com.juagri.shared.com.juagri.shared.domain.usecase.OTPUseCase
-import com.juagri.shared.com.juagri.shared.utils.UIState
+import com.juagri.shared.domain.usecase.EmployeeUseCase
+import com.juagri.shared.domain.usecase.OTPUseCase
+import com.juagri.shared.utils.UIState
 import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.domain.model.login.OTPResponse
 import com.juagri.shared.ui.components.base.BaseViewModel
@@ -20,7 +20,7 @@ class LoginViewModel(
     private val session: SessionPreference,
     private val employeeUseCase: EmployeeUseCase,
     private val otpUseCase: OTPUseCase,
-) : BaseViewModel() {
+) : BaseViewModel(session,dataManager) {
     private var _employee: MutableStateFlow<UIState<JUEmployee>> =
         MutableStateFlow(UIState.Loading())
     val employee = _employee.asStateFlow()

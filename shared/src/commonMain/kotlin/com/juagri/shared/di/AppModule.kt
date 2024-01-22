@@ -3,15 +3,16 @@ package com.juagri.shared.di
 import Constants
 import app.cash.sqldelight.db.SqlDriver
 import com.juagri.shared.JUDatabase
-import com.juagri.shared.com.juagri.shared.data.remote.login.OTPRepositoryImpl
-import com.juagri.shared.com.juagri.shared.domain.repo.EmployeeRepository
-import com.juagri.shared.com.juagri.shared.domain.repo.OTPRepository
-import com.juagri.shared.com.juagri.shared.domain.usecase.EmployeeUseCase
-import com.juagri.shared.com.juagri.shared.ui.dashboard.DashboardViewModel
+import com.juagri.shared.data.remote.login.OTPRepositoryImpl
+import com.juagri.shared.domain.repo.EmployeeRepository
+import com.juagri.shared.domain.repo.OTPRepository
+import com.juagri.shared.domain.usecase.EmployeeUseCase
+import com.juagri.shared.ui.dashboard.DashboardViewModel
 import com.juagri.shared.data.local.session.SessionPreference
 import com.juagri.shared.data.local.session.datamanager.DataManager
 import com.juagri.shared.data.local.session.datamanager.DataStore
 import com.juagri.shared.data.remote.login.EmployeeRepositoryImpl
+import com.juagri.shared.domain.usecase.OTPUseCase
 import com.juagri.shared.ui.home.HomeViewModel
 import com.juagri.shared.ui.login.LoginViewModel
 import com.juagri.shared.ui.splash.SplashViewModel
@@ -48,11 +49,12 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                 }
                 single<OTPRepository> { OTPRepositoryImpl(get()) }
                 single { EmployeeUseCase(get()) }
+                single { OTPUseCase(get()) }
                 single { DataManager(DataStore()) }
-                factory { SplashViewModel(get()) }
+                factory { SplashViewModel(get(),get()) }
                 factory { LoginViewModel(get(),get(),get(),get()) }
-                factory { HomeViewModel(get(),get()) }
-                factory { DashboardViewModel(get()) }
+                factory { HomeViewModel(get(),get(),get()) }
+                factory { DashboardViewModel(get(),get()) }
             }
         )
     }
@@ -72,9 +74,9 @@ private object ApiClient {
 
         // Timeout plugin
         install(HttpTimeout) {
-            requestTimeoutMillis = 15000L
-            connectTimeoutMillis = 15000L
-            socketTimeoutMillis = 15000L
+            requestTimeoutMillis = 60000L
+            connectTimeoutMillis = 60000L
+            socketTimeoutMillis = 60000L
         }
 
         // JSON Response properties

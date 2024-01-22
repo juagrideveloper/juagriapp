@@ -1,4 +1,4 @@
-package com.juagri.shared.com.juagri.shared.ui.ledger
+package com.juagri.shared.ui.ledger
 
 import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable

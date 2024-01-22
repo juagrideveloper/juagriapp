@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.juagri.shared.com.juagri.shared.utils.UIState
+import com.juagri.shared.utils.UIState
 import com.juagri.shared.ui.components.fields.ButtonNormal
 import com.juagri.shared.ui.components.fields.OTPView
 import com.juagri.shared.ui.components.fields.SpaceMedium

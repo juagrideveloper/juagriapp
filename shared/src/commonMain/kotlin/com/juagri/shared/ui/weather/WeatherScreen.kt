@@ -1,4 +1,4 @@
-package com.juagri.shared.com.juagri.shared.ui.weather
+package com.juagri.shared.ui.weather
 
 import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable

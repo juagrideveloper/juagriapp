@@ -1,4 +1,4 @@
-package com.juagri.shared.com.juagri.shared.ui.dashboard
+package com.juagri.shared.ui.dashboard
 
 import Constants
 import androidx.compose.foundation.background

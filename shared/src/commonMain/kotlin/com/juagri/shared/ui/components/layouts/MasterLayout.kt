@@ -15,13 +15,14 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.router.stack.replaceCurrent
-import com.juagri.shared.com.juagri.shared.ui.navigation.AppScreens
+import com.juagri.shared.ui.navigation.AppScreens
 import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.ui.components.fields.NavDrawerContent
 import com.juagri.shared.ui.components.fields.NavDrawerHeading
@@ -32,6 +33,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ScreenLayoutWithMenuActionBar(
     title: String = "",
+    employee: MutableState<JUEmployee>,
     modifier: Modifier = Modifier,
     onBackPressed: (() -> Unit)? = null,
     router: Router<AppScreens>? = null,
@@ -58,7 +60,7 @@ fun ScreenLayoutWithMenuActionBar(
                         .width(300.dp)
                 ) {
                     DrawerLayout(
-                        employee = JUEmployee(
+                        /*employee = JUEmployee(
                             active = true,
                             mgmt = false,
                             admin = false,
@@ -72,7 +74,8 @@ fun ScreenLayoutWithMenuActionBar(
                             fcmid = "",
                             regionCode = "Reg-TN-001",
                             territoryCode = ""
-                        )
+                        )*/
+                        employee = employee.value
                     )
                     Divider(modifier = Modifier.height(2.dp))
                     NavDrawerHeading("Menu")

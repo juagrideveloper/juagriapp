@@ -1,4 +1,4 @@
-package com.juagri.shared.com.juagri.shared.ui.components.dialogs
+package com.juagri.shared.ui.components.dialogs
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme

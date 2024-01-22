@@ -1,4 +1,4 @@
-package com.juagri.shared.com.juagri.shared.utils
+package com.juagri.shared.utils
 
 sealed class UIState<out T> {
    data class Loading(val isLoading: Boolean = false) : UIState<Nothing>()

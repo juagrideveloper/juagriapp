@@ -22,7 +22,7 @@ import io.github.xxfast.decompose.router.rememberRouter
 @Composable
 fun AppInitNav() {
     val router: Router<AppInitScreens> =
-        rememberRouter(AppInitScreens::class) { listOf(AppInitScreens.Home) }
+        rememberRouter(AppInitScreens::class) { listOf(AppInitScreens.Splash) }
 
     RoutedContent(
         router = router,

@@ -1,6 +1,6 @@
-package com.juagri.shared.com.juagri.shared.data.remote.login
+package com.juagri.shared.data.remote.login
 
-import com.juagri.shared.com.juagri.shared.domain.repo.OTPRepository
+import com.juagri.shared.domain.repo.OTPRepository
 import com.juagri.shared.data.remote.ApiConfig
 import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.domain.model.login.OTPResponse
