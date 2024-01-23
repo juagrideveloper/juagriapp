@@ -1,11 +1,10 @@
 package com.juagri.staff
 
+import MainView
 import android.os.Bundle
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.view.WindowCompat
-import com.juagri.shared.JUAgriAppContent
-import com.juagri.shared.com.juagri.shared.ui.theme.AppTheme
 import io.github.xxfast.decompose.router.LocalRouterContext
 import io.github.xxfast.decompose.router.RouterContext
 import io.github.xxfast.decompose.router.defaultRouterContext
@@ -22,9 +21,7 @@ class MainActivity : PreComposeActivity() {
         setContent {
             Surface {
                 CompositionLocalProvider(LocalRouterContext provides rootRouterContext) {
-                    AppTheme {
-                        JUAgriAppContent()
-                    }
+                    MainView()
                 }
             }
         }

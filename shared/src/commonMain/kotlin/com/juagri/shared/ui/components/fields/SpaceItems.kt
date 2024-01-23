@@ -1,4 +1,4 @@
-package com.juagri.shared.com.juagri.shared.ui.components.fields
+package com.juagri.shared.ui.components.fields
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer

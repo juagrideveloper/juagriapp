@@ -1,4 +1,4 @@
-package com.juagri.shared.com.juagri.shared.ui.theme
+package com.juagri.shared.utils.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

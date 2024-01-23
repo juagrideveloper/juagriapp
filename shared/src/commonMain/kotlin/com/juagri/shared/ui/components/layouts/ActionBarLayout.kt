@@ -1,4 +1,4 @@
-package com.juagri.shared.com.juagri.shared.ui.components.layouts
+package com.juagri.shared.ui.components.layouts
 
 import androidx.compose.foundation.background
 import androidx.compose.material.icons.Icons
@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
-import com.juagri.shared.com.juagri.shared.ui.components.fields.TextTitle
+import com.juagri.shared.ui.components.fields.TextTitle
 import com.juagri.shared.ui.splash.BACK_BUTTON_TAG
 
 @OptIn(ExperimentalMaterial3Api::class)

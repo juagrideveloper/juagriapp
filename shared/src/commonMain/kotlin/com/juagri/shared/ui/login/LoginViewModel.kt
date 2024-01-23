@@ -1,14 +1,13 @@
 package com.juagri.shared.ui.login
 
-import com.juagri.shared.JUDatabase
-import com.juagri.shared.com.juagri.shared.data.local.dao.AllData
-import com.juagri.shared.com.juagri.shared.data.local.dao.getAll
-import com.juagri.shared.com.juagri.shared.data.local.dao.getTable1
-import com.juagri.shared.com.juagri.shared.data.local.dao.getTable2
-import com.juagri.shared.com.juagri.shared.ui.components.base.BaseViewModel
+import com.juagri.shared.data.local.session.SessionPreference
 import com.juagri.shared.data.local.session.datamanager.DataManager
-import com.juagri.shared.domain.LoginUseCase
+import com.juagri.shared.domain.usecase.EmployeeUseCase
+import com.juagri.shared.domain.usecase.OTPUseCase
+import com.juagri.shared.utils.UIState
 import com.juagri.shared.domain.model.employee.JUEmployee
+import com.juagri.shared.domain.model.login.OTPResponse
+import com.juagri.shared.ui.components.base.BaseViewModel
 import com.juagri.shared.utils.ResponseState
 import com.juagri.shared.utils.value
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,80 +15,59 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
-class LoginViewModel(private val loginUseCase: LoginUseCase, val dataManager: DataManager,val localDatabase: JUDatabase): BaseViewModel() {
-    private var _employee = MutableStateFlow(EmployeeUIState())
+class LoginViewModel(
+    private val dataManager: DataManager,
+    private val session: SessionPreference,
+    private val employeeUseCase: EmployeeUseCase,
+    private val otpUseCase: OTPUseCase,
+) : BaseViewModel(session,dataManager) {
+    private var _employee: MutableStateFlow<UIState<JUEmployee>> =
+        MutableStateFlow(UIState.Loading())
     val employee = _employee.asStateFlow()
-    private var _tableData = MutableStateFlow(TableUIState())
-    val tableData = _tableData.asStateFlow()
-    init {
-        withScope{
-           /* localDatabase.deleteTable1()
-            localDatabase.deleteTable2()
-            localDatabase.setTable1()
-            localDatabase.setTable2()*/
-        }
-    }
 
-    fun getTable1(){
-        withScope {
-            val value = localDatabase.getTable1().first()
-            tableData.value.data1 = value
-            writeLog(value)
-        }
-    }
+    private var _otpResponse: MutableStateFlow<UIState<OTPResponse>> =
+        MutableStateFlow(UIState.Loading())
+    val otpResponse = _otpResponse.asStateFlow()
 
-    fun getTable2(){
-        withScope {
-            val value = localDatabase.getTable2().first()
-            tableData.value.data2 = value
-            writeLog(value)
-        }
-    }
-
-    fun getAll(){
-        withScope {
-            val value = localDatabase.getAll().first()
-            tableData.value.data3 = value
-            writeLog(value.title1 +"---"+value.title2)
-        }
-    }
-
-    fun getEmployeeDetails(mobileNo: String){
+    fun getEmployeeDetails(mobileNo: String) {
         viewModelScope.launch {
-            loginUseCase.getEmployeeDetails(mobileNo).collect{response->
-                when(response){
-                    is ResponseState.Loading -> {
-                        writeLog("Loading: "+response.isLoading)
-                        _employee.value.isLoading = response.isLoading
-                    }
-                    is ResponseState.Success -> {
-                        writeLog("Employee Name: "+response.data.cname)
-                        _employee.value.data = response.data
-                    }
-                    is ResponseState.Error ->{
-                        writeLog("Error: "+response.e?.message)
-                        _employee.value.error = response.e?.message
-                    }
+            employeeUseCase.getEmployeeDetails(mobileNo).collect { response ->
+                when(response) {
+                    is ResponseState.Loading -> _employee.value = UIState.Loading(response.isLoading)
+                    is ResponseState.Success -> _employee.value = UIState.Success(response.data)
+                    is ResponseState.Error -> _employee.value = UIState.Error(response.e?.message.value())
                 }
-                println("12312312312: getEmployeeDetails"+ _employee.value)
             }
         }
     }
-}
 
-data class EmployeeUIState(
-    var isLoading: Boolean = false,
-    var data: JUEmployee? = null,
-    var error: String? = null
-)
+    fun updateEmployee(employee: JUEmployee) {
+        dataManager.setEmployee(employee)
+    }
 
-data class TableUIState(
-    var data1: String? = null,
-    var data2: String? = null,
-    var data3: AllData? = null,
-    var error: String? = null
-){
-    fun getAllData(): String = data3?.let {
-        it.title1.value() +"-"+it.title2.value()
-    }?: ""
+    fun sendOTP() {
+        dataManager.getEmployee()?.let {
+            withScope {
+                otpUseCase.sendOTP(it).collect { response ->
+                    when(response) {
+                        is ResponseState.Loading -> _otpResponse.value = UIState.Loading(response.isLoading)
+                        is ResponseState.Success -> _otpResponse.value = UIState.Success(response.data)
+                        is ResponseState.Error -> _otpResponse.value = UIState.Error(response.e?.message.value())
+                    }
+                }
+            }
+        }
+    }
+
+    fun storeUserDetails(){
+        dataManager.getEmployee()?.let {emp->
+            session.apply {
+                setEmpCode(emp.code.value())
+                setEmpName(emp.name.value())
+                setEmpMobile(emp.mobile.value())
+                setEmpRoleId(emp.roleId.value())
+                setAlreadyLoggedIn(true)
+            }
+        }
+    }
 }

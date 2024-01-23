@@ -1,4 +1,4 @@
-package com.juagri.shared.com.juagri.shared.ui.components.layouts
+package com.juagri.shared.ui.components.layouts
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box

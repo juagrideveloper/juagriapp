@@ -1,4 +1,4 @@
-package com.juagri.shared.com.juagri.shared.data.local.dao
+package com.juagri.shared.data.local.dao
 
 import com.juagri.shared.JUDatabase
 import com.juagri.shared.utils.value

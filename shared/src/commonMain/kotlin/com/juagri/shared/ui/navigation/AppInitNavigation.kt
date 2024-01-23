@@ -1,4 +1,4 @@
-package com.juagri.shared.com.juagri.shared.ui.navigation
+package com.juagri.shared.ui.navigation
 
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ExperimentalDecomposeApi
@@ -6,15 +6,17 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.pred
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
 import com.arkivanov.decompose.router.stack.pop
+import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.router.stack.replaceCurrent
-import io.github.xxfast.decompose.router.LocalRouterContext
-import io.github.xxfast.decompose.router.Router
-import io.github.xxfast.decompose.router.content.RoutedContent
-import io.github.xxfast.decompose.router.rememberRouter
 import com.juagri.shared.ui.home.HomeScreen
 import com.juagri.shared.ui.login.LoginScreen
 import com.juagri.shared.ui.login.OTPScreen
 import com.juagri.shared.ui.splash.SplashScreen
+import io.github.xxfast.decompose.router.LocalRouterContext
+import io.github.xxfast.decompose.router.Router
+import io.github.xxfast.decompose.router.content.RoutedContent
+import io.github.xxfast.decompose.router.rememberRouter
 
 @OptIn(ExperimentalDecomposeApi::class)
 @Composable
@@ -31,15 +33,21 @@ fun AppInitNav() {
         )
     ) { screen ->
         when (screen) {
-            AppInitScreens.Splash -> SplashScreen { mode ->
-                if (mode == 1) {
-                    router.replaceCurrent(AppInitScreens.Login)
+            AppInitScreens.Splash -> SplashScreen { isAlreadyLoggedIn ->
+                if (isAlreadyLoggedIn) {
+                    router.replaceAll(AppInitScreens.Home)
                 } else {
-                    router.replaceCurrent(AppInitScreens.Home)
+                    router.replaceCurrent(AppInitScreens.Login)
                 }
             }
-            AppInitScreens.Login -> LoginScreen { router.replaceCurrent(AppInitScreens.Home) }
-            AppInitScreens.OTP -> OTPScreen { router.pop() }
+            AppInitScreens.Login -> LoginScreen { router.push(AppInitScreens.OTP) }
+            AppInitScreens.OTP -> OTPScreen { validUser ->
+                if (validUser) {
+                    router.replaceAll(AppInitScreens.Home)
+                } else {
+                    router.pop()
+                }
+            }
             AppInitScreens.Home -> HomeScreen { router.pop() }
         }
     }

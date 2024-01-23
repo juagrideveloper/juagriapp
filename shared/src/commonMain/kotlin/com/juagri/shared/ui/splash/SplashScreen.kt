@@ -19,11 +19,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.juagri.shared.com.juagri.shared.ui.components.fields.SpaceMedium
-import com.juagri.shared.com.juagri.shared.ui.components.layouts.ScreenLayoutWithoutActionBar
-import com.juagri.shared.com.juagri.shared.ui.components.layouts.SplashImageColumn
+import com.juagri.shared.ui.components.fields.SpaceMedium
+import com.juagri.shared.ui.components.layouts.ScreenLayoutWithoutActionBar
+import com.juagri.shared.ui.components.layouts.SplashImageColumn
+import com.juagri.shared.ui.splash.SplashViewModel
+import com.juagri.shared.ui.login.LoginViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import moe.tlaster.precompose.koin.koinViewModel
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
@@ -36,8 +39,9 @@ const val DETAILS_TAG = "details"
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun SplashScreen(
-    onBack: (Int) -> Unit,
+    onNext: (Boolean) -> Unit,
 ) {
+    val viewModel = koinViewModel(SplashViewModel::class)
     ScreenLayoutWithoutActionBar("Splash") {
         var image1 by remember { mutableStateOf(false) }
         var image2 by remember { mutableStateOf(false) }
@@ -47,7 +51,7 @@ fun SplashScreen(
         var image6 by remember { mutableStateOf(false) }
         var image7 by remember { mutableStateOf(false) }
         var image8 by remember { mutableStateOf(false) }
-        var isPerformingTask by remember { mutableStateOf(false) }
+        var isReadyToNavigate by remember { mutableStateOf(false) }
         Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
             Column(modifier = Modifier.align(Alignment.BottomCenter)) {
                 Row {
@@ -100,10 +104,10 @@ fun SplashScreen(
         }
         LaunchedEffect(Unit) {
             delay((500 * 8) + 2000 ) // Do some heavy lifting
-            isPerformingTask = true
+            isReadyToNavigate = true
         }
-        if(isPerformingTask){
-            onBack.invoke(1)
+        if(isReadyToNavigate){
+            onNext.invoke(viewModel.isAlreadyLoggedIn())
         }
     }
 }

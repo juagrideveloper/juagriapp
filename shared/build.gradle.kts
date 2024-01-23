@@ -37,6 +37,8 @@ kotlin {
                 implementation(libs.decompose.compose.multiplatform)
 
                 implementation(libs.ktor.core)
+                implementation(libs.ktor.content.negotiation)
+                implementation(libs.ktor.json)
                 implementation(libs.ktor.logs)
                 api(libs.kotlinx.coroutines.core)
                 api(libs.kotlinx.serialization)
@@ -52,14 +54,12 @@ kotlin {
                 api(libs.precompose.koin)
                 //api(libs.kamel.image)
                 implementation(libs.sqldelight.coroutines)
+                implementation("io.github.koalaplot:koalaplot-core:0.5.1")
+
             }
         }
         val androidMain by getting {
             dependencies {
-                /*api("androidx.activity:activity-compose:1.7.2")
-                api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.core:core-ktx:1.10.1")*/
-
                 implementation(compose.material3)
                 implementation(libs.decompose)
                 implementation(libs.decompose.compose.multiplatform)
@@ -69,6 +69,8 @@ kotlin {
                 implementation("androidx.camera:camera-lifecycle:1.3.0")
                 implementation("io.coil-kt:coil-compose:2.2.1")
                 implementation(libs.sqldelight.android)
+                api(libs.kotlinx.coroutines.android)
+                implementation(libs.ktor.okhttp)
             }
         }
         val iosX64Main by getting
@@ -81,6 +83,7 @@ kotlin {
             iosSimulatorArm64Main.dependsOn(this)
             dependencies {
                 implementation(libs.ktor.ios)
+                implementation(libs.ktor.darwin)
                 implementation(libs.sqldelight.ios)
                 implementation(libs.touchlab.state)
             }

@@ -1,4 +1,4 @@
-package com.juagri.shared.com.juagri.shared.ui.components.layouts
+package com.juagri.shared.ui.components.layouts
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.dp
-import com.juagri.shared.com.juagri.shared.ui.components.fields.TextMedium
+import com.juagri.shared.ui.components.fields.TextMedium
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
