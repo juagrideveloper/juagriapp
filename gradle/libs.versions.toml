@@ -19,6 +19,7 @@ ktor = "2.3.7"
 kamel-image="0.9.1"
 sqldelight="2.0.1"
 touchlab="2.0.5"
+koalaplot-chart="0.5.1"
 
 [libraries]
 agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -60,3 +61,4 @@ sqldelight-coroutines= { module = "app.cash.sqldelight:coroutines-extensions", v
 sqldelight-android= { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-ios= { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
 touchlab-state= { module = "co.touchlab:stately-common", version.ref = "touchlab" }
+koalaplot-chart-core= { module = "io.github.koalaplot:koalaplot-core", version.ref = "koalaplot-chart" }

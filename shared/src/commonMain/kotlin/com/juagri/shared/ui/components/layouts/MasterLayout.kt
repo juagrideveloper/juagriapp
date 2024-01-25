@@ -6,6 +6,9 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -21,11 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.dp
-import com.arkivanov.decompose.router.stack.replaceCurrent
-import com.juagri.shared.ui.navigation.AppScreens
+import com.arkivanov.decompose.router.stack.push
 import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.ui.components.fields.NavDrawerContent
 import com.juagri.shared.ui.components.fields.NavDrawerHeading
+import com.juagri.shared.ui.navigation.AppScreens
 import io.github.xxfast.decompose.router.Router
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -60,42 +63,27 @@ fun ScreenLayoutWithMenuActionBar(
                         .width(300.dp)
                 ) {
                     DrawerLayout(
-                        /*employee = JUEmployee(
-                            active = true,
-                            mgmt = false,
-                            admin = false,
-                            code = "TN-0001",
-                            hrCode = "TN-0001",
-                            mobile = "9578080988",
-                            mailId = "kesavanpanneerselvam@gmail.com",
-                            name = "Kesavan Panneerselvam",
-                            role = "Manager",
-                            roleId = "RM",
-                            fcmid = "",
-                            regionCode = "Reg-TN-001",
-                            territoryCode = ""
-                        )*/
                         employee = employee.value
                     )
                     Divider(modifier = Modifier.height(2.dp))
                     NavDrawerHeading("Menu")
                     NavDrawerContent("Dashboard") {
                         updateDrawerState(scope,drawerState)
-                        router?.replaceCurrent(AppScreens.Dashboard)
+                        router?.push(AppScreens.Dashboard)
                     }
                     NavDrawerContent("Customer Ledger") {
                         updateDrawerState(scope,drawerState)
-                        router?.replaceCurrent(AppScreens.Ledger)
+                        router?.push(AppScreens.Ledger)
                     }
                     NavDrawerHeading("Services")
                     NavDrawerContent("Weather") {
                         updateDrawerState(scope,drawerState)
-                        router?.replaceCurrent(AppScreens.Weather)
+                        router?.push(AppScreens.Weather)
                     }
                     NavDrawerHeading("Personal")
                     NavDrawerContent("Profile") {
                         updateDrawerState(scope,drawerState)
-                        router?.replaceCurrent(AppScreens.Profile)
+                        router?.push(AppScreens.Profile)
                     }
 
                 }
@@ -104,13 +92,9 @@ fun ScreenLayoutWithMenuActionBar(
     ) {
         Scaffold(
             topBar = {
-                ActionBarLayout(title) {
+                ActionBarLayout(title,Icons.Default.Menu) {
                     updateDrawerState(scope,drawerState)
-                    /*scope.launch {
-                        drawerState.apply {
-                            if (isClosed) open() else close()
-                        }
-                    }*/
+                    onBackPressed?.invoke()
                 }
             }) { paddingValues ->
             Layout(
@@ -153,7 +137,7 @@ fun ScreenLayoutWithActionBar(
 ) {
     Scaffold(
         topBar = {
-            ActionBarLayout(title) { onBackPressed?.invoke() }
+            ActionBarLayout(title,Icons.Default.ArrowBack) { onBackPressed?.invoke() }
         }) { paddingValues ->
         Layout(
             modifier = modifier.padding(paddingValues)

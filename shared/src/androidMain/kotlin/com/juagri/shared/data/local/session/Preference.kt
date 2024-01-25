@@ -1,7 +1,5 @@
 package com.juagri.shared.data.local.session
 
-import com.juagri.shared.data.local.session.SessionContext
-
 const val SP_NAME = "JUAgriLocalPreference"
 
 actual fun SessionContext.putInt(key: String, value: Int) {

@@ -3,7 +3,6 @@ package com.juagri.shared.ui.components.layouts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,8 +18,6 @@ import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.ui.components.fields.NavDrawerRole
 import com.juagri.shared.ui.components.fields.NavDrawerUsername
 import com.juagri.shared.ui.components.fields.SpaceMedium
-import com.juagri.shared.ui.components.fields.TextMedium
-import com.juagri.shared.ui.components.fields.TextTitle
 import com.juagri.shared.utils.value
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource

@@ -1,7 +1,6 @@
 package com.juagri.shared.ui.home
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -10,20 +9,21 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.pred
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
 import com.arkivanov.decompose.router.stack.pop
+import com.juagri.shared.com.juagri.shared.ui.components.layouts.ScreenLayout
+import com.juagri.shared.domain.model.employee.JUEmployee
+import com.juagri.shared.ui.components.layouts.ScreenLayoutWithMenuActionBar
 import com.juagri.shared.ui.dashboard.DashboardScreen
 import com.juagri.shared.ui.ledger.LedgerScreen
 import com.juagri.shared.ui.navigation.AppScreens
 import com.juagri.shared.ui.profile.ProfileScreen
 import com.juagri.shared.ui.weather.WeatherScreen
 import com.juagri.shared.utils.UIState
-import com.juagri.shared.domain.model.employee.JUEmployee
-import com.juagri.shared.ui.components.dialogs.ProgressDialog
-import com.juagri.shared.ui.components.layouts.ScreenLayoutWithMenuActionBar
 import io.github.xxfast.decompose.router.LocalRouterContext
 import io.github.xxfast.decompose.router.Router
 import io.github.xxfast.decompose.router.content.RoutedContent
 import io.github.xxfast.decompose.router.rememberRouter
 import moe.tlaster.precompose.koin.koinViewModel
+import moe.tlaster.precompose.navigation.BackHandler
 
 @Composable
 fun HomeScreen(onBack: () -> Unit) {
@@ -32,21 +32,23 @@ fun HomeScreen(onBack: () -> Unit) {
     val viewModel = koinViewModel(HomeViewModel::class)
     val employee = remember { mutableStateOf(JUEmployee()) }
     var initCallNotDone = true
-    ScreenLayoutWithMenuActionBar(title = "Dashboard",router=router, employee = employee) {
-        val enableLoading = remember { mutableStateOf(false) }
-        when (val result = viewModel.employee.collectAsState().value) {
-            is UIState.Loading -> enableLoading.value = result.isLoading
-            is UIState.Success -> {
-                employee.value = result.data
-                initScreen(router)
+    BackHandler {
+        router.pop()
+    }
+    ScreenLayoutWithMenuActionBar(title = "Dashboard",router=router, employee = employee, onBackPressed = {router.pop()}) {
+        ScreenLayout(viewModel) {
+            when (val result = viewModel.employee.collectAsState().value) {
+                is UIState.Success -> {
+                    employee.value = result.data
+                    initScreen(router)
+                }
+                else -> {}
             }
-            else -> {}
+            if (initCallNotDone) {
+                initCallNotDone = false
+                viewModel.getEmployeeDetails()
+            }
         }
-        if(initCallNotDone){
-            initCallNotDone = false
-            viewModel.getEmployeeDetails()
-        }
-        ProgressDialog(enableLoading,{})
     }
 }
 @OptIn(ExperimentalDecomposeApi::class)

@@ -22,8 +22,6 @@ import androidx.compose.ui.unit.dp
 import com.juagri.shared.ui.components.fields.SpaceMedium
 import com.juagri.shared.ui.components.layouts.ScreenLayoutWithoutActionBar
 import com.juagri.shared.ui.components.layouts.SplashImageColumn
-import com.juagri.shared.ui.splash.SplashViewModel
-import com.juagri.shared.ui.login.LoginViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.koin.koinViewModel

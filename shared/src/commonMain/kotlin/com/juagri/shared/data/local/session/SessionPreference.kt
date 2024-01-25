@@ -55,7 +55,14 @@ class SessionPreference(private val context: SessionContext) {
 
     fun empRoleId(): String = context.getString(EMP_ROLE_ID).value()
 
+    fun setFirestorePersistence(done: Boolean) {
+        context.putBool(IS_FIRESTORE_PERSISTENCE_DONE, done)
+    }
+
+    fun isFirestorePersistenceNotDone() = context.getBool(IS_FIRESTORE_PERSISTENCE_DONE, false)
+
     private companion object {
+        const val IS_FIRESTORE_PERSISTENCE_DONE = "isFirestorePersistenceDone"
         const val IS_ALREADY_LOGGED_IN = "isAlreadyLoggedIn"
         const val EMP_CODE = "emp_code"
         const val EMP_NAME = "emp_name"

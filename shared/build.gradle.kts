@@ -52,9 +52,9 @@ kotlin {
                 api(libs.precompose)
                 api(libs.precompose.viewmodel)
                 api(libs.precompose.koin)
-                //api(libs.kamel.image)
+                api(libs.kamel.image)
                 implementation(libs.sqldelight.coroutines)
-                implementation("io.github.koalaplot:koalaplot-core:0.5.1")
+                implementation(libs.koalaplot.chart.core)
 
             }
         }
