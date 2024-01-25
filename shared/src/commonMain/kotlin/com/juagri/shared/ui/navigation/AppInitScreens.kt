@@ -7,7 +7,7 @@ import com.arkivanov.essenty.parcelable.Parcelize
 sealed class AppInitScreens(): Parcelable {
   data object Splash: AppInitScreens()
   data object Login: AppInitScreens()
-  data object OTP: AppInitScreens()
+  data class OTP(val otp:String): AppInitScreens()
   data object Home: AppInitScreens()
 }
 

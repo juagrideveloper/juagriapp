@@ -22,7 +22,7 @@ import io.github.xxfast.decompose.router.rememberRouter
 @Composable
 fun AppInitNav() {
     val router: Router<AppInitScreens> =
-        rememberRouter(AppInitScreens::class) { listOf(AppInitScreens.Splash) }
+        rememberRouter(AppInitScreens::class) { listOf(AppInitScreens.OTP("")) }
 
     RoutedContent(
         router = router,
@@ -40,8 +40,12 @@ fun AppInitNav() {
                     router.replaceCurrent(AppInitScreens.Login)
                 }
             }
-            AppInitScreens.Login -> LoginScreen { router.push(AppInitScreens.OTP) }
-            AppInitScreens.OTP -> OTPScreen { validUser ->
+            AppInitScreens.Login -> LoginScreen { otp->
+                otp?.let {
+                    router.push(AppInitScreens.OTP(it))
+                }?: router.pop()
+            }
+            is AppInitScreens.OTP -> OTPScreen(screen.otp) { validUser ->
                 if (validUser) {
                     router.replaceAll(AppInitScreens.Home)
                 } else {

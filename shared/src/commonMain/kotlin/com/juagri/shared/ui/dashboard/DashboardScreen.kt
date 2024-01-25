@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,12 +36,11 @@ import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
-
 @Composable
 fun DashboardScreen() {
     val viewModel = koinViewModel(DashboardViewModel::class)
     ScreenLayoutWithoutActionBar(modifier=Modifier.background(Color.LightGray)) {
-        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+        Column {
             SpaceLarge()
             when(viewModel.getRoleID()) {
                 Constants.EMP_ROLE_SO -> barChart()

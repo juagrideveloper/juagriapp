@@ -3,6 +3,7 @@ package com.juagri.shared.di
 import Constants
 import app.cash.sqldelight.db.SqlDriver
 import com.juagri.shared.JUDatabase
+import com.juagri.shared.com.juagri.shared.ui.TestScreenViewModel
 import com.juagri.shared.data.remote.login.OTPRepositoryImpl
 import com.juagri.shared.domain.repo.EmployeeRepository
 import com.juagri.shared.domain.repo.OTPRepository
@@ -36,6 +37,11 @@ import org.koin.dsl.module
 import kotlin.native.concurrent.ThreadLocal
 
 fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
+
+    if(!sessionPreference.isFirestorePersistenceNotDone()) {
+        Firebase.firestore.setSettings(false)
+        sessionPreference.setFirestorePersistence(true)
+    }
     startKoin {
         modules(
             module {
@@ -55,6 +61,7 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                 factory { LoginViewModel(get(),get(),get(),get()) }
                 factory { HomeViewModel(get(),get(),get()) }
                 factory { DashboardViewModel(get(),get()) }
+                factory { TestScreenViewModel(get(),get()) }
             }
         )
     }
@@ -66,6 +73,10 @@ private object ApiClient {
     //Configure the HttpCLient
     @OptIn(ExperimentalSerializationApi::class)
     var client = HttpClient {
+
+        engine {
+            pipelining = true
+        }
 
         // For Logging
         install(Logging) {

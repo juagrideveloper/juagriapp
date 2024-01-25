@@ -12,9 +12,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
 @Composable
-fun ProgressDialog(showDialog:MutableState<Boolean>, onClose:()->Unit) {
+fun ProgressDialog(showDialog:MutableState<Boolean>) {
     if (showDialog.value) {
-        Dialog(onDismissRequest =  onClose ) {
+        Dialog(onDismissRequest = {}) {
             Box(
                 contentAlignment = Alignment.Center
             ) {
