@@ -12,7 +12,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -32,12 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.juagri.shared.ui.components.fields.ButtonChatOption
-import com.juagri.shared.ui.components.fields.DotsFlashing
-import com.juagri.shared.ui.components.fields.SpaceMedium
-import com.juagri.shared.ui.components.fields.SpaceSmall
-import com.juagri.shared.ui.components.fields.TextMedium
-import com.juagri.shared.ui.components.layouts.ScreenLayoutWithActionBar
 import com.juagri.shared.data.remote.chat.ChatButtonContent
 import com.juagri.shared.data.remote.chat.ChatButtonItem
 import com.juagri.shared.data.remote.chat.ChatDateItem
@@ -45,6 +38,13 @@ import com.juagri.shared.data.remote.chat.ChatItem
 import com.juagri.shared.data.remote.chat.ChatLoadingItem
 import com.juagri.shared.data.remote.chat.ChatTextItem
 import com.juagri.shared.data.remote.chat.MessageType
+import com.juagri.shared.ui.components.fields.ButtonChatOption
+import com.juagri.shared.ui.components.fields.DotsFlashing
+import com.juagri.shared.ui.components.fields.RowSpaceMedium
+import com.juagri.shared.ui.components.fields.RowSpaceSmall
+import com.juagri.shared.ui.components.fields.TextMedium
+import com.juagri.shared.ui.components.layouts.ScreenLayoutWithActionBar
+import com.juagri.shared.utils.getColors
 import io.ktor.util.date.GMTDate
 import kotlinx.coroutines.delay
 
@@ -52,7 +52,7 @@ data class Item(val text: String,val checked: Boolean)
 private lateinit var list: SnapshotStateList<ChatItem>
 @Composable
 fun ChatScreen(onBack: () -> Unit) {
-    ScreenLayoutWithActionBar(title = "Home", onBackPressed = { /*onBack.invoke()*/ }) {
+    ScreenLayoutWithActionBar(onBackPressed = { /*onBack.invoke()*/ }) {
 
         list = remember { mutableStateListOf<ChatItem>() }
         var textValue by remember { mutableStateOf(TextFieldValue()) }
@@ -170,24 +170,24 @@ private fun AddChatItem(item: ChatItem){
                 horizontalAlignment = Alignment.End
             ) {
                 Surface(
-                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    color = getColors().secondaryContainer,
                     shape = if (item.isFromMe) chatBubbleShape1 else chatBubbleShape2
                 ) {
                     ChatItemLayout(item)
                 }
             }
         }
-        SpaceMedium()
+        RowSpaceMedium()
     } else {
         Column() {
             Surface(
-                color = MaterialTheme.colorScheme.tertiaryContainer,
+                color = getColors().tertiaryContainer,
                 shape = if (item.isFromMe) chatBubbleShape1 else chatBubbleShape2
             ) {
                 ChatItemLayout(item)
             }
         }
-        SpaceMedium()
+        RowSpaceMedium()
     }
 }
 
@@ -247,7 +247,7 @@ private fun ChatItemLayout(item: ChatItem){
                     }
                     val isButtonEnabled = remember { mutableStateOf(buttonItem.isNotSelected) }
                     buttonItem.buttons.forEach { button ->
-                        SpaceSmall()
+                        RowSpaceSmall()
                         ButtonChatOption(button, isButtonEnabled) {
                             list.add(ChatTextItem(button.title, isFromMe = true))
                             if(button.id == 101) {
@@ -302,7 +302,7 @@ private fun ChatItemLayout(item: ChatItem){
                         Text("Select Date", modifier = Modifier.padding(8.dp))
                     }
                 }else{
-                    TextMedium(item.message, modifier = Modifier.padding(8.dp), color = MaterialTheme.colorScheme.onBackground)
+                    TextMedium(item.message, modifier = Modifier.padding(8.dp), color = getColors().onBackground)
                 }
             }
         }

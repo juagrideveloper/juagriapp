@@ -26,14 +26,14 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.juagri.shared.com.juagri.shared.ui.components.layouts.ScreenLayout
 import com.juagri.shared.ui.components.dialogs.ConfirmDialog
 import com.juagri.shared.ui.components.fields.ButtonNormal
-import com.juagri.shared.ui.components.fields.SpaceMedium
-import com.juagri.shared.ui.components.fields.SpaceSmall
+import com.juagri.shared.ui.components.fields.RowSpaceMedium
+import com.juagri.shared.ui.components.fields.RowSpaceSmall
 import com.juagri.shared.ui.components.fields.TextMedium
 import com.juagri.shared.ui.components.fields.TextTitle
 import com.juagri.shared.ui.components.layouts.LoginLayout
+import com.juagri.shared.ui.components.layouts.ScreenLayout
 import com.juagri.shared.ui.components.layouts.ScreenLayoutWithoutActionBar
 import com.juagri.shared.utils.UIState
 import com.juagri.shared.utils.value
@@ -46,126 +46,131 @@ import org.jetbrains.compose.resources.painterResource
 fun LoginScreen(onNext: (String?) -> Unit) {
 
     val viewModel = koinViewModel(LoginViewModel::class)
-    ScreenLayoutWithoutActionBar(title = "Login", onBackPressed = {
-        onNext.invoke(null)
-    }) {
-        ScreenLayout(viewModel) {
-            val mobileNo = remember { mutableStateOf("") }
-            Box {
-                LoginLayout()
-                Column(
-                    modifier = Modifier.fillMaxWidth().wrapContentSize()
-                        .padding(start = 24.dp, end = 24.dp)
-                        .padding(top = 80.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Image(
-                        painterResource("icon_telephone.xml"),
-                        null,
-                        modifier = Modifier.height(150.dp).width(100.dp)
-                    )
-                    SpaceMedium()
-                    TextTitle("Mobile Number")
-                    SpaceMedium()
-                    TextMedium(
-                        textAlign = TextAlign.Center,
-                        text = "Please enter your registered phone number, you will receive an OTP."
-                    )
-                    SpaceMedium()
-                    Row(
-                        modifier = Modifier.padding(start = 24.dp, end = 24.dp)
-                            .background(Color.Transparent)
+    viewModel.apply {
+        ScreenLayoutWithoutActionBar(onBackPressed = {
+            onNext.invoke(null)
+        }) {
+            ScreenLayout(this, false) {
+                val mobileNo = remember { mutableStateOf("") }
+                Box {
+                    LoginLayout()
+                    Column(
+                        modifier = Modifier.fillMaxWidth().wrapContentSize()
+                            .padding(start = 24.dp, end = 24.dp)
+                            .padding(top = 80.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-
-                        TextField(
-                            value = "+91",
-                            onValueChange = {},
-                            modifier = Modifier
-                                .width(65.dp)
-                                .padding(vertical = 4.dp).border(
-                                    shape = RectangleShape, border = BorderStroke(
-                                        (0.5).dp,
-                                        Color.LightGray
-                                    )
-                                ),
-                            colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color.White,
-                                unfocusedContainerColor = Color.White,
-                                focusedIndicatorColor = Color.Transparent,
-                                disabledContainerColor = Color.White,
-                                unfocusedIndicatorColor = Color.Transparent,
-                                disabledTextColor = Color.Black
-                            ),
-                            enabled = false
+                        Image(
+                            painterResource("icon_telephone.xml"),
+                            null,
+                            modifier = Modifier.height(150.dp).width(100.dp)
                         )
-                        TextField(
-                            value = mobileNo.value,
-                            onValueChange = {
-                                if (it.length <= 10) {
-                                    mobileNo.value = it
-                                }
-                            },
-                            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp).border(
-                                    shape = RectangleShape, border = BorderStroke(
-                                        1.dp,
-                                        Color.LightGray
-                                    )
-                                ),
+                        RowSpaceMedium()
+                        TextTitle(names().mobileNumber)
+                        RowSpaceMedium()
+                        TextMedium(
+                            textAlign = TextAlign.Center,
+                            text = "Please enter your registered phone number, you will receive an OTP."
+                        )
+                        RowSpaceMedium()
+                        Row(
+                            modifier = Modifier.padding(start = 24.dp, end = 24.dp)
+                                .background(Color.Transparent)
+                        ) {
 
-                            colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color.White,
-                                unfocusedContainerColor = Color.White,
-                                focusedIndicatorColor = Color.Transparent,
+                            TextField(
+                                value = "+91",
+                                onValueChange = {},
+                                modifier = Modifier
+                                    .width(65.dp)
+                                    .padding(vertical = 4.dp).border(
+                                        shape = RectangleShape, border = BorderStroke(
+                                            (0.5).dp,
+                                            Color.LightGray
+                                        )
+                                    ),
+                                colors = TextFieldDefaults.colors(
+                                    focusedContainerColor = Color.White,
+                                    unfocusedContainerColor = Color.White,
+                                    focusedIndicatorColor = Color.Transparent,
+                                    disabledContainerColor = Color.White,
+                                    unfocusedIndicatorColor = Color.Transparent,
+                                    disabledTextColor = Color.Black
+                                ),
+                                enabled = false
                             )
-                        )
+                            TextField(
+                                value = mobileNo.value,
+                                onValueChange = {
+                                    if (it.length <= 10) {
+                                        mobileNo.value = it
+                                    }
+                                },
+                                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 4.dp).border(
+                                        shape = RectangleShape, border = BorderStroke(
+                                            1.dp,
+                                            Color.LightGray
+                                        )
+                                    ),
 
-                    }
-                    val showConfirmDialog = remember { mutableStateOf(false) }
-                    val confirmDialogContent = remember { mutableStateOf("") }
+                                colors = TextFieldDefaults.colors(
+                                    focusedContainerColor = Color.White,
+                                    unfocusedContainerColor = Color.White,
+                                    focusedIndicatorColor = Color.Transparent,
+                                )
+                            )
 
-                    when (val result = viewModel.employee.collectAsState().value) {
-                        is UIState.Success -> {
-                            result.data.let {
-                                viewModel.updateEmployee(it)
-                                confirmDialogContent.value =
-                                    "Hi, " + it.name.value() + "!\nShall we proceed with +91" + mobileNo.value + " mobile number?"
-                                showConfirmDialog.value = true
+                        }
+                        val showConfirmDialog = remember { mutableStateOf(false) }
+                        val confirmDialogContent = remember { mutableStateOf("") }
+
+                        when (val result = employee.collectAsState().value) {
+                            is UIState.Success -> {
+                                result.data.let {
+                                    updateEmployee(it)
+                                    confirmDialogContent.value =
+                                        "Hi, " + it.name.value() + "!\nShall we proceed with +91" + mobileNo.value + " mobile number?"
+                                    showConfirmDialog.value = true
+                                }
+                            }
+
+                            else -> {}
+                        }
+
+                        RowSpaceSmall()
+                        ButtonNormal("Submit") {
+                            if (mobileNo.value.length == 10) {
+                                getEmployeeDetails(mobileNo.value)
+                            } else {
+                                showErrorMessage("Please enter valid mobile no!")
                             }
                         }
-                        else -> {}
-                    }
-
-                    SpaceSmall()
-                    ButtonNormal("Submit") {
-                        if (mobileNo.value.length == 10) {
-                            viewModel.getEmployeeDetails(mobileNo.value)
-                        } else {
-                            viewModel.showErrorMessage("Please enter valid mobile no!")
-                        }
-                    }
-                    when (val result = viewModel.otpResponse.collectAsState().value) {
-                        is UIState.Success -> {
-                            result.data.let {
-                                onNext.invoke(it.otp)
+                        when (val result = otpResponse.collectAsState().value) {
+                            is UIState.Success -> {
+                                result.data.let {
+                                    onNext.invoke(it.otp)
+                                }
                             }
+
+                            else -> {}
                         }
-                        else -> {}
+                        ConfirmDialog(
+                            showConfirmDialog,
+                            "Confirm",
+                            confirmDialogContent.value,
+                            onClickYes = {
+                                showConfirmDialog.value = false
+                                sendOTP()
+                            },
+                            onClickNo = {
+                                showConfirmDialog.value = false
+                            })
                     }
-                    ConfirmDialog(
-                        showConfirmDialog,
-                        "Confirm",
-                        confirmDialogContent.value,
-                        onClickYes = {
-                            showConfirmDialog.value = false
-                            viewModel.sendOTP()
-                        },
-                        onClickNo = {
-                            showConfirmDialog.value = false
-                        })
                 }
+
             }
         }
     }

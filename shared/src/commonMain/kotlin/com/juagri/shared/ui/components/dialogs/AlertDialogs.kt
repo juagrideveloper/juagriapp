@@ -1,7 +1,7 @@
 package com.juagri.shared.ui.components.dialogs
 
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.MaterialTheme
+import com.juagri.shared.utils.getColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.RectangleShape
@@ -34,7 +34,7 @@ fun ConfirmDialog(showingDialog:MutableState<Boolean>,title: String,content: Str
                     onClickNo.invoke()
                 }
             },
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            containerColor = getColors().surfaceVariant,
             shape = RectangleShape
         )
     }

@@ -19,7 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.juagri.shared.ui.components.fields.SpaceMedium
+import com.juagri.shared.ui.components.fields.RowSpaceMedium
 import com.juagri.shared.ui.components.layouts.ScreenLayoutWithoutActionBar
 import com.juagri.shared.ui.components.layouts.SplashImageColumn
 import kotlinx.coroutines.delay
@@ -40,7 +40,8 @@ fun SplashScreen(
     onNext: (Boolean) -> Unit,
 ) {
     val viewModel = koinViewModel(SplashViewModel::class)
-    ScreenLayoutWithoutActionBar("Splash") {
+    viewModel.setDemoUser()
+    ScreenLayoutWithoutActionBar {
         var image1 by remember { mutableStateOf(false) }
         var image2 by remember { mutableStateOf(false) }
         var image3 by remember { mutableStateOf(false) }
@@ -63,19 +64,19 @@ fun SplashScreen(
                         }
                     }
                 }
-                SpaceMedium()
+                RowSpaceMedium()
                 Row {
                     SplashImageColumn("ic_splash_get_set.png", image7)
                     SplashImageColumn("ic_splash_xpert.png", image6)
                     SplashImageColumn("ic_splash_morgain.png", image5)
                 }
-                SpaceMedium()
+                RowSpaceMedium()
                 Row {
                     SplashImageColumn(visible = false)
                     SplashImageColumn("ic_splash_ecomax.png", image4)
                     SplashImageColumn(visible = false)
                 }
-                SpaceMedium()
+                RowSpaceMedium()
                 Row {
                     SplashImageColumn("ic_splash_elect.png", image3)
                     SplashImageColumn("ic_splash_vitalgold.png", image2)

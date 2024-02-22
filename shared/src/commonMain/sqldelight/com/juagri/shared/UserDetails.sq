@@ -1,0 +1,116 @@
+createRegionMaster:
+CREATE TABLE IF NOT EXISTS RegionMaster (
+    id TEXT NOT NULL PRIMARY KEY,
+    cncode TEXT,
+    cnname TEXT,
+    zcode TEXT,
+    zname TEXT,
+    stcode TEXT,
+    stname TEXT,
+    regname TEXT,
+    rmcode TEXT,
+    rmname TEXT,
+    rmmailid TEXT,
+    rmphoneno TEXT,
+    updatedTime REAL
+);
+
+createTerritoryMaster:
+CREATE TABLE IF NOT EXISTS TerritoryMaster (
+    id TEXT NOT NULL PRIMARY KEY,
+    socode TEXT,
+    soname TEXT,
+    somailid TEXT,
+    sophoneno TEXT,
+    tname TEXT,
+    regcode TEXT,
+    updatedTime REAL
+);
+
+createDealerMaster:
+CREATE TABLE IF NOT EXISTS DealerMaster (
+    id TEXT NOT NULL PRIMARY KEY,
+    cname TEXT,
+    mailId TEXT,
+    address TEXT,
+    phoneno TEXT,
+    tcode TEXT,
+    regcode TEXT,
+    updatedTime REAL
+);
+
+createFinYearMaster:
+CREATE TABLE IF NOT EXISTS FinYearMaster (
+    id TEXT NOT NULL PRIMARY KEY,
+    start_date REAL,
+    end_date REAL,
+    updatedTime REAL
+);
+
+createFinMonthMaster:
+CREATE TABLE IF NOT EXISTS FinMonthMaster (
+    id TEXT NOT NULL PRIMARY KEY,
+    start_date REAL,
+    end_date REAL,
+    updatedTime REAL
+);
+
+insertRegionMaster:
+INSERT OR REPLACE INTO RegionMaster(
+id, cncode, cnname, zcode, zname, stcode, stname,regname,rmcode,rmname,rmmailid,rmphoneno,updatedTime
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?);
+
+insertTerritoryMaster:
+INSERT OR REPLACE INTO TerritoryMaster(
+id, socode, soname, somailid, sophoneno, tname, regcode,updatedTime
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+insertDealerMaster:
+INSERT OR REPLACE INTO DealerMaster(
+id, cname, mailId, address, phoneno, tcode, regcode,updatedTime
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+insertFinYearMaster:
+INSERT OR REPLACE INTO FinYearMaster(
+id, start_date, end_date, updatedTime
+) VALUES (?, ?, ?, ?);
+
+insertFinMonthMaster:
+INSERT OR REPLACE INTO FinMonthMaster(
+id, start_date, end_date, updatedTime
+) VALUES (?, ?, ?, ?);
+
+getRegionList:
+SELECT id, cncode, cnname, zcode, zname, stcode, stname,regname,rmcode,rmname,rmmailid,rmphoneno,updatedTime
+FROM RegionMaster ORDER BY regname;
+
+getTerritoryList:
+SELECT id, socode, soname, somailid, sophoneno, tname, regcode,updatedTime
+FROM TerritoryMaster WHERE regcode = ? ORDER BY tname;
+
+getDealerList:
+SELECT id, cname, mailId, address, phoneno, tcode, regcode,updatedTime
+FROM DealerMaster WHERE tcode = ? ORDER BY cname;
+
+getFinYearList:
+SELECT id, start_date, end_date, updatedTime
+FROM FinYearMaster ORDER BY start_date;
+
+getFinMonthList:
+SELECT id, start_date, end_date, updatedTime
+FROM FinMonthMaster WHERE start_date >= ? AND end_date <= ? ORDER BY start_date;
+
+getRegionLastUpdatedTime:
+SELECT max(updatedTime) FROM RegionMaster;
+
+getTerritoryLastUpdatedTime:
+SELECT max(updatedTime) FROM TerritoryMaster;
+
+getDealerLastUpdatedTime:
+SELECT max(updatedTime) FROM DealerMaster;
+
+getFinYearLastUpdatedTime:
+SELECT max(updatedTime) FROM FinYearMaster;
+
+getFinMonthLastUpdatedTime:
+SELECT max(updatedTime) FROM FinMonthMaster;

@@ -6,38 +6,43 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.dp
-import com.arkivanov.decompose.router.stack.push
 import com.juagri.shared.domain.model.employee.JUEmployee
+import com.juagri.shared.ui.components.base.BaseViewModel
 import com.juagri.shared.ui.components.fields.NavDrawerContent
 import com.juagri.shared.ui.components.fields.NavDrawerHeading
 import com.juagri.shared.ui.navigation.AppScreens
+import com.juagri.shared.utils.getColors
+import com.juagri.shared.utils.value
 import io.github.xxfast.decompose.router.Router
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
 fun ScreenLayoutWithMenuActionBar(
-    title: String = "",
+    title: MutableState<String> = mutableStateOf(""),
     employee: MutableState<JUEmployee>,
     modifier: Modifier = Modifier,
+    viewModel: BaseViewModel,
     onBackPressed: (() -> Unit)? = null,
     router: Router<AppScreens>? = null,
     content: @Composable() () -> Unit
@@ -46,8 +51,8 @@ fun ScreenLayoutWithMenuActionBar(
     val scope = rememberCoroutineScope()
     val gradient = Brush.verticalGradient(
         colors = listOf(
-            MaterialTheme.colorScheme.primary,
-            MaterialTheme.colorScheme.secondary
+            getColors().primary,
+            getColors().secondary
         )
     )
     ModalNavigationDrawer(
@@ -60,16 +65,29 @@ fun ScreenLayoutWithMenuActionBar(
                         .background(gradient)
                         .then(Modifier)
                         .fillMaxHeight()
+                        .verticalScroll(rememberScrollState())
                         .width(300.dp)
                 ) {
                     DrawerLayout(
                         employee = employee.value
                     )
                     Divider(modifier = Modifier.height(2.dp))
-                    NavDrawerHeading("Menu")
+                    if(employee.value.menuItems != null){
+                        employee.value.menuItems?.forEach {parent->
+                            NavDrawerHeading(viewModel.getScreenTitle(parent.value.id.value()))
+                            parent.value.childMenus.forEach {child->
+                                NavDrawerContent(viewModel.getScreenTitle(child.id.value())) {
+                                    updateDrawerState(scope,drawerState)
+                                    title.value = viewModel.getScreenTitle(child.id.value())
+                                    //router?.replaceAll(AppScreens.Dashboard)
+                                }
+                            }
+                        }
+                    }
+                    /*NavDrawerHeading("Menu")
                     NavDrawerContent("Dashboard") {
                         updateDrawerState(scope,drawerState)
-                        router?.push(AppScreens.Dashboard)
+                        router?.replaceAll(AppScreens.Dashboard)
                     }
                     NavDrawerContent("Customer Ledger") {
                         updateDrawerState(scope,drawerState)
@@ -84,22 +102,21 @@ fun ScreenLayoutWithMenuActionBar(
                     NavDrawerContent("Profile") {
                         updateDrawerState(scope,drawerState)
                         router?.push(AppScreens.Profile)
-                    }
-
+                    }*/
                 }
             }
         },
     ) {
         Scaffold(
             topBar = {
-                ActionBarLayout(title,Icons.Default.Menu) {
+                ActionBarLayout(title,Icons.Default.Menu,viewModel) {
                     updateDrawerState(scope,drawerState)
                     onBackPressed?.invoke()
                 }
             }) { paddingValues ->
             Layout(
                 modifier = modifier.padding(paddingValues)
-                    .background(color = MaterialTheme.colorScheme.background),
+                    .background(color = getColors().background),
                 content = content
             ) { measurables, constraints ->
                 // Don't constrain child views further, measure them with given constraints
@@ -130,7 +147,7 @@ fun ScreenLayoutWithMenuActionBar(
 
 @Composable
 fun ScreenLayoutWithActionBar(
-    title: String = "",
+    title: MutableState<String> = mutableStateOf(""),
     modifier: Modifier = Modifier,
     onBackPressed: (() -> Unit)? = null,
     content: @Composable() () -> Unit
@@ -141,7 +158,7 @@ fun ScreenLayoutWithActionBar(
         }) { paddingValues ->
         Layout(
             modifier = modifier.padding(paddingValues)
-                .background(color = MaterialTheme.colorScheme.background),
+                .background(color = getColors().background),
             content = content
         ) { measurables, constraints ->
             // Don't constrain child views further, measure them with given constraints
@@ -177,7 +194,7 @@ fun ScreenLayoutWithoutActionBar(
     content: @Composable() () -> Unit
 ) {
     Layout(
-        modifier = modifier.background(color = MaterialTheme.colorScheme.background),
+        modifier = modifier.background(color = getColors().background),
         content = content
     ) { measurables, constraints ->
         // Don't constrain child views further, measure them with given constraints

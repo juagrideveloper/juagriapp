@@ -1,4 +1,4 @@
-package com.juagri.shared.com.juagri.shared.ui.components.layouts
+package com.juagri.shared.ui.components.layouts
 
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarDuration

@@ -18,17 +18,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.juagri.shared.com.juagri.shared.ui.components.layouts.ScreenLayout
 import com.juagri.shared.ui.components.fields.ButtonNormal
 import com.juagri.shared.ui.components.fields.OTPView
-import com.juagri.shared.ui.components.fields.SpaceMedium
-import com.juagri.shared.ui.components.fields.SpaceSmall
+import com.juagri.shared.ui.components.fields.RowSpaceMedium
+import com.juagri.shared.ui.components.fields.RowSpaceSmall
 import com.juagri.shared.ui.components.fields.TextMedium
 import com.juagri.shared.ui.components.fields.TextTitle
 import com.juagri.shared.ui.components.layouts.LoginLayout
+import com.juagri.shared.ui.components.layouts.ScreenLayout
 import com.juagri.shared.ui.components.layouts.ScreenLayoutWithoutActionBar
 import com.juagri.shared.utils.UIState
-import com.juagri.shared.utils.value
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.koin.koinViewModel
@@ -42,7 +41,7 @@ fun OTPScreen(otpValue: String,onNext: (validUser: Boolean) -> Unit) {
     ScreenLayoutWithoutActionBar(title = "Login", onBackPressed = {
         onNext.invoke(false)
     }) {
-        ScreenLayout(viewModel) {
+        ScreenLayout(viewModel,false) {
             val otp = remember { mutableStateOf("") }
             val validOTP = remember { mutableStateOf(otpValue) }
             when (val result = viewModel.otpResponse.collectAsState().value) {
@@ -70,14 +69,14 @@ fun OTPScreen(otpValue: String,onNext: (validUser: Boolean) -> Unit) {
                         modifier = Modifier.height(120.dp).width(90.dp),
                         contentScale = ContentScale.Fit
                     )
-                    SpaceMedium()
+                    RowSpaceMedium()
                     TextTitle("OTP Verification")
-                    SpaceMedium()
+                    RowSpaceMedium()
                     TextMedium(
                         textAlign = TextAlign.Center,
                         text = "OTP has been sent to your registered mobile number, Please enter the OTP."
                     )
-                    SpaceMedium()
+                    RowSpaceMedium()
                     OTPView(
                         codeLength = 6,
                         initialCode = otp.value,
@@ -85,7 +84,7 @@ fun OTPScreen(otpValue: String,onNext: (validUser: Boolean) -> Unit) {
                             otp.value = it
                         }
                     )
-                    SpaceSmall()
+                    RowSpaceSmall()
                     ButtonNormal("Submit") {
                         if (otp.value == validOTP.value) {
                             viewModel.storeUserDetails()
@@ -94,7 +93,7 @@ fun OTPScreen(otpValue: String,onNext: (validUser: Boolean) -> Unit) {
                             viewModel.showErrorMessage("Please enter valid OTP!")
                         }
                     }
-                    SpaceSmall()
+                    RowSpaceSmall()
                     if(!enableResendOTP.value) {
                         val coroutineScope = rememberCoroutineScope()
                         coroutineScope.launch {
