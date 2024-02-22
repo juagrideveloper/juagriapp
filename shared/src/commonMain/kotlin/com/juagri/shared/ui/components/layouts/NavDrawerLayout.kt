@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.ui.components.fields.NavDrawerRole
 import com.juagri.shared.ui.components.fields.NavDrawerUsername
-import com.juagri.shared.ui.components.fields.SpaceMedium
+import com.juagri.shared.ui.components.fields.RowSpaceMedium
 import com.juagri.shared.utils.value
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
@@ -33,7 +33,7 @@ fun DrawerLayout(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        SpaceMedium()
+        RowSpaceMedium()
         Image(
             modifier = Modifier
                 .size(90.dp)

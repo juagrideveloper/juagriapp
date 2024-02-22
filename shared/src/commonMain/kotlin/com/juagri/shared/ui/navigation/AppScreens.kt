@@ -5,6 +5,7 @@ import com.arkivanov.essenty.parcelable.Parcelize
 
 @Parcelize
 sealed class AppScreens(): Parcelable {
+  data object DummyScreen: AppScreens()
   data object Dashboard: AppScreens()
   data object Ledger: AppScreens()
   data object Weather: AppScreens()

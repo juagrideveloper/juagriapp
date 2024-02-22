@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.MaterialTheme
+import com.juagri.shared.utils.getColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -75,14 +75,14 @@ private fun CodeEntry(text: String) {
     ) {
         val color = animateColorAsState(
             targetValue = if (text.isEmpty()) Color.Gray.copy(alpha = .8f)
-            else MaterialTheme.colorScheme.onSurface
+            else getColors().onSurface
         )
         Text(
             text = text,
             modifier = Modifier.align(Alignment.Center),
             fontSize = 20.sp,
             fontWeight = FontWeight.Medium,
-            color = MaterialTheme.colorScheme.onSurface
+            color = getColors().onSurface
         )
         Box(
             Modifier

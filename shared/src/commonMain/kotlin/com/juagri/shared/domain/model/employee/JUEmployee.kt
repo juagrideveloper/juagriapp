@@ -1,5 +1,6 @@
 package com.juagri.shared.domain.model.employee
 
+import com.juagri.shared.domain.model.menu.HeaderSlideMenu
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -16,5 +17,8 @@ data class JUEmployee(
     @SerialName("role") var role:String? = null,
     @SerialName("roleId") var roleId:String? = null,
     @SerialName("fcmid") var fcmid:String? = null,
+    @SerialName("menu_id") var menuId:String? = null,
     @SerialName("regionCode") var regionCode:String? = null,
-    @SerialName("territoryCode") var territoryCode:String? = null)
+    @SerialName("territoryCode") var territoryCode:String? = null,
+    var menuItems:HashMap<String,HeaderSlideMenu>? = null
+)

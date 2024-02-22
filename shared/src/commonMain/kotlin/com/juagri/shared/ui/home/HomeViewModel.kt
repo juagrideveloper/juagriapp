@@ -5,13 +5,9 @@ import com.juagri.shared.data.local.session.datamanager.DataManager
 import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.domain.usecase.EmployeeUseCase
 import com.juagri.shared.ui.components.base.BaseViewModel
-import com.juagri.shared.utils.ResponseState
 import com.juagri.shared.utils.UIState
-import com.juagri.shared.utils.value
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
-import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class HomeViewModel(
     private val dataManager: DataManager,
@@ -22,13 +18,9 @@ class HomeViewModel(
         MutableStateFlow(UIState.Init)
     val employee = _employee.asStateFlow()
     fun getEmployeeDetails() {
-        viewModelScope.launch {
+        backgroundScope {
             employeeUseCase.getEmployeeDetails(session.empMobile()).collect { response ->
-                when(response) {
-                    is ResponseState.Loading -> showProgressBar(response.isLoading)
-                    is ResponseState.Success -> _employee.value = UIState.Success(response.data)
-                    is ResponseState.Error -> _employee.value = UIState.Error(response.e?.message.value())
-                }
+                uiScope(response,_employee)
             }
         }
     }

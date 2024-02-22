@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.dp
 import com.juagri.shared.ui.components.fields.TextMedium
+import com.juagri.shared.utils.getColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,9 +25,9 @@ fun ChatBubbleLayout(
     content: @Composable() () -> Unit,
 ) {
     val backgroundBubbleColor = if (isFromMe) {
-        MaterialTheme.colorScheme.primary
+        getColors().primary
     } else {
-        MaterialTheme.colorScheme.secondary
+        getColors().secondary
     }
     if(isFromMe) {
         Row {
@@ -68,9 +68,9 @@ fun ChatBubbleLayout(
 @Composable
 private fun ChatLayout(isUserMe: Boolean,content: @Composable() () -> Unit){
     val backgroundBubbleColor = if (isUserMe) {
-        MaterialTheme.colorScheme.primaryContainer
+        getColors().primaryContainer
     } else {
-        MaterialTheme.colorScheme.secondaryContainer
+        getColors().secondaryContainer
     }
     Surface(
         color = backgroundBubbleColor,
@@ -118,8 +118,8 @@ fun ClickableMessage(
     /*val uriHandler = LocalUriHandler.current
 
     val mainTextColor = when (isUserMe) {
-        true -> MaterialTheme.colorScheme.onPrimary
-        false -> MaterialTheme.colorScheme.onSecondary
+        true -> getColors().onPrimary
+        false -> getColors().onSecondary
     }
 
     val styledMessage = messageFormatter(
@@ -152,9 +152,9 @@ fun messageFormatter(
 
         val codeSnippetBackground =
             if (primary) {
-                MaterialTheme.colorScheme.primaryContainer
+                getColors().primaryContainer
             } else {
-                MaterialTheme.colorScheme.secondaryContainer
+                getColors().secondaryContainer
             }
 
         for (token in tokens) {
@@ -203,7 +203,7 @@ private fun getSymbolAnnotation(
             AnnotatedString(
                 text = matchResult.value,
                 spanStyle = SpanStyle(
-                    color = if (primary) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.surfaceVariant,
+                    color = if (primary) getColors().surface else getColors().surfaceVariant,
                     fontWeight = FontWeight.Bold
                 )
             ),
@@ -256,7 +256,7 @@ private fun getSymbolAnnotation(
             AnnotatedString(
                 text = matchResult.value,
                 spanStyle = SpanStyle(
-                    color = if (primary) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.surfaceVariant
+                    color = if (primary) getColors().surface else getColors().surfaceVariant
                 )
             ),
             StringAnnotation(

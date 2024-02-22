@@ -1,4 +1,7 @@
 package com.juagri.shared.utils.theme
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 val md_theme_light_primary = Color(0xFF38B91B)
@@ -92,3 +95,26 @@ val dark_textHint = Color(0xFF4FD8EB)
 val dark_ontextHint = Color(0xFF00363D)
 val dark_textHintContainer = Color(0xFF004F58)
 val dark_ontextHintContainer = Color(0xFF97F0FF)
+
+val light_screenBackground = Color(0xFFF5F5F5)
+val dark_screenBackground = Color(0xFF636363)
+
+val ColorScheme.chart_os_l90: Color get() = Color(0xFF05AE99)
+val ColorScheme.chart_os_l120: Color get() = Color(0xFF7C4DFF)
+val ColorScheme.chart_os_l180: Color get() = Color(0xFFE69103)
+val ColorScheme.chart_os_g180: Color get() = Color(0xFFFE5250)
+val ColorScheme.chart_os_total: Color get() = Color.Transparent
+val ColorScheme.chart_m_plan_start: Color get() = Color(0xFFD8E2E1)
+val ColorScheme.chart_m_plan_end: Color get() = Color(0xFFD8E2E1)
+val ColorScheme.chart_y_plan_start: Color get() = Color(0xFFD8E2E1)
+val ColorScheme.chart_y_plan_end: Color get() = Color(0xFFD8E2E1)
+val ColorScheme.chart_m_actual_start: Color get() = Color(0xFF214C7C)
+val ColorScheme.chart_m_actual_end: Color get() = Color(0xFF96B1CE)
+val ColorScheme.chart_y_actual_start: Color get() = Color(0xFF198165)
+val ColorScheme.chart_y_actual_end: Color get() = Color(0xFF7CB8A8)
+val ColorScheme.ledger_invoice: Color get() = Color(0xFF429C93)
+val ColorScheme.ledger_cheque: Color get() = Color(0xFF378AB4)
+
+@Composable
+fun ColorScheme.screenBackground(): Color
+    = if (isSystemInDarkTheme()) dark_screenBackground else light_screenBackground

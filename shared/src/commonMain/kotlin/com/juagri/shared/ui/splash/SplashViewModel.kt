@@ -7,5 +7,4 @@ import com.juagri.shared.data.local.session.datamanager.DataManager
 class SplashViewModel(
     dataManager: DataManager,
     session: SessionPreference
-) : BaseViewModel(session, dataManager) {
-}
+) : BaseViewModel(session, dataManager)

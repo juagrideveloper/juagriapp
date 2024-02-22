@@ -1,0 +1,106 @@
+createDashboard:
+CREATE TABLE IF NOT EXISTS DealerDashboard (
+    id TEXT NOT NULL PRIMARY KEY,
+    cd_available REAL,
+    cd_availed REAL,
+    cd_availmonth TEXT,
+    cdoid TEXT,
+    cname TEXT,
+    cphone TEXT,
+    g180 REAL,
+    l120 REAL,
+    l180 REAL,
+    l90 REAL,
+    msal_value REAL,
+    regcode TEXT,
+    tcode TEXT,
+    totalos REAL,
+    ysal_value REAL,
+    updatedTime REAL
+);
+
+createProductSalesReport:
+CREATE TABLE IF NOT EXISTS ProductSalesReport (
+    id TEXT NOT NULL PRIMARY KEY,
+    bcode TEXT,
+    bname TEXT,
+    ccode TEXT,
+    qty REAL,
+    type TEXT,
+    updatedTime REAL
+);
+
+createOpeningBalance:
+CREATE TABLE IF NOT EXISTS OpeningBalance (
+    id TEXT NOT NULL PRIMARY KEY,
+    ccode TEXT,
+    month TEXT,
+    open_balance REAL,
+    updatedTime REAL
+);
+
+createLedger:
+CREATE TABLE IF NOT EXISTS Ledger (
+    id TEXT NOT NULL PRIMARY KEY,
+    ccode TEXT,
+    cheque_no TEXT,
+    credit_amt REAL,
+    debit_amt REAL,
+    doc_no TEXT,
+    post_date REAL,
+    updatedTime REAL
+);
+
+insertDashboard:
+INSERT OR REPLACE INTO DealerDashboard(
+id, cd_available, cd_availed, cd_availmonth, cdoid, cname, cphone,g180,l120,l180,l90,msal_value,regcode,tcode, totalos,ysal_value,updatedTime
+) VALUES(?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+getDashboard:
+SELECT id, cd_available, cd_availed, cd_availmonth, cdoid, cname, cphone,g180,l120,l180,l90,msal_value,regcode,tcode, totalos,ysal_value,updatedTime FROM DealerDashboard WHERE id = ?;
+
+getProductSalesReport:
+SELECT id,bcode,bname,ccode,qty,type,updatedTime FROM ProductSalesReport WHERE ccode = ?;
+
+insertProductSalesReport:
+INSERT OR REPLACE INTO ProductSalesReport(id, bcode, bname, ccode, qty, type,updatedTime)
+    VALUES(?, ?, ?,?, ?, ?, ?);
+
+getDashboardLastUpdatedTime:
+SELECT max(updatedTime) FROM DealerDashboard WHERE id = ?;
+
+getProductSalesLastUpdatedTime:
+SELECT max(updatedTime) FROM ProductSalesReport WHERE ccode = ?;
+
+deleteProductSalesItem:
+DELETE FROM ProductSalesReport WHERE id = ?;
+
+insertOpeningBalance:
+INSERT OR REPLACE INTO OpeningBalance(
+id, ccode, month, open_balance, updatedTime
+) VALUES(?,?,?,?,?);
+
+insertLedger:
+INSERT OR REPLACE INTO Ledger(
+id, ccode, cheque_no, credit_amt, debit_amt, doc_no, post_date, updatedTime
+) VALUES(?,?,?,?,?,?,?,?);
+
+getLedgerItems:
+SELECT id, ccode, cheque_no, credit_amt, debit_amt, doc_no, post_date, updatedTime
+FROM Ledger WHERE ccode = ? AND post_date > ? AND post_date < ? ORDER BY post_date;
+
+getOpeningBalance:
+SELECT open_balance
+FROM OpeningBalance WHERE ccode = ? AND month = ?;
+
+getOpeningBalanceLastUpdatedTime:
+SELECT max(updatedTime) FROM OpeningBalance WHERE ccode = ?;
+
+getLedgerLastUpdatedTime:
+SELECT max(updatedTime) FROM Ledger WHERE ccode = ?;
+
+deleteOpeningBalance:
+DELETE FROM OpeningBalance WHERE id = ?;
+
+deleteLedger:
+DELETE FROM Ledger WHERE id = ?;

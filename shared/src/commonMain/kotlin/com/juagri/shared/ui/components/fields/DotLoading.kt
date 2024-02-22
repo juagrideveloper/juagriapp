@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
+import com.juagri.shared.utils.getColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 
-private val dotSize = 24.dp // made it bigger for demo
+private val dotSize = 16.dp // made it bigger for demo
 private val delayUnit = 300 // you can change delay to change animation speed
 @Composable
 fun DotsFlashing() {
@@ -34,7 +34,7 @@ fun DotsFlashing() {
             .size(dotSize)
             .alpha(alpha)
             .background(
-                color = MaterialTheme.colorScheme.primary,
+                color = getColors().primary,
                 shape = CircleShape
             )
     )

@@ -1,4 +1,4 @@
-package com.juagri.shared.ui.dashboard
+package com.juagri.shared.ui.dashboard.cdo
 
 import Constants
 import androidx.compose.foundation.background
@@ -15,8 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
-import com.juagri.shared.ui.components.fields.SpaceLarge
+import com.juagri.shared.ui.components.fields.RowSpaceLarge
 import com.juagri.shared.ui.components.layouts.ScreenLayoutWithoutActionBar
+import com.juagri.shared.ui.dashboard.dealer.DealerDashboardViewModel
 import io.github.koalaplot.core.bar.DefaultVerticalBar
 import io.github.koalaplot.core.bar.VerticalBarPlot
 import io.github.koalaplot.core.line.AreaBaseline
@@ -38,10 +39,10 @@ import kotlin.random.Random
 
 @Composable
 fun DashboardScreen() {
-    val viewModel = koinViewModel(DashboardViewModel::class)
+    val viewModel = koinViewModel(DealerDashboardViewModel::class)
     ScreenLayoutWithoutActionBar(modifier=Modifier.background(Color.LightGray)) {
         Column {
-            SpaceLarge()
+            RowSpaceLarge()
             when(viewModel.getRoleID()) {
                 Constants.EMP_ROLE_SO -> barChart()
                 Constants.EMP_ROLE_CDO -> pieChart()
