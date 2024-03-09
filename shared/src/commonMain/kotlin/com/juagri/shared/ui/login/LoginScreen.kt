@@ -130,7 +130,7 @@ fun LoginScreen(onNext: (String?) -> Unit) {
                         when (val result = employee.collectAsState().value) {
                             is UIState.Success -> {
                                 result.data.let {
-                                    updateEmployee(it)
+                                    setJUEmployee(it)
                                     confirmDialogContent.value =
                                         "Hi, " + it.name.value() + "!\nShall we proceed with +91" + mobileNo.value + " mobile number?"
                                     showConfirmDialog.value = true

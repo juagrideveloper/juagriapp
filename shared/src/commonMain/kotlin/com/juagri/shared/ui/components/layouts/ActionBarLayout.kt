@@ -33,7 +33,7 @@ import com.juagri.shared.utils.strings.AppLanguage
 fun ActionBarLayout(
     title: MutableState<String> = mutableStateOf(""),
     image: ImageVector,
-    viewModel: BaseViewModel? = null,
+    viewModel: BaseViewModel,
     onBackPressed: (() -> Unit)? = null
 ) {
     var menuExpanded by remember {
@@ -73,7 +73,7 @@ fun ActionBarLayout(
                         Text("English")
                     },
                     onClick = {
-                        viewModel?.changeLanguage(AppLanguage.English)
+                        viewModel.changeLanguage(AppLanguage.English)
                         menuExpanded = false
                     },
                 )
@@ -82,7 +82,7 @@ fun ActionBarLayout(
                         Text("Tamil")
                     },
                     onClick = {
-                        viewModel?.changeLanguage(AppLanguage.Tamil)
+                        viewModel.changeLanguage(AppLanguage.Tamil)
                         menuExpanded = false
                     },
                 )
@@ -91,7 +91,7 @@ fun ActionBarLayout(
                         Text("Hindi")
                     },
                     onClick = {
-                        viewModel?.changeLanguage(AppLanguage.Hindi)
+                        viewModel.changeLanguage(AppLanguage.Hindi)
                         menuExpanded = false
                     },
                 )

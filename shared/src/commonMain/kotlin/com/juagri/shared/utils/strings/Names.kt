@@ -37,6 +37,11 @@ interface Names {
     val yourOrders: String
     val juDoctor: String
     val devices: String
+    val name: String
+    val employeeCode: String
+    val role: String
+    val appVersion: String
+    val logout: String
 
     val selectRegion: String
     val selectTerritory: String

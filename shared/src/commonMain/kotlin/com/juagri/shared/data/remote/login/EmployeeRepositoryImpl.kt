@@ -25,6 +25,7 @@ class EmployeeRepositoryImpl(private val db:CollectionReference,private val menu
             trySend(ResponseState.Loading())
             trySend(ResponseState.Success(employee))
         } catch (e: Exception) {
+            e.printStackTrace()
             trySend(ResponseState.Error(e))
         }
         awaitClose {

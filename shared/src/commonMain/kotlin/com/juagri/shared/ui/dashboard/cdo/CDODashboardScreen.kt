@@ -40,6 +40,7 @@ import kotlin.random.Random
 @Composable
 fun DashboardScreen() {
     val viewModel = koinViewModel(DealerDashboardViewModel::class)
+    viewModel.setScreenId(Constants.SCREEN_DASHBOARD)
     ScreenLayoutWithoutActionBar(modifier=Modifier.background(Color.LightGray)) {
         Column {
             RowSpaceLarge()

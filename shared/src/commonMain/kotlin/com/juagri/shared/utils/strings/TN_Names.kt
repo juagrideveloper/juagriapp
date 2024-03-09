@@ -37,6 +37,11 @@ object TN_Names: Names {
     override val yourOrders: String get() = "உங்கள் ஆர்டர்கள்"
     override val juDoctor: String get() = "ஜேயூ டாக்டர்"
     override val devices: String get() = "சாதனங்கள்"
+    override val name: String get() = "பெயர்"
+    override val employeeCode: String get() = "பணியாளர் குறியீடு"
+    override val role: String get() = "பங்கு"
+    override val appVersion: String get() = "ஆப் பதிப்பு"
+    override val logout: String get() = "வெளியேறு"
 
     override val selectRegion: String get() = "$select $region"
     override val selectTerritory: String get() = "$select $territory"

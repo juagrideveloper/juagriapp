@@ -20,10 +20,12 @@ import moe.tlaster.precompose.koin.koinViewModel
 @Composable
 fun LedgerScreen() {
     val viewModel = koinViewModel(LedgerViewModel::class)
+    viewModel.setScreenId(Constants.SCREEN_LEDGER)
     ScreenLayoutWithoutActionBar {
-        ScreenLayout(viewModel,false) {
-            CardLayout(true) {
-                viewModel.apply {
+        ScreenLayout(viewModel,true) {
+            viewModel.apply {
+                CardLayout {
+
                     Row {
                         DropDownLayout(
                             getRegionLabel(),
@@ -64,44 +66,45 @@ fun LedgerScreen() {
                             getFinMonthList()
                         }
                     }
-                    ColumnSpaceSmall()
-                    when (val result = viewModel.dealerLedgerItem.collectAsState().value) {
-                        is UIState.Success -> {
-                            result.data?.let {
-                                LedgerLayout(viewModel.names(),it)
-                            }
+                }
+                ColumnSpaceSmall()
+                when (val result = viewModel.dealerLedgerItem.collectAsState().value) {
+                    is UIState.Success -> {
+                        result.data?.let {
+                            LedgerLayout(viewModel.names(), it)
                         }
-                        else -> {}
                     }
-                    FilterDialog(showDialog) {
-                        resetLedger()
-                        when (val item = it.data) {
-                            is FilterType.REGION -> {
-                                selectedRegion.value = item.data
-                                selectedTerritory.value = null
-                                selectedDealer.value = null
-                            }
 
-                            is FilterType.TERRITORY -> {
-                                selectedTerritory.value = item.data
-                                selectedDealer.value = null
-                            }
+                    else -> {}
+                }
+                FilterDialog(showDialog) {
+                    resetLedger()
+                    when (val item = it.data) {
+                        is FilterType.REGION -> {
+                            selectedRegion.value = item.data
+                            selectedTerritory.value = null
+                            selectedDealer.value = null
+                        }
 
-                            is FilterType.DEALER -> {
-                                selectedDealer.value = item.data
-                                getLedgerDetails()
-                            }
+                        is FilterType.TERRITORY -> {
+                            selectedTerritory.value = item.data
+                            selectedDealer.value = null
+                        }
 
-                            is FilterType.FIN_YEAR -> {
-                                selectedFinYear.value = item.data
-                                selectedFinMonth.value = null
-                                getLedgerDetails()
-                            }
+                        is FilterType.DEALER -> {
+                            selectedDealer.value = item.data
+                            getLedgerDetails()
+                        }
 
-                            is FilterType.FIN_MONTH -> {
-                                selectedFinMonth.value = item.data
-                                getLedgerDetails()
-                            }
+                        is FilterType.FIN_YEAR -> {
+                            selectedFinYear.value = item.data
+                            selectedFinMonth.value = null
+                            getLedgerDetails()
+                        }
+
+                        is FilterType.FIN_MONTH -> {
+                            selectedFinMonth.value = item.data
+                            getLedgerDetails()
                         }
                     }
                 }

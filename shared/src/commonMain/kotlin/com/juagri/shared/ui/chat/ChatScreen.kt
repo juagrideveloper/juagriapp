@@ -52,7 +52,7 @@ data class Item(val text: String,val checked: Boolean)
 private lateinit var list: SnapshotStateList<ChatItem>
 @Composable
 fun ChatScreen(onBack: () -> Unit) {
-    ScreenLayoutWithActionBar(onBackPressed = { /*onBack.invoke()*/ }) {
+    /*ScreenLayoutWithActionBar(onBackPressed = { *//*onBack.invoke()*//* }) {
 
         list = remember { mutableStateListOf<ChatItem>() }
         var textValue by remember { mutableStateOf(TextFieldValue()) }
@@ -117,24 +117,20 @@ fun ChatScreen(onBack: () -> Unit) {
             }
         }
         chatInit()
-
-
-
-
+    }*/
     /*list = remember { mutableStateListOf<ChatItem>() }
-        var textValue by remember { mutableStateOf(TextFieldValue()) }
-        val movableItems = list.map { item ->
-            movableContentOf {
-                AddChatItem(item)
-            }
-        }
-        Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(8.dp)) {
-            list.forEachIndexed { index, item ->
-                movableItems[index]()
-            }
-        }
-        chatInit()*/
-    }
+       var textValue by remember { mutableStateOf(TextFieldValue()) }
+       val movableItems = list.map { item ->
+           movableContentOf {
+               AddChatItem(item)
+           }
+       }
+       Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(8.dp)) {
+           list.forEachIndexed { index, item ->
+               movableItems[index]()
+           }
+       }
+       chatInit()*/
 }
 
 /*@Composable

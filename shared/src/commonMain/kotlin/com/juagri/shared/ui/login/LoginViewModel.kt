@@ -34,10 +34,6 @@ class LoginViewModel(
         }
     }
 
-    fun updateEmployee(employee: JUEmployee) {
-        dataManager.setEmployee(employee)
-    }
-
     fun sendOTP() {
         dataManager.getEmployee()?.let {otp->
             backgroundScope{

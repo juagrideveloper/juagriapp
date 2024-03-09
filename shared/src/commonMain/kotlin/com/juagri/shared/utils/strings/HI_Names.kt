@@ -37,6 +37,11 @@ object HI_Names: Names {
     override val yourOrders: String get() = "तुम्हारे ऑर्डर"
     override val juDoctor: String get() = "जेयू डॉक्टर"
     override val devices: String get() = "उपकरण"
+    override val name: String get() = "हम हैं"
+    override val employeeCode: String get() = "कर्मचारी कोड"
+    override val role: String get() = "रोल"
+    override val appVersion: String get() = "ऐप वॉर्सिन"
+    override val logout: String get() = "लाकेट"
 
     override val selectRegion: String get() = "$select $region"
     override val selectTerritory: String get() = "$select $territory"

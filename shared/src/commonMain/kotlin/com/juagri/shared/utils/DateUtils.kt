@@ -22,4 +22,4 @@ fun GMTDate.toYYYYMMDD(): String = buildString {
     append("-")
     append(dayOfMonth.padZero(2))
 }
-private fun Int.padZero(length: Int): String = toString().padStart(length, '0')
+fun Int.padZero(length: Int): String = toString().padStart(length, '0')

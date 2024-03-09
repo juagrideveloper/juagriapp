@@ -10,6 +10,8 @@ import com.juagri.shared.utils.strings.Names
 data class DataStore(
     val menuItems: MutableState<MutableList<HeaderSlideMenu>> = mutableStateOf(mutableListOf()),
     var employee: JUEmployee? = null,
+    val screenId:MutableState<String> = mutableStateOf(""),
+    val screenTitle:MutableState<String> = mutableStateOf(""),
     val labels: MutableState<Names> = mutableStateOf(
         EN_Names
     )
