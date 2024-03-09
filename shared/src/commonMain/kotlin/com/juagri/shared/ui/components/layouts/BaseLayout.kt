@@ -58,11 +58,11 @@ fun ScreenLayout(
         ) {
             val screenModifier = if(isScrollable) {
                 Modifier.verticalScroll(rememberScrollState())
-                    .padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
                     .matchParentSize()
             }
             else{
-                Modifier.padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
+                Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
                     .matchParentSize()
             }
             Column(
@@ -110,7 +110,7 @@ fun ScreenLayout(
 }
 
 @Composable
-fun CardLayout(fullHeight: Boolean = false, content: @Composable() () -> Unit) {
+fun CardLayout(fullHeight: Boolean = false,isScrollable: Boolean = false, content: @Composable() () -> Unit) {
     if(fullHeight) {
         var size by remember { mutableStateOf(IntSize.Zero) }
         LazyColumn {
@@ -133,7 +133,11 @@ fun CardLayout(fullHeight: Boolean = false, content: @Composable() () -> Unit) {
                             .fillMaxWidth()
                             .fillMaxHeight()
                     ) {
-                        Column(modifier = Modifier.padding(8.dp).fillMaxHeight().verticalScroll(rememberScrollState())) {
+                        var modifier = Modifier.padding(8.dp).fillMaxHeight()
+                        if(isScrollable){
+                            modifier = Modifier.padding(8.dp).fillMaxHeight().verticalScroll(rememberScrollState())
+                        }
+                        Column(modifier = modifier) {
                             content.invoke()
                         }
                     }

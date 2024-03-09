@@ -37,6 +37,11 @@ object EN_Names: Names {
     override val yourOrders: String get() = "Your Orders"
     override val juDoctor: String get() = "JU Doctor"
     override val devices: String get() = "Devices"
+    override val name: String get() = "Name"
+    override val employeeCode: String get() = "Employee Code"
+    override val role: String get() = "Role"
+    override val appVersion: String get() = "App Version"
+    override val logout: String get() = "Logout"
 
     override val selectRegion: String get() = "$select $region"
     override val selectTerritory: String get() = "$select $territory"

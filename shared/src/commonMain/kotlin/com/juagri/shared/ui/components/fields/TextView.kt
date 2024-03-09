@@ -7,6 +7,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import com.juagri.shared.domain.model.dashboard.OSChartItem
 import com.juagri.shared.utils.getColors
 import com.juagri.shared.utils.getIndianCurrencyFormat
+import com.juagri.shared.utils.theme.doctor_no
 import com.juagri.shared.utils.value
 
 @Composable
@@ -259,3 +261,108 @@ fun LedgerIcon(color: Color = Color.Transparent){
         Spacer(modifier = Modifier.width(12.dp).height(12.dp).background(color))
     }
 }
+
+@Composable
+fun TextCropTitle(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.Center,
+    modifier: Modifier = Modifier.fillMaxWidth().fillMaxHeight().background(Color.Black.copy(0.5f)),
+    color: Color = Color.White
+) = Text(
+    text,
+    style = AppTypography.headlineSmall,
+    modifier = modifier,
+    color = color,
+    textAlign = textAlign,
+    fontWeight = FontWeight.Bold
+)
+
+@Composable
+fun TextManagementTitle(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.Center,
+    modifier: Modifier = Modifier.fillMaxWidth().background(Color.Black.copy(0.5f)),
+    color: Color = Color.Black
+) = Text(
+    text,
+    style = AppTypography.titleSmall,
+    modifier = modifier,
+    color = color,
+    textAlign = textAlign,
+    fontWeight = FontWeight.Bold
+)
+
+@Composable
+fun TextChildTitle(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.Center,
+    modifier: Modifier = Modifier.fillMaxWidth().fillMaxHeight().background(Color.Black.copy(0.5f)),
+    color: Color = Color.White
+) = Text(
+    text,
+    style = AppTypography.titleMedium,
+    modifier = modifier,
+    color = color,
+    textAlign = textAlign,
+    fontWeight = FontWeight.Bold
+)
+
+@Composable
+fun TextSolutionTitle(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.Center,
+    modifier: Modifier = Modifier.fillMaxWidth().fillMaxHeight().background(Color.Blue),
+    color: Color = getColors().onBackground
+) = Text(
+    text,
+    style = AppTypography.labelLarge,
+    modifier = modifier,
+    color = color,
+    textAlign = textAlign
+)
+
+@Composable
+fun TextSolutionNo(
+    text: String = "",
+    modifier: Modifier = Modifier
+        .background(getColors().doctor_no)
+        .wrapContentWidth()
+        .wrapContentHeight()
+        .padding(6.dp),
+    color: Color = Color.Black
+) = Text(
+    text,
+    style = AppTypography.labelMedium,
+    modifier = modifier,
+    color = color
+)
+
+@Composable
+fun TextProfileHeading(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.Center,
+    modifier: Modifier = Modifier.fillMaxWidth(),
+    color: Color = getColors().onBackground
+) = Text(
+    text,
+    style = AppTypography.labelMedium,
+    modifier = modifier,
+    color = color,
+    fontWeight = FontWeight.Bold,
+    textAlign = textAlign
+)
+
+@Composable
+fun TextProfileContent(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.Center,
+    modifier: Modifier = Modifier.fillMaxWidth(),
+    color: Color = getColors().onBackground
+) = Text(
+    text,
+    style = AppTypography.labelSmall,
+    modifier = modifier,
+    color = color,
+    fontWeight = FontWeight.Normal,
+    textAlign = textAlign
+)

@@ -3,6 +3,8 @@ package com.juagri.shared.di
 import Constants
 import app.cash.sqldelight.db.SqlDriver
 import com.juagri.shared.JUDatabase
+import com.juagri.shared.data.local.dao.common.JUDoctorDao
+import com.juagri.shared.ui.doctor.DoctorViewModel
 import com.juagri.shared.data.local.dao.common.UserDetailsDao
 import com.juagri.shared.data.local.dao.dealer.DealerDashboardDao
 import com.juagri.shared.data.local.dao.dealer.DealerLedgerDao
@@ -16,19 +18,23 @@ import com.juagri.shared.data.local.session.SessionPreference
 import com.juagri.shared.data.local.session.datamanager.DataManager
 import com.juagri.shared.data.local.session.datamanager.DataStore
 import com.juagri.shared.data.remote.dashboard.DealerDashboardRepositoryImpl
+import com.juagri.shared.data.remote.doctor.JUDoctorRepositoryImpl
 import com.juagri.shared.data.remote.ledger.DealerLedgerRepositoryImpl
 import com.juagri.shared.data.remote.login.EmployeeRepositoryImpl
 import com.juagri.shared.data.remote.user.UserRepositoryImpl
 import com.juagri.shared.domain.repo.dashboard.DealerDashboardRepository
+import com.juagri.shared.domain.repo.doctor.JUDoctorRepository
 import com.juagri.shared.domain.repo.ledger.DealerLedgerRepository
 import com.juagri.shared.domain.repo.user.UserRepository
 import com.juagri.shared.domain.usecase.DealerDashboardUseCase
 import com.juagri.shared.domain.usecase.DealerLedgerUseCase
+import com.juagri.shared.domain.usecase.JUDoctorUseCase
 import com.juagri.shared.domain.usecase.OTPUseCase
 import com.juagri.shared.domain.usecase.UserDetailsUseCase
 import com.juagri.shared.ui.home.HomeViewModel
 import com.juagri.shared.ui.ledger.LedgerViewModel
 import com.juagri.shared.ui.login.LoginViewModel
+import com.juagri.shared.ui.profile.ProfileViewModel
 import com.juagri.shared.ui.splash.SplashViewModel
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.firestore.firestore
@@ -68,6 +74,9 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
         createOpeningBalance()
         createLedger()
     }
+    JUDatabase(sqlDriver).jUDoctorDetailsQueries.apply {
+        createJUDoctor()
+    }
     startKoin {
         modules(
             module {
@@ -77,6 +86,7 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                 single { UserDetailsDao(JUDatabase(sqlDriver).userDetailsQueries) }
                 single { DealerDashboardDao(JUDatabase(sqlDriver).dealerDetailsQueries) }
                 single { DealerLedgerDao(JUDatabase(sqlDriver).dealerDetailsQueries) }
+                single { JUDoctorDao(JUDatabase(sqlDriver).jUDoctorDetailsQueries) }
                 single<EmployeeRepository> {
                     EmployeeRepositoryImpl(
                         Firebase.firestore.collection(Constants.TABLE_EMP_ACCESS),
@@ -109,17 +119,28 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                         get()
                     )
                 }
+                single<JUDoctorRepository> {
+                    JUDoctorRepositoryImpl(
+                        Firebase.firestore.collection(Constants.TABLE_JU_DOCTOR),
+                        get()
+                    )
+                }
+
                 single { EmployeeUseCase(get()) }
                 single { DealerDashboardUseCase(get()) }
                 single { DealerLedgerUseCase(get()) }
                 single { OTPUseCase(get()) }
                 single { UserDetailsUseCase(get()) }
+                single { JUDoctorUseCase(get()) }
+
                 factory { SplashViewModel(get(),get()) }
                 factory { LoginViewModel(get(),get(),get(),get()) }
                 factory { HomeViewModel(get(),get(),get()) }
                 factory { DealerDashboardViewModel(get(),get(),get()) }
                 factory { LedgerViewModel(get(),get(),get(),get()) }
-                factory { TestScreenViewModel(get(),get(),get(),get()) }
+                factory { DoctorViewModel(get(),get(),get()) }
+                factory { ProfileViewModel(get(),get()) }
+                factory { TestScreenViewModel(get(),get(),get()) }
             }
         )
     }

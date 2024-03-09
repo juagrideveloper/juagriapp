@@ -17,7 +17,7 @@ kotlin {
                 implementation(project(":shared"))
                 implementation(project(":decomposerouter"))
 
-                implementation(platform("com.google.firebase:firebase-bom:31.3.0"))
+                implementation(project.dependencies.platform("com.google.firebase:firebase-bom:31.3.0"))
                 implementation("com.google.firebase:firebase-firestore-ktx")
             }
         }

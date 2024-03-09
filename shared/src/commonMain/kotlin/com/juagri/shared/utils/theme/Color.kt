@@ -114,6 +114,12 @@ val ColorScheme.chart_y_actual_start: Color get() = Color(0xFF198165)
 val ColorScheme.chart_y_actual_end: Color get() = Color(0xFF7CB8A8)
 val ColorScheme.ledger_invoice: Color get() = Color(0xFF429C93)
 val ColorScheme.ledger_cheque: Color get() = Color(0xFF378AB4)
+val ColorScheme.doctor_mgmt_1: Color get() = Color(0xFFFDF5B3)
+val ColorScheme.doctor_mgmt_2: Color get() = Color(0xFFE7FDB3)
+val ColorScheme.doctor_mgmt_3: Color get() = Color(0xFFB3E2FD)
+val ColorScheme.doctor_mgmt_4: Color get() = Color(0xFFFFCFCF)
+val ColorScheme.doctor_mgmt_5: Color get() = Color(0xFFFDDFB3)
+val ColorScheme.doctor_no: Color get() = Color(0xFFF3F3F3)
 
 @Composable
 fun ColorScheme.screenBackground(): Color

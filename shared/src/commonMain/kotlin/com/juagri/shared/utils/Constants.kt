@@ -10,6 +10,7 @@ object Constants {
     const val TABLE_FIN_MONTH_MASTER = "V1_FinMonth"
     const val TABLE_LEDGER_OPENING_BALANCE = "V1_LedgerOpeningBalance"
     const val TABLE_DEALER_LEDGER = "V1_DealerLedger"
+    const val TABLE_JU_DOCTOR = "V1_JUDoctorItems"
 
     const val EMP_ROLE_SO = "SO"
     const val EMP_ROLE_DL = "DL"
@@ -19,14 +20,14 @@ object Constants {
     const val HEADING_MENU_0002 = "H_002"
     const val HEADING_MENU_0003 = "H_003"
 
-    const val CHILD_MENU_0001 = "C_001"
-    const val CHILD_MENU_0002 = "C_002"
-    const val CHILD_MENU_0003 = "C_003"
-    const val CHILD_MENU_0004 = "C_004"
-    const val CHILD_MENU_0005 = "C_005"
-    const val CHILD_MENU_0006 = "C_006"
-    const val CHILD_MENU_0007 = "C_007"
-    const val CHILD_MENU_0008 = "C_008"
+    const val SCREEN_DASHBOARD = "C_001"
+    const val SCREEN_LEDGER = "C_002"
+    const val SCREEN_ONLINE_ORDER = "C_003"
+    const val SCREEN_YOUR_ORDERS = "C_004"
+    const val SCREEN_JU_Doctor = "C_005"
+    const val SCREEN_WEATHER = "C_006"
+    const val SCREEN_PROFILE = "C_007"
+    const val SCREEN_DEVICES = "C_008"
 
 
     const val FIELD_C_CODE = "ccode"

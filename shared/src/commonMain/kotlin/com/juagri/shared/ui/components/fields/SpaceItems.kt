@@ -42,6 +42,13 @@ fun RowSpaceLarge() = Spacer(
 )
 
 @Composable
+fun ColumnSpaceExtraSmall() = Spacer(
+    modifier = Modifier
+        .width(4.dp)
+        .background(Color.Transparent)
+        .height(4.dp)
+)
+@Composable
 fun ColumnSpaceSmall() = Spacer(
     modifier = Modifier
         .width(8.dp)
@@ -54,14 +61,14 @@ fun ColumnSpaceMedium() = Spacer(
     modifier = Modifier
         .width(16.dp)
         .background(Color.Transparent)
-        .height(8.dp)
+        .height(16.dp)
 )
 
 @Composable
 fun ColumnSpaceLarge() = Spacer(
     modifier = Modifier
-        .width(32.dp)
+        .height(32.dp)
         .background(Color.Transparent)
-        .height(8.dp)
+        .width(8.dp)
 )
 

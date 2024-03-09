@@ -5,6 +5,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.juagri.shared.data.local.session.SessionPreference
 import com.juagri.shared.data.local.session.datamanager.DataManager
+import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.domain.model.filter.FilterDataItem
 import com.juagri.shared.domain.model.filter.FilterItem
 import com.juagri.shared.domain.model.filter.FilterType
@@ -14,6 +15,7 @@ import com.juagri.shared.domain.model.user.JUDealer
 import com.juagri.shared.domain.model.user.JURegion
 import com.juagri.shared.domain.model.user.JUTerritory
 import com.juagri.shared.ui.components.layouts.MessageData
+import com.juagri.shared.ui.navigation.AppScreens
 import com.juagri.shared.utils.ResponseState
 import com.juagri.shared.utils.UIState
 import com.juagri.shared.utils.strings.AppLanguage
@@ -38,22 +40,29 @@ open class BaseViewModel(private val session: SessionPreference,private val data
     val showDialog = mutableStateOf(FilterDataItem())
     fun names() = dataManager.names.value
 
-    fun getScreenTitle(screenId: String) =
+    fun setScreenId(screenId: String) = dataManager.setScreenId(screenId)
+    fun getScreenTitle() = dataManager.getScreenTitle()
+
+    fun getScreenName(screenId: String) = dataManager.getScreenName(screenId)
+
+    fun getScreenMode(screenId: String): AppScreens =
         when(screenId){
-            Constants.HEADING_MENU_0001-> names().menu
-            Constants.HEADING_MENU_0002-> names().services
-            Constants.HEADING_MENU_0003-> names().user
-            Constants.CHILD_MENU_0001-> names().dashboard
-            Constants.CHILD_MENU_0002-> names().dealerLedger
-            Constants.CHILD_MENU_0003-> names().onlineOrder
-            Constants.CHILD_MENU_0004-> names().yourOrders
-            Constants.CHILD_MENU_0005-> names().juDoctor
-            Constants.CHILD_MENU_0006-> names().weather
-            Constants.CHILD_MENU_0007-> names().profile
-            Constants.CHILD_MENU_0008-> names().devices
-            else -> ""
+            Constants.SCREEN_DASHBOARD-> AppScreens.Dashboard
+            Constants.SCREEN_LEDGER-> AppScreens.Ledger
+            Constants.SCREEN_ONLINE_ORDER-> AppScreens.OnlineOrder
+            Constants.SCREEN_YOUR_ORDERS-> AppScreens.YourOrders
+            Constants.SCREEN_JU_Doctor-> AppScreens.JUDoctorCrop("0")
+            Constants.SCREEN_WEATHER-> AppScreens.Weather
+            Constants.SCREEN_PROFILE-> AppScreens.Profile
+            Constants.SCREEN_DEVICES-> AppScreens.Devices
+            else -> AppScreens.DummyScreen
         }
 
+    fun setJUEmployee(employee: JUEmployee) {
+        dataManager.setEmployee(employee)
+    }
+
+    fun getJUEmployee(): JUEmployee? = dataManager.getEmployee()
 
     fun changeLanguage(language: AppLanguage){
         dataManager.setLanguage(language)
@@ -74,7 +83,10 @@ open class BaseViewModel(private val session: SessionPreference,private val data
             when(response) {
                 is ResponseState.Loading -> showProgressBar(response.isLoading)
                 is ResponseState.Success -> mutableState.value = UIState.Success(response.data)
-                is ResponseState.Error -> processError(response.e)
+                is ResponseState.Error -> {
+                    showProgressBar(false)
+                    processError(response.e)
+                }
             }
         }
     }
@@ -99,7 +111,7 @@ open class BaseViewModel(private val session: SessionPreference,private val data
                             )
                         }
                         is FilterType.TERRITORY -> {
-                            FilterDataItem(
+                                FilterDataItem(
                                 names().selectTerritory,
                                 (response.data as List<JUTerritory>) .map {
                                     FilterItem(

@@ -10,6 +10,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.pred
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
 import com.arkivanov.decompose.router.stack.pop
+import com.juagri.shared.ui.doctor.DoctorCropScreen
 import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.ui.components.dialogs.ProgressDialog
 import com.juagri.shared.ui.components.layouts.ScreenLayoutWithMenuActionBar
@@ -30,7 +31,7 @@ import moe.tlaster.precompose.navigation.BackHandler
 @Composable
 fun HomeScreen(onBack: () -> Unit) {
     val router: Router<AppScreens> =
-        rememberRouter(AppScreens::class) { listOf(AppScreens.Dashboard) }
+        rememberRouter(AppScreens::class) { listOf(AppScreens.Profile) }
     val viewModel = koinViewModel(HomeViewModel::class)
     viewModel.setDemoUser()
     val employee = remember { mutableStateOf(JUEmployee()) }
@@ -43,11 +44,13 @@ fun HomeScreen(onBack: () -> Unit) {
             onBack.invoke()
         }
     }
-    ScreenLayoutWithMenuActionBar(title = mutableStateOf("Dashboard"),router=router, employee = employee, viewModel = viewModel) {
+    ScreenLayoutWithMenuActionBar(title = viewModel.getScreenTitle(),router=router, employee = employee, viewModel = viewModel) {
         ProgressDialog(viewModel.z0001)
         when (val result = viewModel.employee.collectAsState().value) {
             is UIState.Success -> {
+                viewModel.setJUEmployee(result.data)
                 employee.value = result.data
+                viewModel.setDemoUser()
                 initScreen(router, viewModel)
             }
             else -> {}
@@ -70,18 +73,24 @@ private fun initScreen(router: Router<AppScreens>,viewModel: HomeViewModel){
         )
     ) { screen ->
         when (screen) {
-            AppScreens.DummyScreen -> DummyScreen()
             AppScreens.Dashboard -> {
-                when(viewModel.getRoleID()) {
+                when (viewModel.getRoleID()) {
                     Constants.EMP_ROLE_SO -> DashboardScreen()
                     Constants.EMP_ROLE_CDO -> DashboardScreen()
                     Constants.EMP_ROLE_DL -> DealerDashboardScreen()
                 }
             }
             AppScreens.Ledger -> LedgerScreen()
+            is AppScreens.JUDoctorCrop -> DoctorCropScreen(router, screen.parentId)
+            is AppScreens.JUDoctorManagement -> DoctorCropScreen(router, screen.parentId)
+            is AppScreens.JUDoctorChild -> DoctorCropScreen(router, screen.parentId)
+            is AppScreens.JUDoctorSolution -> DoctorCropScreen(router, screen.parentId)
+            AppScreens.OnlineOrder -> WeatherScreen()
+            AppScreens.YourOrders -> WeatherScreen()
+            AppScreens.Devices -> WeatherScreen()
             AppScreens.Weather -> WeatherScreen()
             AppScreens.Profile -> ProfileScreen()
-            else -> {}
+            else -> DummyScreen()
         }
     }
 }

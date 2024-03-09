@@ -26,6 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.router.stack.popTo
+import com.arkivanov.decompose.router.stack.push
 import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.ui.components.base.BaseViewModel
 import com.juagri.shared.ui.components.fields.NavDrawerContent
@@ -74,35 +76,27 @@ fun ScreenLayoutWithMenuActionBar(
                     Divider(modifier = Modifier.height(2.dp))
                     if(employee.value.menuItems != null){
                         employee.value.menuItems?.forEach {parent->
-                            NavDrawerHeading(viewModel.getScreenTitle(parent.value.id.value()))
+                            NavDrawerHeading(viewModel.getScreenName(parent.value.id.value()))
                             parent.value.childMenus.forEach {child->
-                                NavDrawerContent(viewModel.getScreenTitle(child.id.value())) {
+                                val screenId = child.id.value()
+                                NavDrawerContent(viewModel.getScreenName(screenId)) {
                                     updateDrawerState(scope,drawerState)
-                                    title.value = viewModel.getScreenTitle(child.id.value())
-                                    //router?.replaceAll(AppScreens.Dashboard)
+                                    viewModel.writeLog("-----------------------")
+                                    val screen = viewModel.getScreenMode(screenId)
+                                    var notPoped = true
+                                    router?.stack?.value?.items?.forEachIndexed { index, item ->
+                                        if(screen == item.configuration) {
+                                            router.popTo(index)
+                                            notPoped = false
+                                        }
+                                    }
+                                    if(notPoped) {
+                                        router?.push(viewModel.getScreenMode(screenId))
+                                    }
                                 }
                             }
                         }
                     }
-                    /*NavDrawerHeading("Menu")
-                    NavDrawerContent("Dashboard") {
-                        updateDrawerState(scope,drawerState)
-                        router?.replaceAll(AppScreens.Dashboard)
-                    }
-                    NavDrawerContent("Customer Ledger") {
-                        updateDrawerState(scope,drawerState)
-                        router?.push(AppScreens.Ledger)
-                    }
-                    NavDrawerHeading("Services")
-                    NavDrawerContent("Weather") {
-                        updateDrawerState(scope,drawerState)
-                        router?.push(AppScreens.Weather)
-                    }
-                    NavDrawerHeading("Personal")
-                    NavDrawerContent("Profile") {
-                        updateDrawerState(scope,drawerState)
-                        router?.push(AppScreens.Profile)
-                    }*/
                 }
             }
         },
@@ -149,12 +143,13 @@ fun ScreenLayoutWithMenuActionBar(
 fun ScreenLayoutWithActionBar(
     title: MutableState<String> = mutableStateOf(""),
     modifier: Modifier = Modifier,
+    viewModel: BaseViewModel,
     onBackPressed: (() -> Unit)? = null,
     content: @Composable() () -> Unit
 ) {
     Scaffold(
         topBar = {
-            ActionBarLayout(title,Icons.Default.ArrowBack) { onBackPressed?.invoke() }
+            ActionBarLayout(title,Icons.Default.ArrowBack, viewModel) { onBackPressed?.invoke() }
         }) { paddingValues ->
         Layout(
             modifier = modifier.padding(paddingValues)

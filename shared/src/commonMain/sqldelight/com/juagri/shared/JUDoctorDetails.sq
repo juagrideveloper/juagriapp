@@ -1,0 +1,27 @@
+import kotlin.Boolean;
+
+createJUDoctor:
+CREATE TABLE IF NOT EXISTS JUDoctor (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT,
+    image TEXT,
+    type INTEGER,
+    parentId TEXT,
+    has_child INTEGER AS Boolean DEFAULT 0,
+    updatedTime REAL
+);
+
+insertJUDoctor:
+INSERT OR REPLACE INTO JUDoctor(
+id, name, image, type, parentId, has_child, updatedTime
+) VALUES (?, ?, ?, ?, ?, ?, ?);
+
+getJUDoctorLastUpdatedTime:
+SELECT max(updatedTime) FROM JUDoctor;
+
+getJUDoctor:
+SELECT id, name, image, type, parentId, has_child, updatedTime
+FROM JUDoctor WHERE parentId = ?;
+
+deleteJUDoctor:
+DELETE FROM JUDoctor WHERE id;

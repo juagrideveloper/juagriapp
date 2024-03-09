@@ -1,20 +1,33 @@
 package com.juagri.shared.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.withTransform
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
@@ -23,10 +36,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.juagri.shared.domain.model.doctor.JUDoctorDataItem
+import com.juagri.shared.domain.model.doctor.JUDoctorItem
 import com.juagri.shared.domain.model.filter.FilterItem
 import com.juagri.shared.domain.model.filter.FilterType
 import com.juagri.shared.ui.components.fields.ButtonNormal
+import com.juagri.shared.ui.components.fields.TextCropTitle
+import com.juagri.shared.ui.components.fields.TextMedium
+import com.juagri.shared.ui.components.layouts.CardLayout
+import com.juagri.shared.ui.components.layouts.DoctorCropLayout
+import com.juagri.shared.ui.components.layouts.DoctorManagementLayout
+import com.juagri.shared.ui.components.layouts.ScreenLayout
 import com.juagri.shared.ui.components.layouts.ScreenLayoutWithActionBar
+import com.juagri.shared.ui.components.layouts.SnackbarMessage
+import com.juagri.shared.utils.UIState
+import com.juagri.shared.utils.getColors
+import com.juagri.shared.utils.theme.doctor_mgmt_1
+import com.juagri.shared.utils.value
+import dev.gitlive.firebase.firestore.Timestamp
+import io.kamel.image.KamelImage
+import io.kamel.image.asyncPainterResource
 import moe.tlaster.precompose.koin.koinViewModel
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
@@ -35,7 +64,7 @@ import kotlin.math.sqrt
 @Composable
 fun TestScreen() {
     val viewModel = koinViewModel(TestScreenViewModel::class)
-    ScreenLayoutWithActionBar(title = mutableStateOf("Testing")) {
+    ScreenLayoutWithActionBar(title = mutableStateOf("Testing"),viewModel = viewModel) {
         /*KamelImage(
             resource = asyncPainterResource(data = "https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"),
             contentDescription = null,
@@ -70,8 +99,21 @@ fun TestScreen() {
                 }
             }
         }*/
-        ButtonNormal("Test"){
-            //viewModel.setMenu()
+        ScreenLayout(viewModel) {
+            CardLayout(true) {
+                DoctorManagementLayout(
+                    JUDoctorDataItem(
+                        id = "",
+                        name = "Nutrition Management",
+                        image = "nutrition.jpg",
+                        type = 0,
+                        parentId = null,
+                        hasChild = false,
+                        status = 0,
+                        updatedTime = Timestamp.now()
+                    ), getColors().doctor_mgmt_1
+                )
+            }
         }
         /*ScreenLayout(viewModel) {
             CardLayout(true) {
@@ -108,8 +150,6 @@ fun TestScreen() {
         }*/
     }
 }
-
-
 
 
 @OptIn(ExperimentalResourceApi::class)

@@ -27,6 +27,7 @@ import moe.tlaster.precompose.koin.koinViewModel
 @Composable
 fun DealerDashboardScreen() {
     val viewModel = koinViewModel(DealerDashboardViewModel::class)
+    viewModel.setScreenId(Constants.SCREEN_DASHBOARD)
     ScreenLayoutWithoutActionBar(modifier = Modifier.background(Color.LightGray)) {
         ScreenLayout(viewModel,true) {
             var isDashboardNotCreated = true

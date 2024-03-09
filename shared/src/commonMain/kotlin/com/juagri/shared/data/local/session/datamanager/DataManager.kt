@@ -10,7 +10,6 @@ import com.juagri.shared.utils.strings.TN_Names
 class DataManager(private val dataStore: DataStore) {
 
     val names = dataStore.labels
-
     fun setLanguage(language: AppLanguage){
         dataStore.labels.value = when(language){
             is AppLanguage.English ->  EN_Names
@@ -31,4 +30,32 @@ class DataManager(private val dataStore: DataStore) {
 
     fun getEmployee() = dataStore.employee
 
+    fun setScreenId(screen: String){
+        dataStore.screenId.value = screen
+        setScreenTitle(dataStore.screenId.value)
+    }
+
+    fun getScreenId() = dataStore.screenId.value
+
+    private fun setScreenTitle(screenId: String){
+        dataStore.screenTitle.value = getScreenName(screenId)
+    }
+
+    fun getScreenTitle() = dataStore.screenTitle
+
+    fun getScreenName(screenId: String) =
+        when(screenId){
+            Constants.HEADING_MENU_0001-> names.value.menu
+            Constants.HEADING_MENU_0002-> names.value.services
+            Constants.HEADING_MENU_0003-> names.value.user
+            Constants.SCREEN_DASHBOARD-> names.value.dashboard
+            Constants.SCREEN_LEDGER-> names.value.dealerLedger
+            Constants.SCREEN_ONLINE_ORDER-> names.value.onlineOrder
+            Constants.SCREEN_YOUR_ORDERS-> names.value.yourOrders
+            Constants.SCREEN_JU_Doctor-> names.value.juDoctor
+            Constants.SCREEN_WEATHER-> names.value.weather
+            Constants.SCREEN_PROFILE-> names.value.profile
+            Constants.SCREEN_DEVICES-> names.value.devices
+            else -> ""
+        }
 }

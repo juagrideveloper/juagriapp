@@ -28,3 +28,10 @@ fun ProgressDialog(showDialog:MutableState<Boolean>) {
         }
     }
 }
+
+@Composable
+fun DotLoading(showDialog:MutableState<Boolean>){
+    if(showDialog.value) {
+        DotsFlashing()
+    }
+}
