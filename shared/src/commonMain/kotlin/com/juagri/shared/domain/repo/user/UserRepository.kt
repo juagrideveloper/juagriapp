@@ -10,8 +10,7 @@ import dev.gitlive.firebase.firestore.Timestamp
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
-    suspend fun getRegionList(): Flow<ResponseState<List<JURegion>>>
-
+    suspend fun getRegionList(regCodes: String = ""): Flow<ResponseState<List<JURegion>>>
     suspend fun getTerritoryList(regCode: String): Flow<ResponseState<List<JUTerritory>>>
 
     suspend fun getDealerList(tCode: String): Flow<ResponseState<List<JUDealer>>>

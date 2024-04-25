@@ -58,11 +58,11 @@ fun ScreenLayout(
         ) {
             val screenModifier = if(isScrollable) {
                 Modifier.verticalScroll(rememberScrollState())
-                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+                    .padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
                     .matchParentSize()
             }
             else{
-                Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+                Modifier.padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
                     .matchParentSize()
             }
             Column(

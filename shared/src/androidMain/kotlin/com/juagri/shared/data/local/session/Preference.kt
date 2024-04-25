@@ -26,6 +26,10 @@ actual fun SessionContext.getBool(key: String, default: Boolean): Boolean {
     return getSp().getBoolean(key, default)
 }
 
+actual fun SessionContext.clearAll() {
+    getSpEditor().clear().apply()
+}
+
 private fun SessionContext.getSp() = getSharedPreferences(SP_NAME, 0)
 
 private fun SessionContext.getSpEditor() = getSp().edit()

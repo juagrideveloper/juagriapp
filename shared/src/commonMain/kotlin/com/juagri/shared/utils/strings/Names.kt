@@ -42,6 +42,23 @@ interface Names {
     val role: String
     val appVersion: String
     val logout: String
+    val selectEvent: String
+    val event: String
+    val district: String
+    val village: String
+    val promotionActivity: String
+    val promotionEntriesList: String
+    val focusProduct: String
+    val monthPlan: String
+    val monthActual: String
+    val yearPlan: String
+    val yearActual: String
+    val liquidation: String
+    val qty: String
+    val amount: String
+
+    val loginInfo: String
+
 
     val selectRegion: String
     val selectTerritory: String

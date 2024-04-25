@@ -74,7 +74,6 @@ fun LedgerScreen() {
                             LedgerLayout(viewModel.names(), it)
                         }
                     }
-
                     else -> {}
                 }
                 FilterDialog(showDialog) {
@@ -106,6 +105,7 @@ fun LedgerScreen() {
                             selectedFinMonth.value = item.data
                             getLedgerDetails()
                         }
+                        else -> {}
                     }
                 }
             }

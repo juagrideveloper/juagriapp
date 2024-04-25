@@ -13,3 +13,17 @@ fun WeatherScreen() {
         TextTitle("Weather")
     }
 }
+
+@Composable
+fun WeatherScreen1() {
+    ScreenLayoutWithoutActionBar(modifier= Modifier.background(Color.Blue)) {
+        TextTitle("Weather")
+    }
+}
+
+@Composable
+fun WeatherScreen2() {
+    ScreenLayoutWithoutActionBar(modifier= Modifier.background(Color.Blue)) {
+        TextTitle("Weather")
+    }
+}

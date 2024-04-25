@@ -26,6 +26,9 @@ class LoginViewModel(
         MutableStateFlow(UIState.Init)
     val otpResponse = _otpResponse.asStateFlow()
 
+    fun reset(){
+        _employee.value = UIState.Init
+    }
     fun getEmployeeDetails(mobileNo: String) {
         backgroundScope{
             employeeUseCase.getEmployeeDetails(mobileNo).collect { response ->

@@ -19,12 +19,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.juagri.shared.ui.components.fields.ColumnSpaceLarge
 import com.juagri.shared.ui.components.fields.RowSpaceMedium
 import com.juagri.shared.ui.components.layouts.ScreenLayoutWithoutActionBar
 import com.juagri.shared.ui.components.layouts.SplashImageColumn
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.koin.koinViewModel
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
@@ -40,7 +42,7 @@ fun SplashScreen(
     onNext: (Boolean) -> Unit,
 ) {
     val viewModel = koinViewModel(SplashViewModel::class)
-    viewModel.setDemoUser()
+    //viewModel.setDemoUser()
     ScreenLayoutWithoutActionBar {
         var image1 by remember { mutableStateOf(false) }
         var image2 by remember { mutableStateOf(false) }
@@ -53,11 +55,12 @@ fun SplashScreen(
         var isReadyToNavigate by remember { mutableStateOf(false) }
         Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
             Column(modifier = Modifier.align(Alignment.BottomCenter)) {
-                Row {
+                Row(modifier = Modifier.weight(1f)) {
                     Column {
+                        ColumnSpaceLarge()
                         AnimatedVisibility(image8, modifier = Modifier.fillMaxWidth()) {
                             Image(
-                                painterResource("ju_logo.png"),
+                                painterResource(DrawableResource("ju_logo.png")),
                                 null,
                                 modifier = Modifier.height(120.dp).padding(16.dp)
                             )
@@ -65,19 +68,19 @@ fun SplashScreen(
                     }
                 }
                 RowSpaceMedium()
-                Row {
+                Row(modifier = Modifier.weight(1f)) {
                     SplashImageColumn("ic_splash_get_set.png", image7)
                     SplashImageColumn("ic_splash_xpert.png", image6)
                     SplashImageColumn("ic_splash_morgain.png", image5)
                 }
                 RowSpaceMedium()
-                Row {
+                Row(modifier = Modifier.weight(1f)) {
                     SplashImageColumn(visible = false)
                     SplashImageColumn("ic_splash_ecomax.png", image4)
                     SplashImageColumn(visible = false)
                 }
                 RowSpaceMedium()
-                Row {
+                Row(modifier = Modifier.weight(1f)) {
                     SplashImageColumn("ic_splash_elect.png", image3)
                     SplashImageColumn("ic_splash_vitalgold.png", image2)
                     SplashImageColumn("ic_splash_potash.png", image1)

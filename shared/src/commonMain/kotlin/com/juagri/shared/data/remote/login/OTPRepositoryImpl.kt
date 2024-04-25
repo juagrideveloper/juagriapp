@@ -17,6 +17,9 @@ class OTPRepositoryImpl(private val client: HttpClient):
     override suspend fun sendOTP(employee: JUEmployee): Flow<ResponseState<OTPResponse>> = callbackFlow {
         trySend(ResponseState.Loading(true))
         val response = client.get(ApiConfig.API_URL +employee.mobile).body<OTPResponse>()
+        println(response)
+        //val response = client.get(ApiConfig.API_URL +"8122422905").body<OTPResponse>()
+        //val response = client.get(ApiConfig.API_URL +"9578080988").body<OTPResponse>()
         trySend(ResponseState.Loading())
         trySend(ResponseState.Success(response))
         awaitClose {

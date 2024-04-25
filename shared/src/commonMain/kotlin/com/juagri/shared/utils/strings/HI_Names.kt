@@ -42,6 +42,23 @@ object HI_Names: Names {
     override val role: String get() = "रोल"
     override val appVersion: String get() = "ऐप वॉर्सिन"
     override val logout: String get() = "लाकेट"
+    override val selectEvent: String get() = "ईवेंट चुनें"
+    override val event: String get() = "आयोजन"
+    override val district: String get() = "ज़िला"
+    override val village: String get() = "गाँव"
+    override val promotionActivity: String get() = "प्रमोशन गतिविधि"
+    override val promotionEntriesList: String get() = "पदोन्नति प्रविष्टियाँ सूची"
+    override val focusProduct: String get() = "उत्पादों पर ध्यान दें"
+    override val monthPlan: String get() = "माह योजना"
+    override val monthActual: String get() = "माह वास्तविक"
+    override val yearPlan: String get() = "वर्ष योजना"
+    override val yearActual: String get() = "वर्ष वास्तविक"
+    override val liquidation: String get() = "परिसमापन"
+    override val qty: String get() = "मात्रा"
+    override val amount: String get() = "मात्रा"
+
+    override val loginInfo: String get() = "Login Info"
+
 
     override val selectRegion: String get() = "$select $region"
     override val selectTerritory: String get() = "$select $territory"

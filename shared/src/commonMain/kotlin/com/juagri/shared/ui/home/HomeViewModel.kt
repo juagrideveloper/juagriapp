@@ -19,7 +19,7 @@ class HomeViewModel(
     val employee = _employee.asStateFlow()
     fun getEmployeeDetails() {
         backgroundScope {
-            employeeUseCase.getEmployeeDetails(session.empMobile()).collect { response ->
+            employeeUseCase.getEmployeeDetails(session.empMobile(), true).collect { response ->
                 uiScope(response,_employee)
             }
         }

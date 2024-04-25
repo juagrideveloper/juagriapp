@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
@@ -26,12 +27,12 @@ fun LoginLayout() {
             contentAlignment = Alignment.TopStart
         ) {
             Image(
-                painterResource("bg_splash_round.png"),
+                painterResource(DrawableResource("bg_splash_round.png")),
                 null,
                 modifier = Modifier.height(180.dp).width(140.dp).offset((-30).dp, (-40).dp)
             )
             Image(
-                painterResource("bg_splash_round.png"),
+                painterResource(DrawableResource("bg_splash_round.png")),
                 null,
                 modifier = Modifier.height(160.dp).padding(start = 40.dp)
                     .offset((0).dp, (-50).dp)
@@ -44,7 +45,7 @@ fun LoginLayout() {
         ) {
             Row {
                 Image(
-                    painterResource("bg_splash_round.png"),
+                    painterResource(DrawableResource("bg_splash_round.png")),
                     null,
                     modifier = Modifier.height(180.dp).width(140.dp).offset((-30).dp, (40).dp)
                 )
@@ -53,7 +54,7 @@ fun LoginLayout() {
                     contentAlignment = Alignment.BottomEnd
                 ) {
                     Image(
-                        painterResource("bg_splash_round.png"),
+                        painterResource(DrawableResource("bg_splash_round.png")),
                         null,
                         modifier = Modifier.height(160.dp).offset((20).dp, (20).dp),
                         alignment = Alignment.BottomEnd

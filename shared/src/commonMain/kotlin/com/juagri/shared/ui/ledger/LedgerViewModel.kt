@@ -32,17 +32,7 @@ class LedgerViewModel(
         MutableStateFlow(UIState.Init)
     val dealerLedgerItem = _dealerLedgerItem.asStateFlow()
 
-    val selectedRegion: MutableState<JURegion?> = mutableStateOf(null)
-    val selectedTerritory: MutableState<JUTerritory?> = mutableStateOf(null)
-    val selectedDealer: MutableState<JUDealer?> = mutableStateOf(null)
-    val selectedFinYear: MutableState<FinYear?> = mutableStateOf(null)
-    val selectedFinMonth: MutableState<FinMonth?> = mutableStateOf(null)
 
-    fun getRegionLabel() = selectedRegion.value.selectedValue(names())
-    fun getTerritoryLabel() = selectedTerritory.value.selectedValue(names())
-    fun getDealerLabel() = selectedDealer.value.selectedValue(names())
-    fun getFinYearLabel() = selectedFinYear.value.selectedValue(names())
-    fun getFinMonthLabel() = selectedFinMonth.value.selectedValue(names())
 
     fun getRegionList(){
         backgroundScope{

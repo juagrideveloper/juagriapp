@@ -212,7 +212,7 @@ You can now make some changes in the code and check that they are visible in bot
                }
                AnimatedVisibility(showImage) {
                    Image(
-                       painterResource("compose-multiplatform.xml"),
+                       painterResource(("compose-multiplatform.xml")),
                        null
                    )
                }

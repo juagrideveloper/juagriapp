@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -38,6 +39,7 @@ import com.juagri.shared.ui.components.layouts.ScreenLayoutWithoutActionBar
 import com.juagri.shared.utils.UIState
 import com.juagri.shared.utils.value
 import moe.tlaster.precompose.koin.koinViewModel
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
@@ -46,11 +48,14 @@ import org.jetbrains.compose.resources.painterResource
 fun LoginScreen(onNext: (String?) -> Unit) {
 
     val viewModel = koinViewModel(LoginViewModel::class)
+    val showConfirmDialog = remember { mutableStateOf(false) }
+    val confirmDialogContent = remember { mutableStateOf("") }
     viewModel.apply {
         ScreenLayoutWithoutActionBar(onBackPressed = {
             onNext.invoke(null)
         }) {
-            ScreenLayout(this, false) {
+            val focusManager = LocalFocusManager.current
+            ScreenLayout(this, false, enableBGColor = false) {
                 val mobileNo = remember { mutableStateOf("") }
                 Box {
                     LoginLayout()
@@ -61,7 +66,7 @@ fun LoginScreen(onNext: (String?) -> Unit) {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Image(
-                            painterResource("icon_telephone.xml"),
+                            painterResource(DrawableResource("icon_telephone.xml")),
                             null,
                             modifier = Modifier.height(150.dp).width(100.dp)
                         )
@@ -104,6 +109,8 @@ fun LoginScreen(onNext: (String?) -> Unit) {
                                 onValueChange = {
                                     if (it.length <= 10) {
                                         mobileNo.value = it
+                                    } else {
+                                        showConfirmDialog.value = false
                                     }
                                 },
                                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
@@ -124,8 +131,7 @@ fun LoginScreen(onNext: (String?) -> Unit) {
                             )
 
                         }
-                        val showConfirmDialog = remember { mutableStateOf(false) }
-                        val confirmDialogContent = remember { mutableStateOf("") }
+
 
                         when (val result = employee.collectAsState().value) {
                             is UIState.Success -> {
@@ -134,6 +140,7 @@ fun LoginScreen(onNext: (String?) -> Unit) {
                                     confirmDialogContent.value =
                                         "Hi, " + it.name.value() + "!\nShall we proceed with +91" + mobileNo.value + " mobile number?"
                                     showConfirmDialog.value = true
+                                    reset()
                                 }
                             }
 
@@ -142,6 +149,7 @@ fun LoginScreen(onNext: (String?) -> Unit) {
 
                         RowSpaceSmall()
                         ButtonNormal("Submit") {
+                            focusManager.clearFocus(true)
                             if (mobileNo.value.length == 10) {
                                 getEmployeeDetails(mobileNo.value)
                             } else {
@@ -160,18 +168,17 @@ fun LoginScreen(onNext: (String?) -> Unit) {
                         ConfirmDialog(
                             showConfirmDialog,
                             "Confirm",
-                            confirmDialogContent.value,
-                            onClickYes = {
-                                showConfirmDialog.value = false
-                                sendOTP()
-                            },
-                            onClickNo = {
-                                showConfirmDialog.value = false
-                            })
+                            confirmDialogContent.value
+                        ) {
+                            showConfirmDialog.value = false
+                            sendOTP()
+                            //storeUserDetails()
+                            //onNext.invoke("00000")
+                        }
                     }
                 }
-
             }
+
         }
     }
 }

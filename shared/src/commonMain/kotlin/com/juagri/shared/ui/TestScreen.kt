@@ -1,155 +1,176 @@
 package com.juagri.shared.ui
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.drawscope.withTransform
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.juagri.shared.domain.model.doctor.JUDoctorDataItem
-import com.juagri.shared.domain.model.doctor.JUDoctorItem
 import com.juagri.shared.domain.model.filter.FilterItem
 import com.juagri.shared.domain.model.filter.FilterType
+import com.juagri.shared.domain.model.liquidation.DealerLiquidationData
+import com.juagri.shared.ui.components.dialogs.SuccessDialog
 import com.juagri.shared.ui.components.fields.ButtonNormal
-import com.juagri.shared.ui.components.fields.TextCropTitle
+import com.juagri.shared.ui.components.fields.ColumnSpaceMedium
+import com.juagri.shared.ui.components.fields.ColumnSpaceSmall
+import com.juagri.shared.ui.components.fields.DashboardLabelHeading
 import com.juagri.shared.ui.components.fields.TextMedium
 import com.juagri.shared.ui.components.layouts.CardLayout
-import com.juagri.shared.ui.components.layouts.DoctorCropLayout
-import com.juagri.shared.ui.components.layouts.DoctorManagementLayout
 import com.juagri.shared.ui.components.layouts.ScreenLayout
 import com.juagri.shared.ui.components.layouts.ScreenLayoutWithActionBar
-import com.juagri.shared.ui.components.layouts.SnackbarMessage
+import com.juagri.shared.utils.PermissionUtils
 import com.juagri.shared.utils.UIState
 import com.juagri.shared.utils.getColors
-import com.juagri.shared.utils.theme.doctor_mgmt_1
-import com.juagri.shared.utils.value
-import dev.gitlive.firebase.firestore.Timestamp
-import io.kamel.image.KamelImage
-import io.kamel.image.asyncPainterResource
 import moe.tlaster.precompose.koin.koinViewModel
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
 import kotlin.math.sqrt
+
 
 @Composable
 fun TestScreen() {
     val viewModel = koinViewModel(TestScreenViewModel::class)
-    ScreenLayoutWithActionBar(title = mutableStateOf("Testing"),viewModel = viewModel) {
-        /*KamelImage(
-            resource = asyncPainterResource(data = "https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"),
-            contentDescription = null,
-            modifier = Modifier
-                .aspectRatio(1F)
-                .padding(8.dp)
-                .shadow(elevation = 8.dp, RoundedCornerShape(16.dp))
-                .background(Color.White, RoundedCornerShape(16.dp))
-                .clip(RoundedCornerShape(16.dp)),
-            contentScale = ContentScale.Crop,
-            onLoading = { CircularProgressIndicator(it) },
-            onFailure = { exception: Throwable ->
-                SnackbarMessage("Error",Color.Red,Color.White)
-            },
-        )*/
-
-        //DealerDashboardScreen()
-        /*var size by remember { mutableStateOf(IntSize.Zero) }
-        LazyColumn {
-            item {
-                Column(
-                    modifier = Modifier
-                        .fillParentMaxHeight(1f)
-                        .fillMaxWidth()
-                        .background(color = Color.Red)
-                        .onSizeChanged { size = it }
-                        .padding(8.dp)
-                ) {
-                    CardLayout(true) {
-                        ButtonNormal("Success")
+    ScreenLayoutWithActionBar(title = mutableStateOf("Testing"), viewModel = viewModel) {
+        ScreenLayout(viewModel) {
+            val isLocationPermissionGranted = mutableStateOf(false)
+            viewModel.apply {
+                PermissionUtils.LocationPermission {
+                    isLocationPermissionGranted.value = it
+                    if(it){
+                        showSuccessMessage("Success!")
+                    }else{
+                        showErrorMessage("Failed!")
                     }
                 }
-            }
-        }*/
-        ScreenLayout(viewModel) {
-            CardLayout(true) {
-                DoctorManagementLayout(
-                    JUDoctorDataItem(
-                        id = "",
-                        name = "Nutrition Management",
-                        image = "nutrition.jpg",
-                        type = 0,
-                        parentId = null,
-                        hasChild = false,
-                        status = 0,
-                        updatedTime = Timestamp.now()
-                    ), getColors().doctor_mgmt_1
-                )
+                if(isLocationPermissionGranted.value) {
+                    PermissionUtils.GetCurrentLocation { lat, long ->
+                        println("Common Lat: $lat Long: $long")
+                    }
+                }
+               /* val locationClient = remember {
+                    LocationServices.getFusedLocationProviderClient(context)
+                }*/
             }
         }
-        /*ScreenLayout(viewModel) {
-            CardLayout(true) {
-                Row {
-                    DropDownLayout("Select Region", modifier = Modifier.getModifier().weight(1f)){
-                        viewModel.showDialog.value = FilterDataItem("Select Region",getFilterItems("Region",10),mutableStateOf(true))
-                    }
-                    RowSpaceSmall()
-                    DropDownLayout("Select Territory", modifier = Modifier.getModifier().weight(1f)){
-                        viewModel.showDialog.value = FilterDataItem("Select Territory",getFilterItems("Territory",5),mutableStateOf(true))
-                    }
-                }
-                ColumnSpaceSmall()
-                Row {
-                    DropDownLayout("Select Dealer", modifier = Modifier.getModifier()){
-                        viewModel.showDialog.value = FilterDataItem("Select Dealer",getFilterItems("Dealer",2),mutableStateOf(true))
-                    }
-                }
-                ColumnSpaceSmall()
-                Row {
-                    DropDownLayout("Select FinYear", modifier = Modifier.getModifier().weight(1f)){
-                        viewModel.showDialog.value = FilterDataItem("Select FinYear",getFilterItems("FinYear"), mutableStateOf(true))
-                    }
-                    RowSpaceSmall()
-                    DropDownLayout("Select Month", modifier = Modifier.getModifier().weight(1f)){
-                        viewModel.showDialog.value = FilterDataItem("Select Month",getFilterItems("Month"), mutableStateOf(true))
-                    }
-                }
-                ColumnSpaceSmall()
-                FilterDialog(viewModel.showDialog){
-                    viewModel.showAlertMessage(it.name)
-                }
-            }
-        }*/
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun InputTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    enabled: Boolean = true,
+    singleLine: Boolean = true,
+    shape: Shape = TextFieldDefaults.shape,
+    textStyle: TextStyle = LocalTextStyle.current,
+    colors: TextFieldColors = TextFieldDefaults.colors(),
+    trailingIcon: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    placeHolder: @Composable (() -> Unit)? = null,
+) {
+    val interactionSource = remember {
+        MutableInteractionSource()
+    }
+
+    BasicTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier,
+        keyboardOptions = keyboardOptions,
+        visualTransformation = visualTransformation,
+        interactionSource = interactionSource,
+        enabled = enabled,
+        textStyle = textStyle,
+        singleLine = singleLine,
+    ) { innerTextField ->
+
+        TextFieldDefaults.DecorationBox(
+            value = value,
+            visualTransformation = visualTransformation,
+            innerTextField = innerTextField,
+            singleLine = singleLine,
+            enabled = enabled,
+            interactionSource = interactionSource,
+            contentPadding = PaddingValues(0.dp), // this is how you can remove the padding
+            trailingIcon = trailingIcon,
+            placeholder = placeHolder,
+            leadingIcon = leadingIcon,
+            shape = shape,
+            colors = colors
+        )
+    }
+}
+
+
+@Composable
+private fun LiquidationRow(title: String,liquidation: MutableState<String>){
+    Row(
+        modifier = Modifier.wrapContentHeight().border(0.2.dp, getColors().onBackground),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        TextMedium(
+            title,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, bottom = 16.dp)
+                .weight(1f)
+        )
+        TextField(
+            value = liquidation.value,
+            onValueChange = {
+                liquidation.value = it
+            },
+            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.End),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, bottom = 16.dp)
+                .weight(1f)
+        )
+    }
+}
+
 
 
 @OptIn(ExperimentalResourceApi::class)
@@ -218,11 +239,11 @@ private fun RibbonSample() {
 
             }
     ) {
-        Image(
+        /*Image(
             painterResource("ic_splash_get_set.png"),
             null,
             modifier = Modifier.height(100.dp).width(100.dp)
-        )
+        )*/
     }
 }
 

@@ -245,6 +245,35 @@ fun TextLegend(
 }
 
 @Composable
+fun ListHeading(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.Start,
+    modifier: Modifier = Modifier,
+    color: Color = getColors().onBackground
+) = Text(
+    text,
+    style = AppTypography.labelLarge,
+    modifier = modifier,
+    color = color,
+    textAlign = textAlign,
+    fontWeight = FontWeight.Bold
+)
+
+@Composable
+fun ListContent(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.Start,
+    modifier: Modifier = Modifier,
+    color: Color = getColors().onBackground
+) = Text(
+    text,
+    style = AppTypography.labelMedium,
+    modifier = modifier,
+    color = color,
+    textAlign = textAlign
+)
+
+@Composable
 fun LedgerIcon(color: Color = Color.Transparent){
     Card(
         colors = CardDefaults.cardColors(
@@ -364,5 +393,94 @@ fun TextProfileContent(
     modifier = modifier,
     color = color,
     fontWeight = FontWeight.Normal,
+    textAlign = textAlign
+)
+
+@Composable
+fun DashboardLabelHeading(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.Start,
+    modifier: Modifier = Modifier,
+    color: Color = getColors().onBackground
+) = Text(
+    text,
+    style = AppTypography.titleMedium,
+    modifier = modifier.padding(bottom = 4.dp),
+    color = color,
+    fontWeight = FontWeight.Bold,
+    textAlign = textAlign
+)
+
+@Composable
+fun DashboardCountHeading(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.Start,
+    modifier: Modifier = Modifier,
+    color: Color = getColors().onBackground
+) = Text(
+    text,
+    style = AppTypography.titleSmall,
+    modifier = modifier.padding(bottom = 4.dp),
+    color = color,
+    fontWeight = FontWeight.Bold,
+    textAlign = textAlign
+)
+
+@Composable
+fun HeadingText(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.Center,
+    modifier: Modifier = Modifier,
+    color: Color = getColors().onBackground
+) = Text(
+    text,
+    style = AppTypography.titleSmall,
+    modifier = modifier.padding(bottom = 4.dp),
+    color = color,
+    fontWeight = FontWeight.Bold,
+    textAlign = textAlign
+)
+
+@Composable
+fun PromotionHeading(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.Start,
+    modifier: Modifier = Modifier,
+    color: Color = getColors().onBackground
+) = Text(
+    text,
+    style = AppTypography.titleMedium,
+    modifier = modifier.padding(bottom = 4.dp),
+    color = color,
+    fontWeight = FontWeight.Bold,
+    textAlign = textAlign
+)
+
+@Composable
+fun PromotionSubHeading(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.Start,
+    modifier: Modifier = Modifier,
+    color: Color = getColors().onBackground
+) = Text(
+    text,
+    style = AppTypography.titleSmall,
+    modifier = modifier.padding(bottom = 4.dp),
+    color = color,
+    fontWeight = FontWeight.Bold,
+    textAlign = textAlign
+)
+
+@Composable
+fun PromotionContent(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.Start,
+    modifier: Modifier = Modifier,
+    color: Color = getColors().onBackground
+) = Text(
+    text,
+    style = AppTypography.titleSmall,
+    modifier = modifier.padding(bottom = 4.dp),
+    color = color,
     textAlign = textAlign
 )

@@ -14,12 +14,13 @@ wear-compose = "1.3.0-alpha03"
 precompose = "1.5.0"
 koin-core = "3.5.0"
 koin-compose = "1.0.4"
-firebase = "1.11.0"
+firebase = "1.11.1"
 ktor = "2.3.7"
 kamel-image="0.9.1"
 sqldelight="2.0.1"
 touchlab="2.0.5"
 koalaplot-chart="0.5.2"
+peekaboo-image="0.5.1"
 
 [libraries]
 agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -63,3 +64,5 @@ sqldelight-android= { module = "app.cash.sqldelight:android-driver", version.ref
 sqldelight-ios= { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
 touchlab-state= { module = "co.touchlab:stately-common", version.ref = "touchlab" }
 koalaplot-chart-core= { module = "io.github.koalaplot:koalaplot-core", version.ref = "koalaplot-chart" }
+peekaboo-image-ui= { module = "io.github.onseok:peekaboo-ui", version.ref = "peekaboo-image" }
+peekaboo-image-picker= { module = "io.github.onseok:peekaboo-image-picker", version.ref = "peekaboo-image" }

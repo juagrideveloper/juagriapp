@@ -1,0 +1,108 @@
+import kotlin.Boolean;
+
+createPromotionEventListMaster:
+CREATE TABLE IF NOT EXISTS PromotionEventListMaster (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT,
+    order_by REAL,
+    updatedTime REAL
+);
+
+createPromotionEventFieldMaster:
+CREATE TABLE IF NOT EXISTS PromotionEventFieldMaster (
+    id TEXT NOT NULL PRIMARY KEY,
+    data TEXT,
+    editable INTEGER AS Boolean DEFAULT 0,
+    ismandatory INTEGER AS Boolean DEFAULT 0,
+    length  REAL,
+    maxlength  REAL,
+    actId TEXT,
+    name  TEXT,
+    param  TEXT,
+    parentid  REAL,
+    slno  REAL,
+    type  REAL,
+    validation  REAL,
+    value  TEXT,
+    updatedTime REAL
+);
+
+createDistrictMaster:
+CREATE TABLE IF NOT EXISTS DistrictMaster (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT,
+    st_code TEXT,
+    st_name TEXT,
+    updatedTime REAL
+);
+
+createVillageMaster:
+CREATE TABLE IF NOT EXISTS VillageMaster (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT,
+    district_id TEXT,
+    updatedTime REAL
+);
+
+insertPromotionEventListMaster:
+INSERT OR REPLACE INTO PromotionEventListMaster(
+id, name, order_by ,updatedTime
+) VALUES (?, ?, ?, ?);
+
+getPromotionEventList:
+SELECT id, name, order_by
+FROM PromotionEventListMaster ORDER BY order_by;
+
+getPromotionEventListLastUpdatedTime:
+SELECT max(updatedTime) FROM PromotionEventListMaster;
+
+deletePromotionEventList:
+DELETE FROM PromotionEventListMaster WHERE id = ?;
+
+insertPromotionEventFieldMaster:
+INSERT OR REPLACE INTO PromotionEventFieldMaster(
+id, data, editable, ismandatory, length, maxlength, actId,
+name, param, parentid, slno, type, validation, value,updatedTime
+) VALUES (?, ?, ?, ?,?, ?,
+?, ?,?, ?,?, ?, ?,?, ?);
+
+getPromotionEventFields:
+SELECT id, data, editable, ismandatory, length, maxlength, actId,
+       name, param, parentid, slno, type, validation, value,updatedTime
+FROM PromotionEventFieldMaster WHERE actId = ? ORDER BY slno;
+
+getPromotionEventFieldsLastUpdatedTime:
+SELECT max(updatedTime) FROM PromotionEventFieldMaster;
+
+deletePromotionEventFields:
+DELETE FROM PromotionEventFieldMaster WHERE id = ?;
+
+insertDistrictMaster:
+INSERT OR REPLACE INTO DistrictMaster(
+id, name, st_code ,st_name, updatedTime
+) VALUES (?, ?, ?, ?, ?);
+
+getDistrictMaster:
+SELECT id, name, st_code, st_name, updatedTime
+FROM DistrictMaster ORDER BY name;
+
+getDistrictMasterLastUpdatedTime:
+SELECT max(updatedTime) FROM DistrictMaster;
+
+deleteDistrictMaster:
+DELETE FROM DistrictMaster WHERE id = ?;
+
+insertVillageMaster:
+INSERT OR REPLACE INTO VillageMaster(
+id, name, district_id, updatedTime
+) VALUES (?, ?, ?, ?);
+
+getVillageMaster:
+SELECT id, name, district_id, updatedTime
+FROM VillageMaster WHERE district_id = ? ORDER BY name;
+
+getVillageMasterLastUpdatedTime:
+SELECT max(updatedTime) FROM VillageMaster WHERE district_id = ?;
+
+deleteVillageMaster:
+DELETE FROM VillageMaster WHERE id = ?;

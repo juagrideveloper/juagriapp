@@ -2,7 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("org.jetbrains.compose")
-    kotlin("plugin.serialization") version "1.9.0"
+    kotlin("plugin.serialization") version "1.9.21"
     id("kotlin-parcelize")
     id("app.cash.sqldelight")
 }
@@ -55,7 +55,8 @@ kotlin {
                 api(libs.kamel.image)
                 implementation(libs.sqldelight.coroutines)
                 implementation(libs.koalaplot.chart.core)
-
+                implementation(libs.peekaboo.image.ui)
+                implementation(libs.peekaboo.image.picker)
             }
         }
         val androidMain by getting {
@@ -68,6 +69,12 @@ kotlin {
                 implementation(libs.androidx.fragment.ktx)
                 implementation("androidx.camera:camera-lifecycle:1.3.0")
                 implementation("io.coil-kt:coil-compose:2.2.1")
+                implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+                implementation("com.google.firebase:firebase-storage")
+                implementation("com.google.android.gms:play-services-location:21.2.0")
+                implementation("com.google.firebase:firebase-crashlytics")
+                implementation("com.google.firebase:firebase-analytics")
+
                 implementation(libs.sqldelight.android)
                 api(libs.kotlinx.coroutines.android)
                 implementation(libs.ktor.okhttp)

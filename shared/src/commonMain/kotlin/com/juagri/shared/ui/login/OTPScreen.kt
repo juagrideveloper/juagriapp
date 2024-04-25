@@ -31,6 +31,7 @@ import com.juagri.shared.utils.UIState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.koin.koinViewModel
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
@@ -41,7 +42,7 @@ fun OTPScreen(otpValue: String,onNext: (validUser: Boolean) -> Unit) {
     ScreenLayoutWithoutActionBar(title = "Login", onBackPressed = {
         onNext.invoke(false)
     }) {
-        ScreenLayout(viewModel,false) {
+        ScreenLayout(viewModel, isScrollable = false, enableBGColor = false) {
             val otp = remember { mutableStateOf("") }
             val validOTP = remember { mutableStateOf(otpValue) }
             when (val result = viewModel.otpResponse.collectAsState().value) {
@@ -64,7 +65,9 @@ fun OTPScreen(otpValue: String,onNext: (validUser: Boolean) -> Unit) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
-                        painterResource("icon_mobile.xml"),
+                        painterResource(
+                            DrawableResource("icon_mobile.xml")
+                        ),
                         null,
                         modifier = Modifier.height(120.dp).width(90.dp),
                         contentScale = ContentScale.Fit

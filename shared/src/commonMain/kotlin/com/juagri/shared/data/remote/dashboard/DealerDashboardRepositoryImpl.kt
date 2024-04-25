@@ -18,20 +18,20 @@ class DealerDashboardRepositoryImpl(
 ) : DealerDashboardRepository {
     override suspend fun getDashboard(cCode: String): Flow<ResponseState<DealerDashboard>> =
         callbackFlow {
-            trySend(ResponseState.Loading(true))
-            val result = dashboard.filterCCodeUpdatedTime(
-                cCode,
-                dealerDashboardDao.getDashboardLastUpdatedTime(cCode)
-            )
-            trySend(ResponseState.Loading())
             try {
+                trySend(ResponseState.Loading(true))
+                val result = dashboard.filterCCodeUpdatedTime(
+                    cCode,
+                    dealerDashboardDao.getDashboardLastUpdatedTime(cCode)
+                )
                 if (result.isNotEmpty()) {
                     dealerDashboardDao.setDealerDashboard(result.first().data())
                 }
+                trySend(ResponseState.Loading())
                 trySend(ResponseState.Success(dealerDashboardDao.getDealerDashboard(cCode)))
             } catch (e: Exception) {
                 e.printStackTrace()
-                trySend(ResponseState.Error(e))
+                trySend(ResponseState.Error())
             }
             awaitClose {
                 channel.close()
@@ -45,16 +45,16 @@ class DealerDashboardRepositoryImpl(
                 cCode,
                 dealerDashboardDao.getProductSalesLastUpdateTime(cCode)
             )
-            trySend(ResponseState.Loading())
             try {
                 val salesReport: List<DealerSales> = result.map { it.data() }
                 if (salesReport.isNotEmpty()) {
                     dealerDashboardDao.setProductSalesData(salesReport)
                 }
+                trySend(ResponseState.Loading())
                 trySend(ResponseState.Success(dealerDashboardDao.getProductSalesData(cCode)))
             } catch (e: Exception) {
                 e.printStackTrace()
-                trySend(ResponseState.Error(e))
+                trySend(ResponseState.Error())
             }
             awaitClose {
                 channel.close()

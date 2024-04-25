@@ -42,6 +42,23 @@ object TN_Names: Names {
     override val role: String get() = "பங்கு"
     override val appVersion: String get() = "ஆப் பதிப்பு"
     override val logout: String get() = "வெளியேறு"
+    override val selectEvent: String get() = "நிகழ்வைத் தேர்ந்தெடுக்கவும்"
+    override val event: String get() = "நிகழ்வு"
+    override val district: String get() = "மாவட்டம்"
+    override val village: String get() = "கிராமம்"
+    override val promotionActivity: String get() = "விளம்பர நடவடிக்கை"
+    override val promotionEntriesList: String get() = "விளம்பரப் பதிவுகள் பட்டியல்"
+    override val focusProduct: String get() = "கவனம் செலுத்தும் தயாரிப்புகள்"
+    override val monthPlan: String get() = "மாதாந்திர திட்டம்"
+    override val monthActual: String get() = "உண்மையான மாதம்"
+    override val yearPlan: String get() = "ஆண்டு திட்டம்"
+    override val yearActual: String get() = "உண்மையான ஆண்டு"
+    override val liquidation: String get() = "திரவமாக்கல்"
+    override val qty: String get() = "அளவு"
+    override val amount: String get() = "தொகை"
+
+    override val loginInfo: String get() = "Login Info"
+
 
     override val selectRegion: String get() = "$select $region"
     override val selectTerritory: String get() = "$select $territory"
