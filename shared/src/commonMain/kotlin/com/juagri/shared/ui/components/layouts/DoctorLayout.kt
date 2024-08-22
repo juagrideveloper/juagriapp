@@ -52,7 +52,7 @@ fun DoctorCropLayout(item: JUDoctorDataItem, onClick: ((JUDoctorDataItem) -> Uni
                 SnackbarMessage("Error", Color.Red, Color.White)
             },
         )
-        TextCropTitle(item.name.value())
+        //TextCropTitle(item.name.value())
     }
 }
 

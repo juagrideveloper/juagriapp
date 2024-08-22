@@ -1,9 +1,8 @@
 package com.juagri.shared.ui.components.dialogs
 
-import androidx.compose.foundation.BorderStroke
+import Constants
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,7 +20,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -37,26 +35,23 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.juagri.shared.domain.model.promotion.PromotionChildItem
-import com.juagri.shared.domain.model.promotion.PromotionFilterDataItem
 import com.juagri.shared.domain.model.filter.FilterDataItem
 import com.juagri.shared.domain.model.filter.FilterItem
 import com.juagri.shared.domain.model.promotion.ParticipateDialogData
 import com.juagri.shared.domain.model.promotion.ParticipationEntry
+import com.juagri.shared.domain.model.promotion.PromotionChildItem
+import com.juagri.shared.domain.model.promotion.PromotionFilterDataItem
 import com.juagri.shared.ui.components.base.BaseViewModel
 import com.juagri.shared.ui.components.fields.ButtonNormal
 import com.juagri.shared.ui.components.fields.ColumnSpaceExtraSmall
@@ -70,7 +65,6 @@ import com.juagri.shared.ui.components.fields.TextDropdown
 import com.juagri.shared.ui.components.fields.TextMedium
 import com.juagri.shared.ui.components.layouts.CheckboxListItemLayout
 import com.juagri.shared.ui.components.layouts.PeekabooCameraView
-import com.juagri.shared.ui.promotion.CustomCameraView
 import com.juagri.shared.utils.PermissionUtils
 import com.juagri.shared.utils.disable
 import com.juagri.shared.utils.enable
@@ -78,26 +72,25 @@ import com.juagri.shared.utils.getBackgroundGradient
 import com.juagri.shared.utils.getColors
 import com.juagri.shared.utils.isContains
 import com.juagri.shared.utils.lowerCase
-import com.juagri.shared.utils.value
 import com.preat.peekaboo.image.picker.SelectionMode
 import com.preat.peekaboo.image.picker.rememberImagePickerLauncher
 import com.preat.peekaboo.image.picker.toImageBitmap
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.InternalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalResourceApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalResourceApi::class, InternalResourceApi::class)
 @Composable
 fun ParticipatedDialog(
     dialogData: ParticipateDialogData,
     viewModel: BaseViewModel,
     onClickOK: (ParticipationEntry) -> Unit,
 ) {
+    val comments = mutableStateOf("")
     if (dialogData.showDialog.value) {
         val keyboardController = LocalFocusManager.current
-        val comments = mutableStateOf("")
         val selectedImages = remember { mutableStateListOf<ByteArray>() }
-
         val openCameraLauncher =remember {  mutableStateOf(false)}
         val openPermissionLauncher =  remember { mutableStateOf(false) }
         if(openPermissionLauncher.value) {
@@ -159,58 +152,52 @@ fun ParticipatedDialog(
                             modifier = Modifier.fillMaxWidth().height(120.dp).padding(0.dp)
                         )
                         ColumnSpaceMedium()
-                        LabelHeading("Capture Images")
-                        ColumnSpaceExtraSmall()
-                        FlowRow(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        ) {
-                            if (selectedImages.size < 2) {
-                                Column(
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Image(
-                                        painterResource(DrawableResource("icon_camera.xml")),
-                                        contentDescription = null,
-                                        colorFilter = ColorFilter.tint(getColors().onBackground),
-                                        modifier = Modifier.size(40.dp).clickable {
-                                            openPermissionLauncher.value = true
-                                        }
-                                    )
-                                    /*Image(
-                                        painterResource(DrawableResource("icon_gallery.xml")),
-                                        contentDescription = null,
-                                        colorFilter = ColorFilter.tint(getColors().onBackground),
-                                        modifier = Modifier.size(45.dp).clickable {
-                                            multipleImagePicker.launch()
-                                        }
-                                    )*/
-                                }
-                            }
-                            selectedImages.forEach {
-                                Box(contentAlignment = Alignment.TopEnd) {
-                                    Image(
-                                        bitmap = it.toImageBitmap(),
-                                        contentDescription = "Selected Image",
-                                        modifier =
-                                        Modifier
-                                            .size(80.dp)
-                                            .clip(shape = RoundedCornerShape(12.dp)),
-                                        contentScale = ContentScale.Crop,
-                                    )
-                                    IconButton(onClick = {
-                                        selectedImages.remove(it)
-                                    }, modifier = Modifier.size(18.dp)) {
-                                        Icon(
-                                            imageVector = Icons.Default.Close,
-                                            null,
-                                            tint = Color.White,
-                                            modifier = Modifier.background(Color.Black)
-                                                .clip(
-                                                    RoundedCornerShape(10.dp)
-                                                )
+                        if(!dialogData.activityCode.equals("PM_FI") && !dialogData.activityCode.equals("PM_DRC")) {
+                            LabelHeading("Capture Images")
+                            ColumnSpaceExtraSmall()
+                            FlowRow(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            ) {
+                                if (selectedImages.size < 2) {
+                                    Column(
+                                        verticalArrangement = Arrangement.Center,
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        Image(
+                                            painterResource(DrawableResource("icon_camera.xml")),
+                                            contentDescription = null,
+                                            colorFilter = ColorFilter.tint(getColors().onBackground),
+                                            modifier = Modifier.size(40.dp).clickable {
+                                                openPermissionLauncher.value = true
+                                            }
                                         )
+                                    }
+                                }
+                                selectedImages.forEach {
+                                    Box(contentAlignment = Alignment.TopEnd) {
+                                        Image(
+                                            bitmap = it.toImageBitmap(),
+                                            contentDescription = "Selected Image",
+                                            modifier =
+                                            Modifier
+                                                .size(80.dp)
+                                                .clip(shape = RoundedCornerShape(12.dp)),
+                                            contentScale = ContentScale.Crop,
+                                        )
+                                        IconButton(onClick = {
+                                            selectedImages.remove(it)
+                                        }, modifier = Modifier.size(18.dp)) {
+                                            Icon(
+                                                imageVector = Icons.Default.Close,
+                                                null,
+                                                tint = Color.White,
+                                                modifier = Modifier.background(Color.Black)
+                                                    .clip(
+                                                        RoundedCornerShape(10.dp)
+                                                    )
+                                            )
+                                        }
                                     }
                                 }
                             }
@@ -226,15 +213,15 @@ fun ParticipatedDialog(
                                 keyboardController.clearFocus()
                                 if(comments.value.isEmpty()) {
                                     viewModel.showErrorMessage("Please enter comments")
-                                }else if(selectedImages.isEmpty()){
+                                }else if(selectedImages.isEmpty() && !dialogData.activityCode.equals("PM_FI") && !dialogData.activityCode.equals("PM_DRC")){
                                     viewModel.showErrorMessage("Please select image")
                                 }else{
+                                    viewModel.showProgressBar(true)
                                     viewModel.getCurrentLocation.enable()
                                 }
                             }
                         }
                         if (viewModel.getCurrentLocation.value) {
-                            viewModel.showProgressBar(true)
                             PermissionUtils.GetCurrentLocation{ lat, long ->
                                 if (lat == 0.0 && long == 0.0) {
                                     viewModel.showProgressBar(false)

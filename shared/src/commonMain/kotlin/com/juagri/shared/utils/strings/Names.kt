@@ -56,6 +56,7 @@ interface Names {
     val liquidation: String
     val qty: String
     val amount: String
+    val participation: String
 
     val loginInfo: String
 

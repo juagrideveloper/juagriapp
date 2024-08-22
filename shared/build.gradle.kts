@@ -53,10 +53,18 @@ kotlin {
                 api(libs.precompose.viewmodel)
                 api(libs.precompose.koin)
                 api(libs.kamel.image)
+
+                implementation("network.chaintech:compose-multiplatform-media-player:1.0.0")
+
                 implementation(libs.sqldelight.coroutines)
                 implementation(libs.koalaplot.chart.core)
                 implementation(libs.peekaboo.image.ui)
                 implementation(libs.peekaboo.image.picker)
+
+                implementation("io.github.alexzhirkevich:compottie:2.0.0-beta02")
+                implementation("io.github.alexzhirkevich:compottie-dot:2.0.0-beta02")
+                implementation("io.github.alexzhirkevich:compottie-network:2.0.0-beta02")
+                //implementation("io.github.alexzhirkevich:compottie-resources:2.0.0-beta02")
             }
         }
         val androidMain by getting {
@@ -113,9 +121,14 @@ android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
-
+    buildFeatures {
+        buildConfig = true
+    }
     defaultConfig {
         minSdk = (findProperty("android.minSdk") as String).toInt()
+        buildConfigField("Integer","CDOVersion",(findProperty("cdo.version.code") as String))
+        buildConfigField("Integer","DealerVersion", (findProperty("dealer.version.code") as String))
+        buildConfigField("Integer","StaffVersion",(findProperty("staff.version.code") as String))
     }
     flavorDimensions += listOf("appMode")
     productFlavors {
@@ -135,5 +148,6 @@ android {
     }
     kotlin {
         jvmToolchain(17)
+        task("testClasses")
     }
 }

@@ -336,7 +336,7 @@ class TestScreenViewModel(
         }
     }*/
 
-    fun setMenu() {
+    /*fun setMenu() {
         val menus = hashMapOf<String,HeaderSlideMenu>()
         menus["H_001"] =
             HeaderSlideMenu(
@@ -422,7 +422,7 @@ class TestScreenViewModel(
                 .document("DL_MENU")
                 .set(menus)
         }
-    }
+    }*/
 
     fun setData() {
         /*backgroundScope {

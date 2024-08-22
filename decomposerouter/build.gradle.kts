@@ -99,6 +99,10 @@ android {
     targetCompatibility = JavaVersion.VERSION_17
   }
 
+  kotlin{
+    task("testClasses")
+  }
+
   testOptions {
     unitTests {
       isIncludeAndroidResources = true

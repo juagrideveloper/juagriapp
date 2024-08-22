@@ -15,6 +15,8 @@ interface UserRepository {
 
     suspend fun getDealerList(tCode: String): Flow<ResponseState<List<JUDealer>>>
 
+    suspend fun getDealerListByCDO(cdoCode: String): Flow<ResponseState<List<JUDealer>>>
+
     suspend fun getFinYear(): Flow<ResponseState<List<FinYear>>>
 
     suspend fun getFinMonth(startDate: Timestamp, endDate: Timestamp): Flow<ResponseState<List<FinMonth>>>

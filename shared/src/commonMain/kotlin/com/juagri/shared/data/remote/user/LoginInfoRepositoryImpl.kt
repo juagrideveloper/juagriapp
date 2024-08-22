@@ -18,14 +18,14 @@ class LoginInfoRepositoryImpl(
 ): LoginInfoRepository {
     override suspend fun getLoginInfoDetails(employee: JUEmployee): Flow<ResponseState<List<LoginInfo>>>  = callbackFlow {
         trySend(ResponseState.Loading(true))
-        val response = when(employee.roleId.value()){
-            Constants.EMP_ROLE_RM, Constants.EMP_ROLE_DM -> {
+        val response = when(employee.menuId.value()){
+            Constants.EMP_MENU_DM, Constants.EMP_MENU_RM -> {
                 loginInfoDB
                     .where { Constants.FIELD_REG_CODE inArray employee.regionCode.value().split(",") }
                     .where { Constants.FIELD_ROLE_ID equalTo "CDO" }
                     .orderBy(Constants.FIELD_EMP_Name).get().documents
             }
-            Constants.EMP_ROLE_SO -> {
+            Constants.EMP_MENU_SO -> {
                 loginInfoDB
                     .where {Constants.FIELD_T_CODE inArray employee.territoryCode.value().split(",") }
                     .where { Constants.FIELD_ROLE_ID equalTo "CDO" }

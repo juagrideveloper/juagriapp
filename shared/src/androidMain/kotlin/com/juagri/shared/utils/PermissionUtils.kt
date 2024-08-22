@@ -20,13 +20,20 @@ actual object PermissionUtils {
         val context = LocalContext.current
         val permissionCheckResult =
             ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+        var isResponseNotSent = true
         val permissionLauncher = rememberLauncherForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) {
-            result.invoke(it)
+            if(isResponseNotSent) {
+                isResponseNotSent = false
+                result.invoke(it)
+            }
         }
         if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
-            result.invoke(true)
+            if(isResponseNotSent) {
+                isResponseNotSent = false
+                result.invoke(true)
+            }
         } else {
             SideEffect {
                 // Request a permission

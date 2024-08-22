@@ -56,8 +56,9 @@ object HI_Names: Names {
     override val liquidation: String get() = "परिसमापन"
     override val qty: String get() = "मात्रा"
     override val amount: String get() = "मात्रा"
+    override val participation: String get() = "भाग लेना"
 
-    override val loginInfo: String get() = "Login Info"
+    override val loginInfo: String get() = "लॉगिन जानकारी"
 
 
     override val selectRegion: String get() = "$select $region"

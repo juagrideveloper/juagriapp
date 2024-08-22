@@ -19,12 +19,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -32,7 +29,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,16 +37,13 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
+import com.juagri.shared.domain.model.filter.FilterType
 import com.juagri.shared.domain.model.promotion.PromotionChildItem
+import com.juagri.shared.domain.model.promotion.PromotionField
 import com.juagri.shared.domain.model.promotion.PromotionFilterDataItem
 import com.juagri.shared.domain.model.promotion.PromotionParentItem
-import com.juagri.shared.domain.model.filter.FilterType
-import com.juagri.shared.domain.model.promotion.PromotionField
 import com.juagri.shared.domain.model.promotion.PromotionValue
 import com.juagri.shared.domain.model.promotion.VillageItem
 import com.juagri.shared.ui.components.dialogs.FilterDialog
@@ -94,10 +87,18 @@ fun PromotionEntryScreen() {
         viewModel.apply {
             CardLayout(true) {
                 DropDownLayout(
-                    names().selectEvent,
-                    mutableStateOf(selectedPromotionEvent.value?.name.value())
+                    getDealerLabel(),
+                    mutableStateOf(selectedDealer.value?.cName.value())
                 ) {
-                    viewModel.getPromotionEventList()
+                    viewModel.getDealerListByCDO()
+                }
+                if(selectedDealer.value != null) {
+                    DropDownLayout(
+                        names().selectEvent,
+                        mutableStateOf(selectedPromotionEvent.value?.name.value())
+                    ) {
+                        viewModel.getPromotionEventList()
+                    }
                 }
                 when (val result = viewModel.promotionFieldItems.collectAsState().value) {
                     is UIState.Success -> {
@@ -131,6 +132,10 @@ fun PromotionEntryScreen() {
 
                     is FilterType.VILLAGE -> {
                         selectedVillageItem.value = item.data
+                    }
+
+                    is FilterType.DEALER -> {
+                        selectedDealer.value = item.data
                     }
 
                     else -> {}
@@ -342,24 +347,6 @@ private fun updatePromotionFields(
                                                 }
                                             }
                                         )
-                                        /*Image(
-                                            painterResource(DrawableResource("icon_gallery.xml")),
-                                            contentDescription = null,
-                                            colorFilter = ColorFilter.tint(getColors().onBackground),
-                                            modifier = Modifier.size(45.dp).clickable {
-                                                if (selectedImages.size < field.maxlength.value()
-                                                        .toInt()
-                                                ) {
-                                                    multipleImagePicker.launch()
-                                                } else {
-                                                    viewModel.showErrorMessage(
-                                                        "Only allowed ${
-                                                            field.maxlength.value().toInt()
-                                                        } files!"
-                                                    )
-                                                }
-                                            }
-                                        )*/
                                     }
                                 }
                                 selectedImages.forEach {
@@ -433,9 +420,11 @@ private fun updatePromotionFields(
             }
         }
         if (viewModel.getCurrentLocation.value) {
+            viewModel.getCurrentLocation.disable()
             keyboardController.clearFocus(true)
             viewModel.showProgressBar(true)
             PermissionUtils.GetCurrentLocation { lat, long ->
+                println("JUAgriAppTestLogs: GetCurrentLocation setPromotionEntry")
                 if (lat == 0.0 && long == 0.0) {
                     viewModel.showProgressBar(false)
                     viewModel.showErrorMessage(Constants.ERROR_MSG)
@@ -529,6 +518,7 @@ private fun updatePromotionFields(
                             updateEntry["updated_empname"] = emp.name.value()
                             updateEntry["updated_regcode"] = emp.regionCode.value()
                             updateEntry["updated_terrcode"] = emp.territoryCode.value()
+                            updateEntry["dealer_code"] = viewModel.selectedDealer.value?.cCode.value()
                             updateEntry["participant_SO_userId"] = ""
                             updateEntry["participant_RM_userId"] = ""
                             updateEntry["participant_DM_userId"] = ""
@@ -540,7 +530,6 @@ private fun updatePromotionFields(
                         viewModel.showProgressBar(false)
                     }
                 }
-                viewModel.getCurrentLocation.disable()
             }
         }
     }

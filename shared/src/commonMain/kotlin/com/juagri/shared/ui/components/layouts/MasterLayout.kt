@@ -80,15 +80,20 @@ fun ScreenLayoutWithMenuActionBar(
 
                     if(employee.value.menuItems != null){
                         employee.value.menuItems?.forEach {parent->
-                            NavDrawerHeading(viewModel.getScreenName(parent.value.id.value()))
-                            parent.value.childMenus.forEach {child->
-                                val screenId = child.id.value()
-                                NavDrawerContent(viewModel.getScreenName(screenId)) {
-                                    updateDrawerState(scope,drawerState)
-                                    if(screenId == Constants.SCREEN_PROMOTION_ENTRY || screenId == Constants.SCREEN_PROMOTION_ENTRIES_LIST){
-                                        viewModel.locationPermissionNeeded.value = PermissionData(true,screenId)
-                                    }else{
-                                        processNavigation(viewModel, screenId, router)
+                            if(parent.value.isActive) {
+                                NavDrawerHeading(viewModel.getScreenName(parent.value.id.value()))
+                                parent.value.childMenus.forEach { child ->
+                                    if(child.isActive) {
+                                        val screenId = child.id.value()
+                                        NavDrawerContent(viewModel.getScreenName(screenId)) {
+                                            updateDrawerState(scope, drawerState)
+                                            if (screenId == Constants.SCREEN_PROMOTION_ENTRY || screenId == Constants.SCREEN_PROMOTION_ENTRIES_LIST) {
+                                                viewModel.locationPermissionNeeded.value =
+                                                    PermissionData(true, screenId)
+                                            } else {
+                                                processNavigation(viewModel, screenId, router)
+                                            }
+                                        }
                                     }
                                 }
                             }

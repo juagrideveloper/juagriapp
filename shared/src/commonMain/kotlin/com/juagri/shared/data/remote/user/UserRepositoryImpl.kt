@@ -85,6 +85,23 @@ class UserRepositoryImpl(
         }
     }
 
+    override suspend fun getDealerListByCDO(cdoCode: String): Flow<ResponseState<List<JUDealer>>> = callbackFlow{
+        println("CDO_Code: $cdoCode")
+        trySend(ResponseState.Loading(true))
+        val result = dealerDB.where {
+            Constants.FIELD_CDO_CODE equalTo cdoCode
+        }.get().documents
+        try {
+            trySend(ResponseState.Loading())
+            trySend(ResponseState.Success(result.map { it.data() }))
+        }catch (e:Exception){
+            trySend(ResponseState.Error())
+        }
+        awaitClose {
+            channel.close()
+        }
+    }
+
     override suspend fun getFinYear(): Flow<ResponseState<List<FinYear>>> = callbackFlow{
         trySend(ResponseState.Loading(true))
         val result = finYearDB.filterUpdatedTime(userDetailsDao.getFinYearLastUpdatedTime())

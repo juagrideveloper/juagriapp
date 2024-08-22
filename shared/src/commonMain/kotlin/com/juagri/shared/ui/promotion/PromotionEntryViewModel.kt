@@ -9,6 +9,7 @@ import com.juagri.shared.domain.model.promotion.DistrictItem
 import com.juagri.shared.domain.model.promotion.PromotionEventItem
 import com.juagri.shared.domain.model.promotion.PromotionField
 import com.juagri.shared.domain.model.promotion.VillageItem
+import com.juagri.shared.domain.model.user.JUDealer
 import com.juagri.shared.domain.usecase.PromotionUseCase
 import com.juagri.shared.domain.usecase.UserDetailsUseCase
 import com.juagri.shared.ui.components.base.BaseViewModel
@@ -26,6 +27,10 @@ class PromotionEntryViewModel(
     private var _promotionFieldItems: MutableStateFlow<UIState<List<PromotionField>>> =
         MutableStateFlow(UIState.Init)
     val promotionFieldItems = _promotionFieldItems.asStateFlow()
+
+    private var _dealers: MutableStateFlow<UIState<List<JUDealer>>> =
+        MutableStateFlow(UIState.Init)
+    val dealers = _dealers.asStateFlow()
 
     var selectedPromotionEvent: MutableState<PromotionEventItem?> = mutableStateOf(null)
     var dropdownItem: MutableState<String> = mutableStateOf(names().select)
@@ -75,8 +80,17 @@ class PromotionEntryViewModel(
         }
     }
 
-    fun setPromotionEntry(entryItems: Map<String,Any>, files: List<ByteArray>){
+    fun getDealerListByCDO(){
         backgroundScope {
+            promotionUseCase.getDealerListByCDO(getJUEmployee()?.code.value()).collect{response->
+                uiScopeFilter(response,FilterType.DEALER(JUDealer()))
+            }
+        }
+    }
+
+    fun setPromotionEntry(entryItems: MutableMap<String,Any>, files: List<ByteArray>){
+        backgroundScope {
+            println("JUAgriAppTestLogs: PromotionEntryViewModel setPromotionEntry")
             promotionUseCase.setPromotionEntry(entryItems, files).collect{response->
                 uiScope(response,_setPromotionEntryData)
             }

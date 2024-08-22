@@ -23,8 +23,14 @@ object Constants {
     const val TABLE_CONFIG = "Config"
     const val TABLE_LIQUIDATION_CONFIG = "DealerLiquidation"
     const val TABLE_LOGIN_INFO = "LoginInfo"
+    const val TABLE_APP = "App"
 
     const val FOLDER_PROMOTION_ENTRY_IMAGES = "PromotionEntryImages"
+
+    const val EMP_MENU_CDO = "CDO_Menu"
+    const val EMP_MENU_DM = "DM_Menu"
+    const val EMP_MENU_RM = "RM_Menu"
+    const val EMP_MENU_SO = "SO_Menu"
 
     const val EMP_ROLE_RM = "RM"
     const val EMP_ROLE_DM = "DM"
@@ -55,6 +61,7 @@ object Constants {
     const val SCREEN_CDO_FOCUS_PRODUCT = "C_011"
     const val SCREEN_CDO_LIQUIDATION = "C_012"
     const val SCREEN_LOGIN_INFO = "C_013"
+    const val SCREEN_PARTICIPATION = "C_014"
 
 
     const val FIELD_C_CODE = "ccode"
@@ -62,6 +69,7 @@ object Constants {
     const val FIELD_EMP_Name = "emp_name"
     const val FIELD_T_CODE = "tcode"
     const val FIELD_ROLE_ID = "emp_role_id"
+    const val FIELD_CDO_CODE = "cdocode"
     const val FIELD_START_DATE = "start_date"
     const val FIELD_END_DATE = "end_date"
     const val FIELD_UPDATED_TIME = "updatedTime"

@@ -3,7 +3,6 @@ package com.juagri.shared.ui.promotionEntries
 import Constants
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Divider
@@ -15,7 +14,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.juagri.shared.domain.model.filter.FilterType
 import com.juagri.shared.domain.model.promotion.ParticipateDialogData
-import com.juagri.shared.ui.TestScreenViewModel
 import com.juagri.shared.ui.components.base.BaseViewModel
 import com.juagri.shared.ui.components.dialogs.FilterDialog
 import com.juagri.shared.ui.components.dialogs.ParticipatedDialog
@@ -24,13 +22,10 @@ import com.juagri.shared.ui.components.fields.ColumnSpaceSmall
 import com.juagri.shared.ui.components.fields.PromotionContent
 import com.juagri.shared.ui.components.fields.PromotionHeading
 import com.juagri.shared.ui.components.fields.PromotionSubHeading
-import com.juagri.shared.ui.components.fields.RowSpaceSmall
 import com.juagri.shared.ui.components.layouts.CardLayout
 import com.juagri.shared.ui.components.layouts.DropDownLayout
 import com.juagri.shared.ui.components.layouts.PromotionImage
 import com.juagri.shared.ui.components.layouts.ScreenLayout
-import com.juagri.shared.ui.components.layouts.ScreenLayoutWithActionBar
-import com.juagri.shared.ui.components.layouts.getModifier
 import com.juagri.shared.utils.UIState
 import com.juagri.shared.utils.getColors
 import com.juagri.shared.utils.value
@@ -69,8 +64,8 @@ fun PromotionEntriesScreen() {
                                 "PM_NDS" -> ndsView(it, viewModel)
                                 "PM_DFD" -> dfdView(it, viewModel)
                                 "PM_FM" -> fmView(it, viewModel)
-                                "PM_FI" -> fiView(it, viewModel)
-                                "PM_DRC" -> drcView(it, viewModel)
+                                //"PM_FI" -> fiView(it, viewModel)
+                                //"PM_DRC" -> drcView(it, viewModel)
                                 else -> {}
                             }
                             ColumnSpaceSmall()
@@ -118,8 +113,8 @@ fun PromotionEntriesScreen() {
                 viewModel.setParticipationEntry(it, updateItems)
             }
             if (isDashboardNotCreated) {
-                getPromotionEntries()
                 isDashboardNotCreated = false
+                getPromotionEntries()
             }
         }
     }
@@ -326,17 +321,18 @@ private fun fiView(entry: Map<String, Any>,viewModel: BaseViewModel) {
             PromotionSubHeading("Farmer Phone")
             PromotionContent(entry["farmerphone"].toString(), textAlign = TextAlign.End)
         }
-        RowView {
+       /* RowView {
             PromotionSubHeading("")
             ButtonNormal("I Participated"){
                 val entryId = entry["entryId"].toString()
                 viewModel.showParticipateDialog.value = ParticipateDialogData(
                     "Add Participation Details",
                     entryId,
-                    mutableStateOf(true)
+                    mutableStateOf(true),
+                    entry["activity_code"].toString()
                 )
             }
-        }
+        }*/
     }
 }
 
@@ -366,17 +362,18 @@ private fun drcView(entry: Map<String, Any>,viewModel: BaseViewModel) {
                 textAlign = TextAlign.End
             )
         }
-        RowView {
+        /*RowView {
             PromotionSubHeading("")
             ButtonNormal("I Participated"){
                 val entryId = entry["entryId"].toString()
                 viewModel.showParticipateDialog.value = ParticipateDialogData(
                     "Add Participation Details",
                     entryId,
-                    mutableStateOf(true)
+                    mutableStateOf(true),
+                    entry["activity_code"].toString()
                 )
             }
-        }
+        }*/
     }
 }
 

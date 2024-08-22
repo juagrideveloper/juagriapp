@@ -15,6 +15,6 @@ interface PromotionRepository {
     suspend fun getPromotionEventFieldsList(actId: String): Flow<ResponseState<List<PromotionField>>>
     suspend fun getDistrictList(stCode: String): Flow<ResponseState<List<DistrictItem>>>
     suspend fun getVillageList(districtId: String): Flow<ResponseState<List<VillageItem>>>
-    suspend fun setPromotionEntry(entryItems: Map<String,Any>, files: List<ByteArray>): Flow<ResponseState<Boolean>>
+    suspend fun setPromotionEntry(entryItems: MutableMap<String,Any>, files: List<ByteArray>): Flow<ResponseState<Boolean>>
     suspend fun getDashboard(employee: JUEmployee): Flow<ResponseState<List<PromotionDashboard>>>
 }

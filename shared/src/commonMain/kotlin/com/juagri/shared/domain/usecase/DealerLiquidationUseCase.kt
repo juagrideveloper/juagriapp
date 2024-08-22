@@ -5,7 +5,7 @@ import com.juagri.shared.domain.model.liquidation.DealerLiquidationData
 import com.juagri.shared.domain.repo.liquidation.DealerLiquidationRepository
 
 class DealerLiquidationUseCase(private val repository: DealerLiquidationRepository) {
-    suspend fun getDealerLiquidationItems(tCode: String) = repository.getDealerLiquidationItems(tCode)
+    suspend fun getDealerLiquidationItems(cdoCode: String) = repository.getDealerLiquidationItems(cdoCode)
 
     suspend fun setUpdateLiquidation(data: DealerLiquidationData, employee: JUEmployee) = repository.setUpdateLiquidation(data, employee)
 }

@@ -11,6 +11,7 @@ import com.juagri.shared.data.local.dao.dealer.DealerLedgerDao
 import com.juagri.shared.data.local.session.SessionPreference
 import com.juagri.shared.data.local.session.datamanager.DataManager
 import com.juagri.shared.data.local.session.datamanager.DataStore
+import com.juagri.shared.data.remote.app.AppConfigRepositoryImpl
 import com.juagri.shared.data.remote.dashboard.DealerDashboardRepositoryImpl
 import com.juagri.shared.data.remote.doctor.JUDoctorRepositoryImpl
 import com.juagri.shared.data.remote.focusProduct.CDOFocusProductRepositoryImpl
@@ -19,9 +20,12 @@ import com.juagri.shared.data.remote.liquidation.DealerLiquidationRepositoryImpl
 import com.juagri.shared.data.remote.login.EmployeeRepositoryImpl
 import com.juagri.shared.data.remote.user.LoginInfoRepositoryImpl
 import com.juagri.shared.data.remote.login.OTPRepositoryImpl
+import com.juagri.shared.data.remote.participation.ParticipationRepositoryImpl
 import com.juagri.shared.data.remote.promotion.PromotionEntriesRepositoryImpl
 import com.juagri.shared.data.remote.promotion.PromotionRepositoryImpl
 import com.juagri.shared.data.remote.user.UserRepositoryImpl
+import com.juagri.shared.data.remote.weather.WeatherRepositoryImpl
+import com.juagri.shared.domain.repo.app.AppConfigRepository
 import com.juagri.shared.domain.repo.dashboard.DealerDashboardRepository
 import com.juagri.shared.domain.repo.doctor.JUDoctorRepository
 import com.juagri.shared.domain.repo.focusProduct.CDOFocusProductRepository
@@ -29,10 +33,13 @@ import com.juagri.shared.domain.repo.ledger.DealerLedgerRepository
 import com.juagri.shared.domain.repo.liquidation.DealerLiquidationRepository
 import com.juagri.shared.domain.repo.login.EmployeeRepository
 import com.juagri.shared.domain.repo.login.OTPRepository
+import com.juagri.shared.domain.repo.participation.ParticipationRepository
 import com.juagri.shared.domain.repo.promotion.PromotionEntriesRepository
 import com.juagri.shared.domain.repo.promotion.PromotionRepository
 import com.juagri.shared.domain.repo.user.LoginInfoRepository
 import com.juagri.shared.domain.repo.user.UserRepository
+import com.juagri.shared.domain.repo.weather.WeatherRepository
+import com.juagri.shared.domain.usecase.AppConfigUseCase
 import com.juagri.shared.domain.usecase.CDOFocusProductUseCase
 import com.juagri.shared.domain.usecase.DealerDashboardUseCase
 import com.juagri.shared.domain.usecase.DealerLedgerUseCase
@@ -41,9 +48,11 @@ import com.juagri.shared.domain.usecase.EmployeeUseCase
 import com.juagri.shared.domain.usecase.JUDoctorUseCase
 import com.juagri.shared.domain.usecase.LoginInfoUseCase
 import com.juagri.shared.domain.usecase.OTPUseCase
+import com.juagri.shared.domain.usecase.ParticipationUseCase
 import com.juagri.shared.domain.usecase.PromotionEntriesUseCase
 import com.juagri.shared.domain.usecase.PromotionUseCase
 import com.juagri.shared.domain.usecase.UserDetailsUseCase
+import com.juagri.shared.domain.usecase.WeatherUseCase
 import com.juagri.shared.ui.TestScreenViewModel
 import com.juagri.shared.ui.dashboard.cdo.CDODashboardViewModel
 import com.juagri.shared.ui.dashboard.dealer.DealerDashboardViewModel
@@ -54,10 +63,12 @@ import com.juagri.shared.ui.ledger.LedgerViewModel
 import com.juagri.shared.ui.liquidation.LiquidationViewModel
 import com.juagri.shared.ui.login.LoginViewModel
 import com.juagri.shared.ui.loginInfo.LoginInfoViewModel
+import com.juagri.shared.ui.participation.ParticipationViewModel
 import com.juagri.shared.ui.profile.ProfileViewModel
 import com.juagri.shared.ui.promotion.PromotionEntryViewModel
 import com.juagri.shared.ui.promotionEntries.PromotionEntriesViewModel
 import com.juagri.shared.ui.splash.SplashViewModel
+import com.juagri.shared.ui.weather.WeatherViewModel
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.firestore.firestore
 import io.ktor.client.HttpClient
@@ -128,6 +139,7 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                     )
                 }
                 single<OTPRepository> { OTPRepositoryImpl(get()) }
+                single<WeatherRepository> { WeatherRepositoryImpl(get()) }
                 //single<FirebaseAuthRepository> { FirebaseAuthRepositoryImpl(Firebase.auth) }
                 single<DealerDashboardRepository> {
                     DealerDashboardRepositoryImpl(
@@ -192,21 +204,37 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                         Firebase.firestore.collection(Constants.TABLE_LOGIN_INFO),
                     )
                 }
+                single<AppConfigRepository> {
+                    AppConfigRepositoryImpl(
+                        Firebase.firestore.collection(Constants.TABLE_CONFIG),
+                    )
+                }
+                single<ParticipationRepository> {
+                    ParticipationRepositoryImpl(
+                        Firebase.firestore.collection(Constants.TABLE_PROMOTION_ACTIVITY_LIST),
+                        Firebase.firestore.collection(Constants.TABLE_PROMOTION_ACTIVITY_ENTRY),
+                        get()
+                    )
+                }
+
                 single { EmployeeUseCase(get()) }
                 single { DealerDashboardUseCase(get()) }
                 single { DealerLedgerUseCase(get()) }
                 single { OTPUseCase(get()) }
                 single { UserDetailsUseCase(get()) }
                 single { JUDoctorUseCase(get()) }
-                single { PromotionUseCase(get()) }
+                single { PromotionUseCase(get(),get()) }
                 single { PromotionEntriesUseCase(get()) }
                 single { CDOFocusProductUseCase(get()) }
                 single { DealerLiquidationUseCase(get()) }
                 single { LoginInfoUseCase(get()) }
+                single { AppConfigUseCase(get()) }
+                single { WeatherUseCase(get()) }
+                single { ParticipationUseCase(get()) }
 
                 factory { SplashViewModel(get(),get()) }
                 factory { LoginViewModel(get(),get(),get(),get()) }
-                factory { HomeViewModel(get(),get(),get()) }
+                factory { HomeViewModel(get(),get(),get(),get()) }
                 factory { DealerDashboardViewModel(get(),get(),get()) }
                 factory { LedgerViewModel(get(),get(),get(),get()) }
                 factory { DoctorViewModel(get(),get(),get()) }
@@ -218,6 +246,8 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                 factory { LiquidationViewModel(get(),get(),get()) }
                 factory { LoginInfoViewModel(get(),get(),get()) }
                 factory { TestScreenViewModel(get(),get(),get()) }
+                factory { WeatherViewModel(get(),get(),get()) }
+                factory { ParticipationViewModel(get(),get(),get()) }
             }
         )
     }

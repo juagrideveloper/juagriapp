@@ -56,8 +56,9 @@ object TN_Names: Names {
     override val liquidation: String get() = "திரவமாக்கல்"
     override val qty: String get() = "அளவு"
     override val amount: String get() = "தொகை"
+    override val participation: String get() = "பங்கேற்பு"
 
-    override val loginInfo: String get() = "Login Info"
+    override val loginInfo: String get() = "உள்நுழைவு தகவல்"
 
 
     override val selectRegion: String get() = "$select $region"

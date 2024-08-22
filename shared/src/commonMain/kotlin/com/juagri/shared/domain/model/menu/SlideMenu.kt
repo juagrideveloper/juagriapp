@@ -10,7 +10,7 @@ data class HeaderSlideMenu(
     @SerialName("index") var index: Int? =null,
     @SerialName("menu_name") var menuName: String? = null,
     @SerialName("is_active") var isActive: Boolean = false,
-    @SerialName("child_menus") var childMenus: List<ChildSlideMenu> = listOf(),
+    @SerialName("child_menus") var childMenus: MutableList<ChildSlideMenu> = mutableListOf(),
     @SerialName("updatedTime") var updatedTime: Timestamp? = null
 )
 

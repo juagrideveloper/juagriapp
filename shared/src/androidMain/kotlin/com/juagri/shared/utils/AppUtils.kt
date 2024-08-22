@@ -2,7 +2,7 @@ package com.juagri.shared.utils
 
 import android.os.Build
 import android.os.Process
-import kotlin.system.exitProcess
+
 
 actual object AppUtils{
     actual fun logout(){
@@ -12,10 +12,14 @@ actual object AppUtils{
 
     actual fun getDeviceInfo(): Map<String,String> {
         return mapOf(
-            "app_version" to "v2.0.2.alpha",
+            "app_version" to com.juagri.shared.BuildConfig.CDOVersion.toString(),
             "device_os" to Build.VERSION.CODENAME.toString(),
             "device_sdk" to Build.VERSION.SDK_INT.toString(),
             "device_mode" to "Android",
         )
+    }
+
+    actual fun getAppVersion():Int{
+        return com.juagri.shared.BuildConfig.CDOVersion
     }
 }

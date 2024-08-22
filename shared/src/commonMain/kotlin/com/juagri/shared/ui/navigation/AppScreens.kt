@@ -10,7 +10,7 @@ sealed class AppScreens: Parcelable {
   data object Ledger: AppScreens()
   data object OnlineOrder: AppScreens()
   data object YourOrders: AppScreens()
-  data object Weather: AppScreens()
+  data object WeatherScreen: AppScreens()
   data object Profile: AppScreens()
   data object Devices: AppScreens()
   data object PromotionEntry: AppScreens()
@@ -22,5 +22,6 @@ sealed class AppScreens: Parcelable {
   data class JUDoctorManagement(val parentId:String): AppScreens()
   data class JUDoctorChild(val parentId:String): AppScreens()
   data class JUDoctorSolution(val parentId:String): AppScreens()
+  data object Participation: AppScreens()
 }
 

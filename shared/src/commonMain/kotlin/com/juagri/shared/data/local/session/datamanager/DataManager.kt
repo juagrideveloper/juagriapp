@@ -61,6 +61,7 @@ class DataManager(private val dataStore: DataStore) {
             Constants.SCREEN_CDO_FOCUS_PRODUCT->names.value.focusProduct
             Constants.SCREEN_CDO_LIQUIDATION->names.value.liquidation
             Constants.SCREEN_LOGIN_INFO ->names.value.loginInfo
+            Constants.SCREEN_PARTICIPATION ->names.value.participation
             else -> ""
         }
 }

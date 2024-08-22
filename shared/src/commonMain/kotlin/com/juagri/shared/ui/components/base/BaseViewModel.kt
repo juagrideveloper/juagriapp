@@ -81,7 +81,7 @@ open class BaseViewModel(private val session: SessionPreference,private val data
             Constants.SCREEN_ONLINE_ORDER-> AppScreens.OnlineOrder
             Constants.SCREEN_YOUR_ORDERS-> AppScreens.YourOrders
             Constants.SCREEN_JU_Doctor-> AppScreens.JUDoctorCrop("0")
-            Constants.SCREEN_WEATHER-> AppScreens.Weather
+            Constants.SCREEN_WEATHER-> AppScreens.WeatherScreen
             Constants.SCREEN_PROFILE-> AppScreens.Profile
             Constants.SCREEN_DEVICES-> AppScreens.Devices
             Constants.SCREEN_PROMOTION_ENTRY-> AppScreens.PromotionEntry
@@ -89,6 +89,7 @@ open class BaseViewModel(private val session: SessionPreference,private val data
             Constants.SCREEN_CDO_FOCUS_PRODUCT-> AppScreens.CDOFocusProduct
             Constants.SCREEN_CDO_LIQUIDATION-> AppScreens.CDOLiquidation
             Constants.SCREEN_LOGIN_INFO-> AppScreens.LoginInfoScreen
+            Constants.SCREEN_PARTICIPATION-> AppScreens.Participation
             else -> AppScreens.DummyScreen
         }
 

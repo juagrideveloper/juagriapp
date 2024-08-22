@@ -41,9 +41,10 @@ import com.juagri.shared.utils.value
 import moe.tlaster.precompose.koin.koinViewModel
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.InternalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
-@OptIn(ExperimentalResourceApi::class)
+@OptIn(ExperimentalResourceApi::class, InternalResourceApi::class)
 @Composable
 fun LoginScreen(onNext: (String?) -> Unit) {
 

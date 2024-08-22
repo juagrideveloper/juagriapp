@@ -37,8 +37,8 @@ android {
         applicationId = namespace
         minSdk = (findProperty("android.minSdk") as String).toInt()
         targetSdk = (findProperty("android.targetSdk") as String).toInt()
-        versionCode = 13
-        versionName = "v2.0.0"
+        versionCode = (findProperty("cdo.version.code") as String).toInt()
+        versionName = (findProperty("cdo.version.name") as String)
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

@@ -2,7 +2,6 @@ package com.juagri.shared.ui.liquidation
 
 import com.juagri.shared.data.local.session.SessionPreference
 import com.juagri.shared.data.local.session.datamanager.DataManager
-import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.domain.model.liquidation.DealerLiquidationData
 import com.juagri.shared.domain.usecase.DealerLiquidationUseCase
 import com.juagri.shared.ui.components.base.BaseViewModel
@@ -28,7 +27,7 @@ class LiquidationViewModel(
     fun getDealerLiquidationItems(){
         _updateLiquidationItems.value = UIState.Init
         backgroundScope {
-            dealerLiquidationUseCase.getDealerLiquidationItems(getJUEmployee()?.territoryCode.value()).collect{response->
+            dealerLiquidationUseCase.getDealerLiquidationItems(getJUEmployee()?.code.value()).collect{response->
                 uiScope(response, _dealerLiquidationItems)
             }
         }

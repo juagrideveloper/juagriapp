@@ -13,7 +13,6 @@ import com.juagri.shared.utils.JUError
 import com.juagri.shared.utils.ResponseState
 import com.juagri.shared.utils.value
 import dev.gitlive.firebase.firestore.CollectionReference
-import dev.gitlive.firebase.firestore.Timestamp
 import dev.gitlive.firebase.firestore.where
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -38,61 +37,40 @@ class EmployeeRepositoryImpl(
             if(employee.active) {
                 if (withMenu) {
                     employee.menuId?.let {
-                        if (employee.roleId.value() == "CDO") {
-                            employee.menuItems = menuDB.document(it).get().reference.get().data()
-                        } else {
-                            val childMenus1 = mutableListOf<ChildSlideMenu>()
-                            childMenus1.add(
-                                ChildSlideMenu(
-                                    "C_001",
-                                    1,
-                                    "Dashboard",
-                                    true
-                                )
-                            )
-                            childMenus1.add(
-                                ChildSlideMenu(
-                                    "C_010",
-                                    2,
-                                    "Recent Entries",
-                                    true
-                                )
-                            )
-                            val menu1 = HeaderSlideMenu(
-                                "H_001",
-                                1,
-                                "Menu",
-                                true,
-                                childMenus1,
-                                Timestamp.now()
-                            )
-                            val childMenus2 = mutableListOf<ChildSlideMenu>()
-                            childMenus2.add(
-                                ChildSlideMenu(
-                                    "C_013",
-                                    1,
-                                    "Login Info",
-                                    true
-                                )
-                            )
-                            childMenus2.add(
-                                ChildSlideMenu(
-                                    "C_007",
-                                    2,
-                                    "Profile",
-                                    true
-                                )
-                            )
-                            val menu2 = HeaderSlideMenu(
-                                "H_003",
-                                2,
-                                "User",
-                                true,
-                                childMenus2,
-                                Timestamp.now()
-                            )
-                            employee.menuItems = hashMapOf("H_001" to menu1, "H_003" to menu2)
+                        employee.menuItems = menuDB.document(it).get().reference.get().data()
+                        /*employee.menuItems?.forEach { menu ->
+                            if (menu.value.id.value() == "H_001") {
+                                when (employee.roleId.value()) {
+                                    Constants.EMP_ROLE_SO, Constants.EMP_ROLE_RM, Constants.EMP_ROLE_DM -> {
+                                        employee.menuItems!![menu.key]?.childMenus?.add(
+                                            ChildSlideMenu(
+                                                Constants.SCREEN_PARTICIPATION,
+                                                2,
+                                                "Promotion Activity",
+                                                true
+                                            )
+                                        )
+                                    }
+                                }
+                            }
                         }
+                        employee.menuItems!![Constants.HEADING_MENU_0002] = HeaderSlideMenu(
+                            Constants.HEADING_MENU_0002,
+                            menuName = "Services",
+                            isActive = true,
+                            childMenus = mutableListOf()
+                        )
+                        employee.menuItems!![Constants.HEADING_MENU_0002]?.childMenus?.add(
+                            ChildSlideMenu(
+                                Constants.SCREEN_JU_Doctor,
+                                1,
+                                "Promotion Activity",
+                                true
+                            )
+                        )
+                        employee.menuItems!![Constants.HEADING_MENU_0002]?.childMenus?.add(
+                            ChildSlideMenu(Constants.SCREEN_WEATHER, 2, "Promotion Activity", true)
+                        )*/
                     }
                     if (employee.roleId == "CDO" || employee.roleId == "SO") {
                         employee.territoryCode?.let { tCode ->

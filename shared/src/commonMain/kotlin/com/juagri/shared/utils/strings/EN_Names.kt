@@ -56,6 +56,7 @@ object EN_Names: Names {
     override val liquidation: String get() = "Liquidation"
     override val qty: String get() = "Qty"
     override val amount: String get() = "Amount"
+    override val participation: String get() = "Participation Dashboard"
 
     override val loginInfo: String get() = "Login Info"
 

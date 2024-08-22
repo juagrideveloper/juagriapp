@@ -46,7 +46,8 @@ fun TextSmall(
     text,
     style = AppTypography.titleSmall,
     modifier = modifier,
-    color = color
+    color = color,
+    textAlign = textAlign
 )
 
 @Composable

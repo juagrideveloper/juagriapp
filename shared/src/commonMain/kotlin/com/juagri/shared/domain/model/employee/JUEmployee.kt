@@ -23,6 +23,7 @@ data class JUEmployee(
     @SerialName("regionCode") var regionCode:String? = null,
     @SerialName("territoryCode") var territoryCode:String? = null,
     @SerialName("stateCode") var stateCode:String? = null,
+    @SerialName("enablePromotionEntry") var enablePromotionEntry:Boolean = false,
     var menuItems:HashMap<String,HeaderSlideMenu>? = null,
     val regionList: MutableList<JURegion> = mutableListOf(),
     val territoryList: MutableList<JUTerritory> = mutableListOf()

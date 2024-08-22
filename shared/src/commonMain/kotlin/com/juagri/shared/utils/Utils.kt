@@ -19,7 +19,7 @@ import dev.gitlive.firebase.firestore.fromMilliseconds
 import dev.gitlive.firebase.firestore.toMilliseconds
 import kotlin.math.min
 
-private const val MILLIS_ONE_DAY = 86400000.0
+const val MILLIS_ONE_DAY = 86400000.0
 private const val MILLIS_ONE_SEC = 1000.0
 fun String?.value() = this ?: ""
 fun Boolean?.value() = this ?: false

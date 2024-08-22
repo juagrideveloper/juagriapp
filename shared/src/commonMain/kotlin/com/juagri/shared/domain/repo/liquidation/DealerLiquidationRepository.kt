@@ -7,7 +7,7 @@ import com.juagri.shared.utils.ResponseState
 import kotlinx.coroutines.flow.Flow
 
 interface DealerLiquidationRepository {
-    suspend fun getDealerLiquidationItems(tCode: String): Flow<ResponseState<DealerLiquidationData>>
+    suspend fun getDealerLiquidationItems(cdoCode: String): Flow<ResponseState<DealerLiquidationData>>
 
     suspend fun setUpdateLiquidation(data: DealerLiquidationData,employee: JUEmployee): Flow<ResponseState<Boolean>>
 }

@@ -11,4 +11,8 @@ actual object AppUtils{
     actual fun getDeviceInfo(): Map<String, String> {
         return mapOf()
     }
+
+    actual fun getAppVersion():Int{
+        return 0
+    }
 }

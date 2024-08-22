@@ -119,7 +119,7 @@ class PromotionRepositoryImpl(
         }
 
     override suspend fun setPromotionEntry(
-        entryItems: Map<String, Any>,
+        entryItems: MutableMap<String, Any>,
         files: List<ByteArray>
     ): Flow<ResponseState<Boolean>> =
     callbackFlow {
@@ -134,7 +134,7 @@ class PromotionRepositoryImpl(
             }else ""
 
             var isMobileNumberUnique = true
-            if(phoneNo.isNotEmpty()){
+            if(phoneNo.isNotEmpty() && entryItems["activity_code"]?.toString().value() != "PM_DFD"){
                 isMobileNumberUnique = !promotionMobileNumbersDB.document(phoneNo).get().exists
             }
 
@@ -151,9 +151,10 @@ class PromotionRepositoryImpl(
                 if(farmerCountNotMet) {
                     val entryId =
                         entryItems["updated_empcode"].toString() + "-" + GMTDate().timestamp
+                    entryItems["entryId"] = entryId
+                    println("JUAgriAppTestLogs: PromotionRepositoryImpl setPromotionEntry")
                     promotionEntryDB.document(entryId).set(entryItems)
                     val filenames = List(files.size) { index -> "${entryId}_" + index + ".jpg" }
-                    promotionEntryDB.document(entryId).update(mapOf("entryId" to entryId))
                     if (files.isNotEmpty()) {
                         promotionEntryDB.document(entryId)
                             .update(mapOf("filenames" to filenames.joinToString(",")))

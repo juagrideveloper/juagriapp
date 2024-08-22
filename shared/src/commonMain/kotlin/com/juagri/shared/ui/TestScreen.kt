@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,8 +21,10 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -44,6 +47,8 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import chaintech.videoplayer.ui.VideoPlayerView
+import chaintech.videoplayer.ui.VideoPlayerWithoutControl
 import com.juagri.shared.domain.model.filter.FilterItem
 import com.juagri.shared.domain.model.filter.FilterType
 import com.juagri.shared.domain.model.liquidation.DealerLiquidationData
@@ -60,33 +65,34 @@ import com.juagri.shared.utils.PermissionUtils
 import com.juagri.shared.utils.UIState
 import com.juagri.shared.utils.getColors
 import moe.tlaster.precompose.koin.koinViewModel
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.Resource
+import org.jetbrains.compose.resources.ResourceItem
 import kotlin.math.sqrt
 
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun TestScreen() {
     val viewModel = koinViewModel(TestScreenViewModel::class)
     ScreenLayoutWithActionBar(title = mutableStateOf("Testing"), viewModel = viewModel) {
         ScreenLayout(viewModel) {
-            val isLocationPermissionGranted = mutableStateOf(false)
-            viewModel.apply {
-                PermissionUtils.LocationPermission {
-                    isLocationPermissionGranted.value = it
-                    if(it){
-                        showSuccessMessage("Success!")
-                    }else{
-                        showErrorMessage("Failed!")
-                    }
-                }
-                if(isLocationPermissionGranted.value) {
-                    PermissionUtils.GetCurrentLocation { lat, long ->
-                        println("Common Lat: $lat Long: $long")
-                    }
-                }
-               /* val locationClient = remember {
-                    LocationServices.getFusedLocationProviderClient(context)
-                }*/
+           /* VideoPlayerView(
+                modifier = Modifier.height(200.dp).padding(16.dp),
+                url = "https://firebasestorage.googleapis.com/v0/b/ju-agri-cdo-app.appspot.com/o/SplashVideo%2Fjulogovideo.mp4?alt=media",
+                enablePauseResume = true,
+            )*/
+            var isPause by remember { mutableStateOf(true) }
+            VideoPlayerWithoutControl(
+                modifier = Modifier.height(200.dp).padding(16.dp),
+                url = "https://firebasestorage.googleapis.com/v0/b/ju-agri-cdo-app.appspot.com/o/SplashVideo%2Fjulogovideo.mp4?alt=media",
+                enablePauseResume = false,
+                isPause = isPause,
+                onPauseToggle = {isPause = isPause.not()}
+            )
+            ButtonNormal("PlayNow"){
+                isPause = !isPause
             }
         }
     }

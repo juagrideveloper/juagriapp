@@ -4,4 +4,6 @@ expect object AppUtils{
     fun logout()
 
     fun getDeviceInfo(): Map<String,String>
+
+    fun getAppVersion(): Int
 }

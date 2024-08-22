@@ -21,12 +21,12 @@ class DealerLiquidationRepositoryImpl(
     private val config: CollectionReference,
     private val liquidationDB: CollectionReference
 ): DealerLiquidationRepository {
-    override suspend fun getDealerLiquidationItems(tCode: String): Flow<ResponseState<DealerLiquidationData>> =
+    override suspend fun getDealerLiquidationItems(cdoCode: String): Flow<ResponseState<DealerLiquidationData>> =
         callbackFlow {
             trySend(ResponseState.Loading(true))
             try {
                 val configItem = config.document(Constants.TABLE_LIQUIDATION_CONFIG).get().data<DealerLiquidationConfig>()
-                val liquidationItems = liquidationDB.where { "tcode" equalTo tCode }.get().documents.map { it.data<DealerLiquidationItem>() }
+                val liquidationItems = liquidationDB.where { "cdocode" equalTo cdoCode }.get().documents.map { it.data<DealerLiquidationItem>() }
                 trySend(ResponseState.Loading())
                 trySend(
                     ResponseState.Success(
