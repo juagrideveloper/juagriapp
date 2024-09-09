@@ -1,5 +1,6 @@
 package com.juagri.shared.domain.model.user
 
+import androidx.compose.runtime.MutableState
 import dev.gitlive.firebase.firestore.Timestamp
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -19,5 +20,6 @@ data class JURegion(
     @SerialName("rmmailid") var rmMailId: String? = null,
     @SerialName("rmphoneno") var rmPhoneNo: String? = null,
     @SerialName("status") var status: Double? = 0.0,
-    @SerialName("updatedTime") val updatedTime: Timestamp? = null
+    @SerialName("updatedTime") val updatedTime: Timestamp? = null,
+    val territoryList: List<JUTerritory> = listOf()
 )

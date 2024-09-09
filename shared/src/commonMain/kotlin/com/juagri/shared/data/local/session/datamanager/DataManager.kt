@@ -56,6 +56,12 @@ class DataManager(private val dataStore: DataStore) {
             Constants.SCREEN_WEATHER-> names.value.weather
             Constants.SCREEN_PROFILE-> names.value.profile
             Constants.SCREEN_DEVICES-> names.value.devices
+            Constants.SCREEN_PROMOTION_ENTRY-> names.value.promotionActivity
+            Constants.SCREEN_PROMOTION_ENTRIES_LIST-> names.value.promotionEntriesList
+            Constants.SCREEN_CDO_FOCUS_PRODUCT->names.value.focusProduct
+            Constants.SCREEN_CDO_LIQUIDATION->names.value.liquidation
+            Constants.SCREEN_LOGIN_INFO ->names.value.loginInfo
+            Constants.SCREEN_PARTICIPATION ->names.value.participation
             else -> ""
         }
 }

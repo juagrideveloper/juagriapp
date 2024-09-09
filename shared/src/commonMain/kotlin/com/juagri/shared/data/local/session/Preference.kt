@@ -11,3 +11,5 @@ expect fun SessionContext.getString(key: String) : String?
 expect fun SessionContext.putBool(key: String, value: Boolean)
 
 expect fun SessionContext.getBool(key: String, default: Boolean): Boolean
+
+expect fun SessionContext.clearAll()

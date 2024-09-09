@@ -25,3 +25,7 @@ actual fun SessionContext.putBool(key: String, value: Boolean) {
 actual fun SessionContext.getBool(key: String, default: Boolean): Boolean {
     return NSUserDefaults.standardUserDefaults.boolForKey(key)
 }
+
+actual fun SessionContext.clearAll(){
+    NSUserDefaults.standardUserDefaults.clearAll()
+}

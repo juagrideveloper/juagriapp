@@ -17,14 +17,14 @@ class JUDoctorRepositoryImpl(
     override suspend fun getJUDoctorItems(parentId: String): Flow<ResponseState<List<JUDoctorDataItem>>> = callbackFlow{
         trySend(ResponseState.Loading(true))
         val result = doctorDB.filterUpdatedTime(doctorDao.getDoctorLastUpdatedTime())
-        trySend(ResponseState.Loading())
         try {
             if(result.isNotEmpty()){
                 doctorDao.insertJUDoctor(result.map { it.data() })
             }
+            trySend(ResponseState.Loading())
             trySend(ResponseState.Success(doctorDao.getJUDoctor(parentId)))
         }catch (e:Exception){
-            trySend(ResponseState.Error(e))
+            trySend(ResponseState.Error())
         }
         awaitClose {
             channel.close()

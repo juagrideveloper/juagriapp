@@ -10,10 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.InternalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
-@OptIn(ExperimentalResourceApi::class)
+@OptIn(ExperimentalResourceApi::class, InternalResourceApi::class)
 @Composable
 fun RowScope.SplashImageColumn(imageName: String = "", visible: Boolean) =
     Column(
@@ -24,7 +26,7 @@ fun RowScope.SplashImageColumn(imageName: String = "", visible: Boolean) =
         if (imageName.isNotEmpty()) {
             AnimatedVisibility(visible) {
                 Image(
-                    painterResource(imageName),
+                    painterResource(DrawableResource(imageName)),
                     null,
                     modifier = Modifier.height(150.dp)
                 )

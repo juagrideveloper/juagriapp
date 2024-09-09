@@ -88,6 +88,10 @@ getTerritoryList:
 SELECT id, socode, soname, somailid, sophoneno, tname, regcode,updatedTime
 FROM TerritoryMaster WHERE regcode = ? ORDER BY tname;
 
+getTerritoryListByCode:
+SELECT id, socode, soname, somailid, sophoneno, tname, regcode,updatedTime
+FROM TerritoryMaster WHERE id = ? ORDER BY tname;
+
 getDealerList:
 SELECT id, cname, mailId, address, phoneno, tcode, regcode,updatedTime
 FROM DealerMaster WHERE tcode = ? ORDER BY cname;

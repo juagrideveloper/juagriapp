@@ -57,7 +57,7 @@ fun ActionBarLayout(
             }
         },
         actions = {
-            IconButton(onClick = { menuExpanded = !menuExpanded }) {
+            /*IconButton(onClick = { menuExpanded = !menuExpanded }) {
                 Icon(
                     imageVector = Icons.Filled.MoreVert,
                     contentDescription = null,
@@ -95,7 +95,7 @@ fun ActionBarLayout(
                         menuExpanded = false
                     },
                 )
-            }
+            }*/
         },
         colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
     )

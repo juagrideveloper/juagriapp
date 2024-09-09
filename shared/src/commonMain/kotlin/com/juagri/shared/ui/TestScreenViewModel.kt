@@ -1,16 +1,38 @@
 package com.juagri.shared.ui
 
 import Constants
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import com.juagri.shared.data.local.session.SessionPreference
 import com.juagri.shared.data.local.session.datamanager.DataManager
 import com.juagri.shared.domain.model.dashboard.DealerSales
 import com.juagri.shared.domain.model.doctor.JUDoctorDataItem
 import com.juagri.shared.domain.model.doctor.JUDoctorItem
+import com.juagri.shared.domain.model.employee.JUEmployee
+import com.juagri.shared.domain.model.filter.FilterType
+import com.juagri.shared.domain.model.focusProduct.CDOFocusProductItem
+import com.juagri.shared.domain.model.liquidation.DealerLiquidationConfig
+import com.juagri.shared.domain.model.liquidation.DealerLiquidationData
+import com.juagri.shared.domain.model.liquidation.DealerLiquidationItem
 import com.juagri.shared.domain.model.menu.ChildSlideMenu
 import com.juagri.shared.domain.model.menu.HeaderSlideMenu
-import com.juagri.shared.domain.usecase.JUDoctorUseCase
+import com.juagri.shared.domain.model.promotion.DistrictItem
+import com.juagri.shared.domain.model.promotion.ParticipateDialogData
+import com.juagri.shared.domain.model.promotion.ParticipationEntry
+import com.juagri.shared.domain.model.promotion.PromotionDashboard
+import com.juagri.shared.domain.model.promotion.PromotionEventItem
+import com.juagri.shared.domain.model.promotion.PromotionField
+import com.juagri.shared.domain.model.promotion.VillageItem
+import com.juagri.shared.domain.usecase.CDOFocusProductUseCase
+import com.juagri.shared.domain.usecase.DealerLiquidationUseCase
+import com.juagri.shared.domain.usecase.PromotionEntriesUseCase
+import com.juagri.shared.domain.usecase.PromotionUseCase
+import com.juagri.shared.domain.usecase.UserDetailsUseCase
 import com.juagri.shared.ui.components.base.BaseViewModel
+import com.juagri.shared.utils.MockResponse
+import com.juagri.shared.utils.ResponseState
 import com.juagri.shared.utils.UIState
+import com.juagri.shared.utils.selectedValue
 import com.juagri.shared.utils.value
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.firestore.Timestamp
@@ -18,43 +40,106 @@ import dev.gitlive.firebase.firestore.firestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 
 class TestScreenViewModel(
     dataManager: DataManager,
     session: SessionPreference,
-    private val juDoctorUseCase: JUDoctorUseCase
+    private val dealerLiquidationUseCase: DealerLiquidationUseCase
 ) : BaseViewModel(session, dataManager) {
 
-    init {
-        getJUDoctorDetails(1L,"0")
-    }
-
-    private var _juDoctorItems: MutableStateFlow<UIState<List<JUDoctorDataItem>>> =
+    private var _dealerLiquidationItems: MutableStateFlow<UIState<DealerLiquidationData>> =
         MutableStateFlow(UIState.Init)
-    val juDoctorItems = _juDoctorItems.asStateFlow()
+    val dealerLiquidationItems = _dealerLiquidationItems.asStateFlow()
 
-    fun getNameObject(obj: JsonObject): String{
-        val nameObject = obj["itmname"].toString().value().replace("\\","").replace("\"{","{").replace("}\"","}")
-        return Json.parseToJsonElement(nameObject).jsonObject["en"].toString()
-    }
+    private var _updateLiquidationItems: MutableStateFlow<UIState<Boolean>> =
+        MutableStateFlow(UIState.Init)
+    val updateLiquidationItems = _updateLiquidationItems.asStateFlow()
 
-    fun getJUDoctorDetails(type: Long, parentId: String){
+    fun getDealerLiquidationItems(){
         backgroundScope {
-            juDoctorUseCase.getJUDoctorItems(parentId).collect { response ->
-                uiScope(response,_juDoctorItems)
+            dealerLiquidationUseCase.getDealerLiquidationItems("TN-007").collect{response->
+                uiScope(response, _dealerLiquidationItems)
             }
         }
     }
 
-    /*private fun getItem(it: JUDoctorItem): JUDoctorItem =
-        JUDoctorItem(
-            name = it.name.replaceQuotes(),
-            image = it.image.replaceQuotes(),
-            type = it.type.value(),
-            child = it.child.map { item-> getItem(item) }
-        )*/
+    fun setUpdateLiquidation(data: DealerLiquidationData){
+        setJUEmployee(JUEmployee(
+            code = "GI-138746",
+            roleId = "CDO",
+            name = "Kesavan"
+        ))
+        getJUEmployee()?.let {
+            backgroundScope {
+                dealerLiquidationUseCase.setUpdateLiquidation(data, it).collect{response->
+                    uiScope(response, _updateLiquidationItems)
+                }
+            }
+        }
+    }
+
+
+    private fun getNameObject(nameObj: String): String{
+        var name = nameObj.replace("\"","")
+        name = name.replace("\"","")
+        name = name.replace("\"","")
+        name = name.replace("\"","")
+        name = name.replace("\"","")
+        return name
+    }
+
+    fun insertPromotionList(){
+        val promotionFieldList = mutableListOf<PromotionField>()
+        val jsonObject = Json.parseToJsonElement(MockResponse.mockPM_DRCLedgerItems).jsonArray
+        jsonObject.forEach {
+            val fieldIdText = getNameObject(it.jsonObject["actid"].toString()) +"_"+ getNameObject(it.jsonObject["param"].toString())
+            promotionFieldList.add(
+                PromotionField(
+                    actId = getNameObject(it.jsonObject["actid"].toString()),
+                    data = getNameObject(it.jsonObject["data"].toString()),
+                    editable = it.jsonObject["editable"].toString().toBoolean(),
+                    fieldId = fieldIdText,
+                    isMandatory = it.jsonObject["ismandatory"].toString().toBoolean(),
+                    length = it.jsonObject["length"].toString().toDouble(),
+                    maxlength = it.jsonObject["maxlength"].toString().toDouble(),
+                    name = getNameObject(it.jsonObject["name"].toString()),
+                    param = getNameObject(it.jsonObject["param"].toString()),
+                    parentId = it.jsonObject["parentid"].toString().toDouble(),
+                    slNo = it.jsonObject["slno"].toString().toDouble(),
+                    type = it.jsonObject["type"].toString().toDouble(),
+                    validation = it.jsonObject["validation"].toString().toDouble(),
+                    value = getNameObject(it.jsonObject["value"].toString()),
+                    status = 0.0,
+                    updatedTime = Timestamp.now()
+                )
+            )
+        }
+        promotionFieldList.forEach {
+            backgroundScope {
+                Firebase.firestore
+                    .collection(Constants.TABLE_PROMOTION_ACTIVITY_FIELDS)
+                    .document(it.fieldId.value())
+                    .set(it)
+            }
+        }
+
+        /*val list = mutableListOf<PromotionActivityItem>()
+        list.add(PromotionActivityItem("PM_NDS", "New Demo",1.0,1.0, Timestamp.now()))
+        list.add(PromotionActivityItem("PM_DFD", "Demo Follow-up / Field Day",2.0,1.0, Timestamp.now()))
+        list.add(PromotionActivityItem("PM_FM", "Farmer Meeting",3.0,1.0, Timestamp.now()))
+        list.add(PromotionActivityItem("PM_FI", "Individual farmer Contact",4.0,1.0, Timestamp.now()))
+        list.add(PromotionActivityItem("PM_DRC", "Distributor/Retailer Contact",5.0,1.0, Timestamp.now()))
+        list.forEach {
+            backgroundScope {
+                Firebase.firestore
+                         .collection(Constants.TABLE_PROMOTION_ACTIVITY_LIST)
+                         .document(it.id.value())
+                         .set(it)
+            }
+        }*/
+    }
 
     fun setJUDoctorDetails(list: List<JUDoctorItem>){
         val doctorItems = mutableListOf<JUDoctorDataItem>()
@@ -251,7 +336,7 @@ class TestScreenViewModel(
         }
     }*/
 
-    fun setMenu() {
+    /*fun setMenu() {
         val menus = hashMapOf<String,HeaderSlideMenu>()
         menus["H_001"] =
             HeaderSlideMenu(
@@ -337,7 +422,7 @@ class TestScreenViewModel(
                 .document("DL_MENU")
                 .set(menus)
         }
-    }
+    }*/
 
     fun setData() {
         /*backgroundScope {
@@ -411,9 +496,8 @@ class TestScreenViewModel(
         }*/
     }
 
-    fun getDashboard() {
-        setDemoUser()
-        /*withScope{
+    /*fun getDashboard2() {
+        withScope{
             dealerDashboardUseCase.getDashboard(session.empCode()).collect{ response ->
                 when(response) {
                     is ResponseState.Loading -> showProgressBar(response.isLoading)
@@ -433,8 +517,8 @@ class TestScreenViewModel(
                     is ResponseState.Error -> processError(response.e)
                 }
             }
-        }*/
-    }
+        }
+    }*/
 
     fun uploadData() {
         //DealerDashboardItem

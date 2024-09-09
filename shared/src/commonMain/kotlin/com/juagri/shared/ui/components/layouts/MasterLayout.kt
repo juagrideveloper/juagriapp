@@ -33,11 +33,14 @@ import com.juagri.shared.ui.components.base.BaseViewModel
 import com.juagri.shared.ui.components.fields.NavDrawerContent
 import com.juagri.shared.ui.components.fields.NavDrawerHeading
 import com.juagri.shared.ui.navigation.AppScreens
+import com.juagri.shared.utils.PermissionUtils
 import com.juagri.shared.utils.getColors
 import com.juagri.shared.utils.value
 import io.github.xxfast.decompose.router.Router
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+
+data class PermissionData(val isNeeded: Boolean = false, val screenId: String = "")
 
 @Composable
 fun ScreenLayoutWithMenuActionBar(
@@ -71,27 +74,26 @@ fun ScreenLayoutWithMenuActionBar(
                         .width(300.dp)
                 ) {
                     DrawerLayout(
-                        employee = employee.value
+                        employee = employee.value.copy(mobile = viewModel.empMobile())
                     )
                     Divider(modifier = Modifier.height(2.dp))
+
                     if(employee.value.menuItems != null){
                         employee.value.menuItems?.forEach {parent->
-                            NavDrawerHeading(viewModel.getScreenName(parent.value.id.value()))
-                            parent.value.childMenus.forEach {child->
-                                val screenId = child.id.value()
-                                NavDrawerContent(viewModel.getScreenName(screenId)) {
-                                    updateDrawerState(scope,drawerState)
-                                    viewModel.writeLog("-----------------------")
-                                    val screen = viewModel.getScreenMode(screenId)
-                                    var notPoped = true
-                                    router?.stack?.value?.items?.forEachIndexed { index, item ->
-                                        if(screen == item.configuration) {
-                                            router.popTo(index)
-                                            notPoped = false
+                            if(parent.value.isActive) {
+                                NavDrawerHeading(viewModel.getScreenName(parent.value.id.value()))
+                                parent.value.childMenus.forEach { child ->
+                                    if(child.isActive) {
+                                        val screenId = child.id.value()
+                                        NavDrawerContent(viewModel.getScreenName(screenId)) {
+                                            updateDrawerState(scope, drawerState)
+                                            if (screenId == Constants.SCREEN_PROMOTION_ENTRY || screenId == Constants.SCREEN_PROMOTION_ENTRIES_LIST) {
+                                                viewModel.locationPermissionNeeded.value =
+                                                    PermissionData(true, screenId)
+                                            } else {
+                                                processNavigation(viewModel, screenId, router)
+                                            }
                                         }
-                                    }
-                                    if(notPoped) {
-                                        router?.push(viewModel.getScreenMode(screenId))
                                     }
                                 }
                             }
@@ -136,6 +138,31 @@ fun ScreenLayoutWithMenuActionBar(
                 }
             }
         }
+    }
+    if(viewModel.locationPermissionNeeded.value.isNeeded) {
+        PermissionUtils.LocationPermission { permissionGranted ->
+            if (permissionGranted) {
+                processNavigation(viewModel, viewModel.locationPermissionNeeded.value.screenId, router)
+            } else {
+                viewModel.showErrorMessage("Location permission needed!")
+            }
+        }
+        viewModel.locationPermissionNeeded.value = PermissionData()
+    }
+}
+
+private fun processNavigation(viewModel: BaseViewModel,screenId: String, router: Router<AppScreens>?){
+    viewModel.writeLog("-----------------------")
+    val screen = viewModel.getScreenMode(screenId)
+    var notPoped = true
+    router?.stack?.value?.items?.forEachIndexed { index, item ->
+        if(screen == item.configuration) {
+            router.popTo(index)
+            notPoped = false
+        }
+    }
+    if(notPoped) {
+        router?.push(viewModel.getScreenMode(screenId))
     }
 }
 

@@ -25,7 +25,6 @@ class DealerDashboardViewModel(
     val productSalesReport = _productSalesReport.asStateFlow()
 
     fun getDashboard() {
-        setDemoUser()
         backgroundScope{
             dealerDashboardUseCase.getDashboard(session.empCode()).collect{ response ->
                 uiScope(response,_dealerDashboard)

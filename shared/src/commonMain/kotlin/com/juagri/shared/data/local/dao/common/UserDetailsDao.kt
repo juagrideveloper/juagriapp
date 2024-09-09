@@ -103,6 +103,20 @@ class UserDetailsDao(private val queries: UserDetailsQueries) {
             )
         }
 
+    fun getTerritoryListByCode(tCode: String) =
+        queries.getTerritoryListByCode(tCode).executeAsList().map {
+            JUTerritory(
+                tCode = it.id.value(),
+                soCode = it.socode.value(),
+                soName = it.soname.value(),
+                soMailId = it.somailid.value(),
+                soPhoneNo = it.sophoneno.value(),
+                tName = it.tname.value(),
+                regCode = it.regcode.value(),
+                updatedTime = it.updatedTime.toTimeStamp()
+            )
+        }
+
     fun getTerritoryList(regCode: String) =
         queries.getTerritoryList(regCode).executeAsList().map {
             JUTerritory(

@@ -19,6 +19,8 @@ kotlin {
 
                 implementation(platform("com.google.firebase:firebase-bom:31.3.0"))
                 implementation("com.google.firebase:firebase-firestore-ktx")
+                implementation("com.google.firebase:firebase-crashlytics")
+                implementation("com.google.firebase:firebase-analytics")
             }
         }
     }

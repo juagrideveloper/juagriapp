@@ -7,6 +7,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toLowerCase
+import com.juagri.shared.domain.model.promotion.PromotionEventItem
 import com.juagri.shared.domain.model.user.FinMonth
 import com.juagri.shared.domain.model.user.FinYear
 import com.juagri.shared.domain.model.user.JUDealer
@@ -18,7 +19,7 @@ import dev.gitlive.firebase.firestore.fromMilliseconds
 import dev.gitlive.firebase.firestore.toMilliseconds
 import kotlin.math.min
 
-private const val MILLIS_ONE_DAY = 86400000.0
+const val MILLIS_ONE_DAY = 86400000.0
 private const val MILLIS_ONE_SEC = 1000.0
 fun String?.value() = this ?: ""
 fun Boolean?.value() = this ?: false
@@ -32,8 +33,10 @@ fun JUTerritory?.selectedValue(label:Names): String = this?.tName ?: label.selec
 fun JUDealer?.selectedValue(label:Names): String = this?.cName ?: label.selectDealer
 fun FinYear?.selectedValue(label:Names): String = this?.fYear ?: label.selectFinYear
 fun FinMonth?.selectedValue(label:Names): String = this?.fMonth ?: label.selectFinMonth
+fun PromotionEventItem?.selectedValue(label:Names): String = this?.name ?: label.selectEvent
 
 fun Double?.value() = this ?: 0.0
+fun Double?.maxLen():Int = if(value() > 0) value().toInt() else 100
 
 fun Double?.toTimeStamp() = Timestamp.fromMilliseconds(this.value())
 

@@ -2,7 +2,10 @@ package com.juagri.shared.utils.theme
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import com.juagri.shared.domain.model.dashboard.BarType
+import com.juagri.shared.utils.getColors
 
 val md_theme_light_primary = Color(0xFF38B91B)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
@@ -120,6 +123,28 @@ val ColorScheme.doctor_mgmt_3: Color get() = Color(0xFFB3E2FD)
 val ColorScheme.doctor_mgmt_4: Color get() = Color(0xFFFFCFCF)
 val ColorScheme.doctor_mgmt_5: Color get() = Color(0xFFFDDFB3)
 val ColorScheme.doctor_no: Color get() = Color(0xFFF3F3F3)
+
+@Composable
+fun ColorScheme.getBarColor(barType: BarType): Brush =
+    Brush.horizontalGradient(
+        colors = when (barType) {
+            is BarType.MPlan, BarType.YPlan ->
+                listOf(
+                    getColors().chart_m_plan_start,
+                    getColors().chart_m_plan_end
+                )
+            is BarType.MActual ->
+                listOf(
+                    getColors().chart_m_actual_start,
+                    getColors().chart_m_actual_end
+                )
+            is BarType.YActual ->
+                listOf(
+                    getColors().chart_y_actual_start,
+                    getColors().chart_y_actual_end
+                )
+        }
+    )
 
 @Composable
 fun ColorScheme.screenBackground(): Color

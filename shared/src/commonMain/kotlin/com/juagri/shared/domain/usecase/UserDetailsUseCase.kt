@@ -4,7 +4,7 @@ import com.juagri.shared.domain.repo.user.UserRepository
 import dev.gitlive.firebase.firestore.Timestamp
 
 class UserDetailsUseCase(private val repository: UserRepository) {
-    suspend fun getRegionList() = repository.getRegionList()
+    suspend fun getRegionList(regCodes: String = "") = repository.getRegionList(regCodes)
 
     suspend fun getTerritoryList(regCode: String) = repository.getTerritoryList(regCode)
 

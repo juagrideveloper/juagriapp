@@ -2,6 +2,9 @@ package com.juagri.shared.domain.model.filter
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import com.juagri.shared.domain.model.promotion.DistrictItem
+import com.juagri.shared.domain.model.promotion.PromotionEventItem
+import com.juagri.shared.domain.model.promotion.VillageItem
 import com.juagri.shared.domain.model.user.FinMonth
 import com.juagri.shared.domain.model.user.FinYear
 import com.juagri.shared.domain.model.user.JUDealer
@@ -22,4 +25,7 @@ sealed class FilterType {
     data class DEALER(val data: JUDealer) : FilterType()
     data class FIN_YEAR(val data: FinYear) : FilterType()
     data class FIN_MONTH(val data: FinMonth) : FilterType()
+    data class PROMOTION_EVENT(val data: PromotionEventItem) : FilterType()
+    data class DISTRICT(val data: DistrictItem) : FilterType()
+    data class VILLAGE(val data: VillageItem) : FilterType()
 }

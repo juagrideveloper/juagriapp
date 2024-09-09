@@ -61,6 +61,10 @@ class SessionPreference(private val context: SessionContext) {
 
     fun isFirestorePersistenceNotDone() = context.getBool(IS_FIRESTORE_PERSISTENCE_DONE, false)
 
+    fun clearAll(){
+        context.clearAll()
+    }
+
     private companion object {
         const val IS_FIRESTORE_PERSISTENCE_DONE = "isFirestorePersistenceDone"
         const val IS_ALREADY_LOGGED_IN = "isAlreadyLoggedIn"

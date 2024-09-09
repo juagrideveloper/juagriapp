@@ -3,6 +3,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.compose")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 kotlin {
@@ -19,6 +20,8 @@ kotlin {
 
                 implementation(project.dependencies.platform("com.google.firebase:firebase-bom:31.3.0"))
                 implementation("com.google.firebase:firebase-firestore-ktx")
+                implementation("com.google.firebase:firebase-crashlytics")
+                implementation("com.google.firebase:firebase-analytics")
             }
         }
     }
@@ -34,8 +37,8 @@ android {
         applicationId = namespace
         minSdk = (findProperty("android.minSdk") as String).toInt()
         targetSdk = (findProperty("android.targetSdk") as String).toInt()
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = (findProperty("cdo.version.code") as String).toInt()
+        versionName = (findProperty("cdo.version.name") as String)
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

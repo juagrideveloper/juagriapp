@@ -5,19 +5,28 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.juagri.shared.data.local.session.SessionPreference
 import com.juagri.shared.data.local.session.datamanager.DataManager
+import com.juagri.shared.domain.model.promotion.PromotionFilterDataItem
 import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.domain.model.filter.FilterDataItem
 import com.juagri.shared.domain.model.filter.FilterItem
 import com.juagri.shared.domain.model.filter.FilterType
+import com.juagri.shared.domain.model.promotion.DistrictItem
+import com.juagri.shared.domain.model.promotion.ParticipateDialogData
+import com.juagri.shared.domain.model.promotion.PromotionEventItem
+import com.juagri.shared.domain.model.promotion.VillageItem
 import com.juagri.shared.domain.model.user.FinMonth
 import com.juagri.shared.domain.model.user.FinYear
 import com.juagri.shared.domain.model.user.JUDealer
 import com.juagri.shared.domain.model.user.JURegion
 import com.juagri.shared.domain.model.user.JUTerritory
 import com.juagri.shared.ui.components.layouts.MessageData
+import com.juagri.shared.ui.components.layouts.PermissionData
 import com.juagri.shared.ui.navigation.AppScreens
+import com.juagri.shared.utils.AppUtils
+import com.juagri.shared.utils.JUError
 import com.juagri.shared.utils.ResponseState
 import com.juagri.shared.utils.UIState
+import com.juagri.shared.utils.selectedValue
 import com.juagri.shared.utils.strings.AppLanguage
 import com.juagri.shared.utils.value
 import kotlinx.coroutines.Dispatchers
@@ -37,8 +46,28 @@ open class BaseViewModel(private val session: SessionPreference,private val data
     val z0004 = mutableStateOf(MessageData())
     val z0005 = mutableStateOf(MessageData())
 
+    val locationPermissionNeeded = mutableStateOf(PermissionData())
+    val getCurrentLocation = mutableStateOf(false)
+
     val showDialog = mutableStateOf(FilterDataItem())
+    val showPromotionDialog = mutableStateOf(PromotionFilterDataItem())
+    val showParticipateDialog = mutableStateOf(ParticipateDialogData())
+
+    val selectedRegion: MutableState<JURegion?> = mutableStateOf(null)
+    val selectedTerritory: MutableState<JUTerritory?> = mutableStateOf(null)
+    val selectedDealer: MutableState<JUDealer?> = mutableStateOf(null)
+    val selectedFinYear: MutableState<FinYear?> = mutableStateOf(null)
+    val selectedFinMonth: MutableState<FinMonth?> = mutableStateOf(null)
+
+    fun getRegionLabel() = selectedRegion.value.selectedValue(names())
+    fun getTerritoryLabel() = selectedTerritory.value.selectedValue(names())
+    fun getDealerLabel() = selectedDealer.value.selectedValue(names())
+    fun getFinYearLabel() = selectedFinYear.value.selectedValue(names())
+    fun getFinMonthLabel() = selectedFinMonth.value.selectedValue(names())
+
     fun names() = dataManager.names.value
+
+    fun empMobile() = session.empMobile()
 
     fun setScreenId(screenId: String) = dataManager.setScreenId(screenId)
     fun getScreenTitle() = dataManager.getScreenTitle()
@@ -52,9 +81,15 @@ open class BaseViewModel(private val session: SessionPreference,private val data
             Constants.SCREEN_ONLINE_ORDER-> AppScreens.OnlineOrder
             Constants.SCREEN_YOUR_ORDERS-> AppScreens.YourOrders
             Constants.SCREEN_JU_Doctor-> AppScreens.JUDoctorCrop("0")
-            Constants.SCREEN_WEATHER-> AppScreens.Weather
+            Constants.SCREEN_WEATHER-> AppScreens.WeatherScreen
             Constants.SCREEN_PROFILE-> AppScreens.Profile
             Constants.SCREEN_DEVICES-> AppScreens.Devices
+            Constants.SCREEN_PROMOTION_ENTRY-> AppScreens.PromotionEntry
+            Constants.SCREEN_PROMOTION_ENTRIES_LIST-> AppScreens.PromotionEntriesList
+            Constants.SCREEN_CDO_FOCUS_PRODUCT-> AppScreens.CDOFocusProduct
+            Constants.SCREEN_CDO_LIQUIDATION-> AppScreens.CDOLiquidation
+            Constants.SCREEN_LOGIN_INFO-> AppScreens.LoginInfoScreen
+            Constants.SCREEN_PARTICIPATION-> AppScreens.Participation
             else -> AppScreens.DummyScreen
         }
 
@@ -86,12 +121,26 @@ open class BaseViewModel(private val session: SessionPreference,private val data
                 is ResponseState.Error -> {
                     showProgressBar(false)
                     processError(response.e)
+                    if (response.e is JUError.DeactivatedUserError){
+                       val isAlreadyLoggedIn = isAlreadyLoggedIn()
+                        session.apply {
+                            setAlreadyLoggedIn(false)
+                            setEmpMobile("")
+                            setEmpCode("")
+                            setEmpRoleId("")
+                            clearAll()
+                        }
+                        if(isAlreadyLoggedIn){
+                            delay(1500)
+                            AppUtils.logout()
+                        }
+                    }
                 }
             }
         }
     }
 
-    suspend fun <T> uiScopeFilter(response: ResponseState<T>,filterType: FilterType){
+    suspend fun <T> uiScopeFilter(response: ResponseState<T>,filterType: FilterType,addAll: Boolean = false){
         withContext(Dispatchers.Main){
             when(response) {
                 is ResponseState.Loading -> showProgressBar(response.isLoading)
@@ -111,15 +160,28 @@ open class BaseViewModel(private val session: SessionPreference,private val data
                             )
                         }
                         is FilterType.TERRITORY -> {
-                                FilterDataItem(
-                                names().selectTerritory,
-                                (response.data as List<JUTerritory>) .map {
+                            val territoryList = mutableListOf<FilterItem>()
+                            if (addAll) {
+                                territoryList.add(
+                                    FilterItem(
+                                        names().all,
+                                        names().all,
+                                        FilterType.TERRITORY(JUTerritory(tCode = names().all, tName = names().all))
+                                    )
+                                )
+                            }
+                            territoryList.addAll(
+                                (response.data as List<JUTerritory>).map {
                                     FilterItem(
                                         it.tCode.value(),
                                         it.tName.value(),
                                         FilterType.TERRITORY(it)
                                     )
-                                },
+                                }
+                            )
+                            FilterDataItem(
+                                names().selectTerritory,
+                                territoryList,
                                 mutableStateOf(true)
                             )
                         }
@@ -169,6 +231,45 @@ open class BaseViewModel(private val session: SessionPreference,private val data
                                 mutableStateOf(true)
                             )
                         }
+                        is FilterType.PROMOTION_EVENT -> {
+                            FilterDataItem(
+                                names().selectEvent,
+                                (response.data as List<PromotionEventItem>) .map {
+                                    FilterItem(
+                                        it.id.value(),
+                                        it.name.value(),
+                                        FilterType.PROMOTION_EVENT(it)
+                                    )
+                                },
+                                mutableStateOf(true)
+                            )
+                        }
+                        is FilterType.DISTRICT -> {
+                            FilterDataItem(
+                                "${names().select} ${names().district}",
+                                (response.data as List<DistrictItem>) .map {
+                                    FilterItem(
+                                        it.id.value(),
+                                        it.name.value(),
+                                        FilterType.DISTRICT(it)
+                                    )
+                                },
+                                mutableStateOf(true)
+                            )
+                        }
+                        is FilterType.VILLAGE -> {
+                            FilterDataItem(
+                                "${names().select} ${names().village}",
+                                (response.data as List<VillageItem>) .map {
+                                    FilterItem(
+                                        it.id.value(),
+                                        it.name.value(),
+                                        FilterType.VILLAGE(it)
+                                    )
+                                },
+                                mutableStateOf(true)
+                            )
+                        }
                     }
                 }
                 is ResponseState.Error -> processError(response.e)
@@ -184,9 +285,9 @@ open class BaseViewModel(private val session: SessionPreference,private val data
 
     fun isAlreadyLoggedIn() = session.isAlreadyLoggedIn()
 
-    fun getRoleID() = session.empRoleId()
+    fun getRoleID() = dataManager.getEmployee()?.roleId.value()
 
-    private fun showProgressBar(boolean: Boolean){
+    fun showProgressBar(boolean: Boolean){
         z0001.value = boolean
     }
     fun showSuccessMessage(message: String){
