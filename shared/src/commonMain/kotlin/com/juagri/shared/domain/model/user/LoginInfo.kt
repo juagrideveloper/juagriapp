@@ -1,5 +1,6 @@
 package com.juagri.shared.domain.model.user
 
+import com.juagri.shared.utils.Constants
 import dev.gitlive.firebase.firestore.FieldValue
 import dev.gitlive.firebase.firestore.Timestamp
 import kotlinx.serialization.SerialName

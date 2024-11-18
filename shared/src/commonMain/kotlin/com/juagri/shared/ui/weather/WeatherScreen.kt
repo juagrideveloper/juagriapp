@@ -1,6 +1,6 @@
 package com.juagri.shared.ui.weather
 
-import Constants
+import com.juagri.shared.utils.Constants
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

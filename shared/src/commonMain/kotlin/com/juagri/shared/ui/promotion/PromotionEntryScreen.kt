@@ -1,6 +1,6 @@
 package com.juagri.shared.ui.promotion
 
-import Constants
+import com.juagri.shared.utils.Constants
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

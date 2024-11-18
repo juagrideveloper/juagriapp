@@ -1,7 +1,7 @@
 package com.juagri.shared.ui.focusProduct
 
 import AppTypography
-import Constants
+import com.juagri.shared.utils.Constants
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

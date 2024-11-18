@@ -1,3 +1,4 @@
+package com.juagri.shared.utils
 object Constants {
     const val TABLE_EMP_ACCESS = "V1_EmpAccess"
     const val TABLE_MENU = "V1_Menu"
@@ -72,6 +73,7 @@ object Constants {
     const val FIELD_CDO_CODE = "cdocode"
     const val FIELD_START_DATE = "start_date"
     const val FIELD_END_DATE = "end_date"
+    const val FIELD_ACTIVE = "active"
     const val FIELD_UPDATED_TIME = "updatedTime"
     const val FIELD_EVENT_ID = "actid"
     const val FIELD_STATE_CODE = "st_code"

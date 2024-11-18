@@ -1,6 +1,6 @@
 package com.juagri.shared.data.remote.app
 
-import Constants
+import com.juagri.shared.utils.Constants
 import com.juagri.shared.domain.model.app.AppConfig
 import com.juagri.shared.domain.repo.app.AppConfigRepository
 import com.juagri.shared.utils.ResponseState

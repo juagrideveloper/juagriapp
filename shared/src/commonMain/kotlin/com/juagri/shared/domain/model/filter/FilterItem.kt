@@ -2,6 +2,7 @@ package com.juagri.shared.domain.model.filter
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.domain.model.promotion.DistrictItem
 import com.juagri.shared.domain.model.promotion.PromotionEventItem
 import com.juagri.shared.domain.model.promotion.VillageItem
@@ -28,4 +29,5 @@ sealed class FilterType {
     data class PROMOTION_EVENT(val data: PromotionEventItem) : FilterType()
     data class DISTRICT(val data: DistrictItem) : FilterType()
     data class VILLAGE(val data: VillageItem) : FilterType()
+    data class USER(val data: JUEmployee) : FilterType()
 }

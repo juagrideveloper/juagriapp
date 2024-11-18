@@ -2,6 +2,7 @@ package com.juagri.shared.data.local.session.datamanager
 
 import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.domain.model.menu.HeaderSlideMenu
+import com.juagri.shared.utils.Constants
 import com.juagri.shared.utils.strings.AppLanguage
 import com.juagri.shared.utils.strings.EN_Names
 import com.juagri.shared.utils.strings.HI_Names

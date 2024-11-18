@@ -1,6 +1,6 @@
 package com.juagri.shared.ui.loginInfo
 
-import Constants
+import com.juagri.shared.utils.Constants
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Divider
@@ -12,11 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.juagri.shared.domain.model.filter.FilterItem
 import com.juagri.shared.domain.model.user.LoginInfo
-import com.juagri.shared.ui.components.fields.ColumnSpaceMedium
 import com.juagri.shared.ui.components.fields.ColumnSpaceSmall
-import com.juagri.shared.ui.components.fields.FilterTitleItem
 import com.juagri.shared.ui.components.fields.PromotionContent
 import com.juagri.shared.ui.components.fields.PromotionHeading
 import com.juagri.shared.ui.components.fields.PromotionSubHeading
@@ -25,7 +22,6 @@ import com.juagri.shared.ui.components.layouts.CardLayout
 import com.juagri.shared.ui.components.layouts.ScreenLayout
 import com.juagri.shared.ui.promotionEntries.RowView
 import com.juagri.shared.utils.UIState
-import com.juagri.shared.utils.disable
 import com.juagri.shared.utils.getColors
 import com.juagri.shared.utils.isContains
 import com.juagri.shared.utils.toDDMMYYYY
@@ -85,34 +81,6 @@ fun LoginInfoScreen() {
                     }
                     else -> {}
                 }
-                /*when (val result = viewModel.loginInfoItems.collectAsState().value) {
-                    is UIState.Success -> {
-                        result.data.forEach {
-                            CardLayout {
-                                RowView {
-                                    PromotionHeading(it.empName)
-                                    PromotionContent(it.empCode, textAlign = TextAlign.End)
-                                }
-                                ColumnSpaceSmall()
-                                Divider(color = getColors().onBackground, thickness = 0.2.dp)
-                                ColumnSpaceSmall()
-                                RowView {
-                                    PromotionSubHeading("App Version")
-                                    PromotionContent(it.appVersion, textAlign = TextAlign.End)
-                                }
-                                RowView {
-                                    PromotionSubHeading("Last Online")
-                                    PromotionContent(
-                                        it.lastOnline.toDDMMYYYY(),
-                                        textAlign = TextAlign.End
-                                    )
-                                }
-                            }
-                            ColumnSpaceSmall()
-                        }
-                    }
-                    else -> {}
-                }*/
             }
             if(isFirstApiCallNotDone){
                 isFirstApiCallNotDone = false

@@ -1,5 +1,6 @@
 package com.juagri.shared.domain.repo.user
 
+import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.domain.model.user.FinMonth
 import com.juagri.shared.domain.model.user.FinYear
 import com.juagri.shared.domain.model.user.JUDealer
@@ -20,4 +21,6 @@ interface UserRepository {
     suspend fun getFinYear(): Flow<ResponseState<List<FinYear>>>
 
     suspend fun getFinMonth(startDate: Timestamp, endDate: Timestamp): Flow<ResponseState<List<FinMonth>>>
+
+    suspend fun getUserList(employee: JUEmployee): Flow<ResponseState<List<JUEmployee>>>
 }

@@ -1,21 +1,32 @@
 package com.juagri.shared.data.remote.user
 
 import com.juagri.shared.data.local.dao.common.UserDetailsDao
+import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.domain.model.user.FinMonth
 import com.juagri.shared.domain.model.user.FinYear
 import com.juagri.shared.domain.model.user.JUDealer
 import com.juagri.shared.domain.model.user.JURegion
 import com.juagri.shared.domain.model.user.JUTerritory
 import com.juagri.shared.domain.repo.user.UserRepository
+import com.juagri.shared.utils.Constants.EMP_ROLE_CDO
+import com.juagri.shared.utils.Constants.EMP_ROLE_SO
+import com.juagri.shared.utils.Constants.EMP_ROLE_RM
+import com.juagri.shared.utils.Constants.EMP_ROLE_DM
+import com.juagri.shared.utils.Constants.FIELD_ACTIVE
+import com.juagri.shared.utils.Constants.FIELD_CDO_CODE
+import com.juagri.shared.utils.Constants.FIELD_REG_CODE
+import com.juagri.shared.utils.Constants.FIELD_UPDATED_TIME
 import com.juagri.shared.utils.ResponseState
 import com.juagri.shared.utils.endTime
 import com.juagri.shared.utils.filterRegCodeUpdatedTime
 import com.juagri.shared.utils.filterTCodeUpdatedTime
 import com.juagri.shared.utils.filterUpdatedTime
 import com.juagri.shared.utils.startTime
+import com.juagri.shared.utils.value
 import dev.gitlive.firebase.firestore.CollectionReference
 import dev.gitlive.firebase.firestore.Timestamp
 import dev.gitlive.firebase.firestore.fromMilliseconds
+import dev.gitlive.firebase.firestore.orderBy
 import dev.gitlive.firebase.firestore.where
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -27,15 +38,16 @@ class UserRepositoryImpl(
     private val dealerDB: CollectionReference,
     private val finYearDB: CollectionReference,
     private val finMonthDB: CollectionReference,
+    private val empAccessDB: CollectionReference,
     private val userDetailsDao: UserDetailsDao
 ):UserRepository {
     override suspend fun getRegionList(regCodes: String): Flow<ResponseState<List<JURegion>>> = callbackFlow{
         trySend(ResponseState.Loading(true))
         val result = if(regCodes.isNotEmpty()){
             regionDB.where {
-                Constants.FIELD_UPDATED_TIME greaterThan Timestamp.fromMilliseconds(userDetailsDao.getRegionLastUpdatedTime())
+                FIELD_UPDATED_TIME greaterThan Timestamp.fromMilliseconds(userDetailsDao.getRegionLastUpdatedTime())
             }.where {
-                Constants.FIELD_REG_CODE inArray  regCodes.split(",")
+                FIELD_REG_CODE inArray  regCodes.split(",")
             }.get().documents
         }else{
             regionDB.filterUpdatedTime(userDetailsDao.getRegionLastUpdatedTime())
@@ -89,7 +101,7 @@ class UserRepositoryImpl(
         println("CDO_Code: $cdoCode")
         trySend(ResponseState.Loading(true))
         val result = dealerDB.where {
-            Constants.FIELD_CDO_CODE equalTo cdoCode
+            FIELD_CDO_CODE equalTo cdoCode
         }.get().documents
         try {
             trySend(ResponseState.Loading())
@@ -127,6 +139,43 @@ class UserRepositoryImpl(
             trySend(ResponseState.Loading())
             trySend(ResponseState.Success(userDetailsDao.getFinMonthList(startDate.startTime(),endDate.endTime())))
         }catch (e:Exception){
+            trySend(ResponseState.Error())
+        }
+        awaitClose {
+            channel.close()
+        }
+    }
+
+    override suspend fun getUserList(employee: JUEmployee): Flow<ResponseState<List<JUEmployee>>> = callbackFlow{
+        trySend(ResponseState.Loading(true))
+        try {
+            val response = when (employee.roleId.value()) {
+                EMP_ROLE_DM, EMP_ROLE_RM -> {
+                    empAccessDB
+                        .where {
+                            "regionCode" inArray employee.regionCode.value().split(",")
+                        }
+                        .where { "roleId" inArray arrayListOf(EMP_ROLE_CDO, EMP_ROLE_SO) }
+                        .where { FIELD_ACTIVE equalTo true }
+                        .orderBy("name").get().documents
+                }
+
+                EMP_ROLE_SO -> {
+                    empAccessDB
+                        .where {
+                            "territoryCode" inArray employee.territoryCode.value().split(",")
+                        }
+                        .where { "roleId" equalTo EMP_ROLE_CDO }
+                        .where { FIELD_ACTIVE equalTo true }
+                        .orderBy("name").get().documents
+                }
+
+                else -> listOf()
+            }
+            trySend(ResponseState.Loading())
+            trySend(ResponseState.Success(response.map { it.data() }))
+        }catch (e: Exception){
+            e.printStackTrace()
             trySend(ResponseState.Error())
         }
         awaitClose {

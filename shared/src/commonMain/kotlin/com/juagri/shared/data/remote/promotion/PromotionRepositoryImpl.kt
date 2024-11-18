@@ -1,6 +1,6 @@
 package com.juagri.shared.data.remote.promotion
 
-import Constants
+import com.juagri.shared.utils.Constants
 import com.juagri.shared.data.local.dao.cdo.PromotionDao
 import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.domain.model.promotion.DistrictItem
@@ -11,24 +11,19 @@ import com.juagri.shared.domain.model.promotion.VillageItem
 import com.juagri.shared.domain.repo.promotion.PromotionRepository
 import com.juagri.shared.utils.JUError
 import com.juagri.shared.utils.ResponseState
-import com.juagri.shared.utils.uploadImages
 import com.juagri.shared.utils.filterUpdatedTime
 import com.juagri.shared.utils.startTime
 import com.juagri.shared.utils.toTimeStamp
+import com.juagri.shared.utils.uploadImages
 import com.juagri.shared.utils.value
 import dev.gitlive.firebase.firestore.CollectionReference
 import dev.gitlive.firebase.firestore.Timestamp
 import dev.gitlive.firebase.firestore.fromMilliseconds
-import dev.gitlive.firebase.firestore.toMilliseconds
 import dev.gitlive.firebase.firestore.where
 import io.ktor.util.date.GMTDate
-import io.ktor.util.date.getTimeMillis
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
 
 class PromotionRepositoryImpl(
     private val promotionEventDB: CollectionReference,
@@ -134,7 +129,7 @@ class PromotionRepositoryImpl(
             }else ""
 
             var isMobileNumberUnique = true
-            if(phoneNo.isNotEmpty() && entryItems["activity_code"]?.toString().value() != "PM_DFD"){
+            if(phoneNo.isNotEmpty() && entryItems["activity_code"]?.toString().value() != "PM_DFD" && entryItems["activity_code"]?.toString().value() != "PM_NDS"){
                 isMobileNumberUnique = !promotionMobileNumbersDB.document(phoneNo).get().exists
             }
 
@@ -190,9 +185,65 @@ class PromotionRepositoryImpl(
             try {
                 val eventList: List<PromotionEventItem> = promotionEventDB.filterUpdatedTime(promotionDao.getPromotionEventLastUpdatedTime()).map { it.data() }
                 result.addAll(eventList.map { PromotionDashboard(it.id.value(),it.name.value()) })
-                //val entriesCount = promotionCountDB.document(employee.code.value()).get().reference.get().data<Map<String,String>>()
+
                 val entries = getEntries(employee)
                 entries.forEach {entriesCount->
+                    result.map {
+                        if (employee.roleId.value() == Constants.EMP_ROLE_CDO) {
+                            entriesCount[it.actId + "_Mon_act"]?.let { count ->
+                                it.mActual += count.toDouble()
+                            }
+                            entriesCount[it.actId + "_Yr_act"]?.let { count ->
+                                it.yActual += count.toDouble()
+                            }
+                            entriesCount[it.actId + "_Mon_plan"]?.let { count ->
+                                it.mPlan += count.toDouble()
+                            }
+                            entriesCount[it.actId + "_Yr_plan"]?.let { count ->
+                                it.yPlan += count.toDouble()
+                            }
+                        } else {
+                            if(entriesCount["cdoid"] != employee.code.value()) {
+                                entriesCount[it.actId + "_Mon_act"]?.let { count ->
+                                    it.mActual += count.toDouble()
+                                }
+                                entriesCount[it.actId + "_Yr_act"]?.let { count ->
+                                    it.yActual += count.toDouble()
+                                }
+                            }
+                            if(entriesCount["cdoid"] == employee.code.value()) {
+                                entriesCount[it.actId + "_Mon_plan"]?.let { count ->
+                                    it.mPlan += count.toDouble()
+                                }
+                                entriesCount[it.actId + "_Yr_plan"]?.let { count ->
+                                    it.yPlan += count.toDouble()
+                                }
+                            } else {}
+                        }
+                    }
+                }
+                trySend(ResponseState.Loading(false))
+                trySend(ResponseState.Success(result))
+            } catch (e: Exception) {
+                e.printStackTrace()
+                trySend(ResponseState.Loading(false))
+                trySend(ResponseState.Success(result))
+            }
+            awaitClose {
+                channel.close()
+            }
+        }
+
+    override suspend fun getDashboardByEmployeeId(employeeId: String): Flow<ResponseState<List<PromotionDashboard>>> =
+        callbackFlow {
+            trySend(ResponseState.Loading(true))
+            val result = mutableListOf<PromotionDashboard>()
+            try {
+                val eventList: List<PromotionEventItem> = promotionEventDB.filterUpdatedTime(promotionDao.getPromotionEventLastUpdatedTime()).map { it.data() }
+                result.addAll(eventList.map { PromotionDashboard(it.id.value(),it.name.value()) })
+                val countsList = mutableListOf<Map<String,String>>()
+                countsList.add(promotionCountDB.document(employeeId).get().reference.get().data<Map<String, String>>())
+                countsList.forEach {entriesCount->
                     result.map {
                         entriesCount[it.actId + "_Mon_act"]?.let { count ->
                             it.mActual += count.toDouble()

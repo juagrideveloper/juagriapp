@@ -1,6 +1,6 @@
 package com.juagri.shared.di
 
-import Constants
+import com.juagri.shared.utils.Constants
 import app.cash.sqldelight.db.SqlDriver
 import com.juagri.shared.JUDatabase
 import com.juagri.shared.data.local.dao.cdo.PromotionDao
@@ -155,6 +155,7 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                         Firebase.firestore.collection(Constants.TABLE_DEALER_MASTER),
                         Firebase.firestore.collection(Constants.TABLE_FIN_YEAR_MASTER),
                         Firebase.firestore.collection(Constants.TABLE_FIN_MONTH_MASTER),
+                        Firebase.firestore.collection(Constants.TABLE_EMP_ACCESS),
                         get()
                     )
                 }
@@ -202,6 +203,7 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                 single<LoginInfoRepository> {
                     LoginInfoRepositoryImpl(
                         Firebase.firestore.collection(Constants.TABLE_LOGIN_INFO),
+                        Firebase.firestore.collection(Constants.TABLE_EMP_ACCESS),
                     )
                 }
                 single<AppConfigRepository> {
@@ -213,6 +215,7 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                     ParticipationRepositoryImpl(
                         Firebase.firestore.collection(Constants.TABLE_PROMOTION_ACTIVITY_LIST),
                         Firebase.firestore.collection(Constants.TABLE_PROMOTION_ACTIVITY_ENTRY),
+                        Firebase.firestore.collection(Constants.TABLE_PROMOTION_ACTIVITY_COUNT),
                         get()
                     )
                 }
@@ -240,14 +243,14 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                 factory { DoctorViewModel(get(),get(),get()) }
                 factory { ProfileViewModel(get(),get()) }
                 factory { PromotionEntryViewModel(get(),get(),get()) }
-                factory { CDODashboardViewModel(get(),get(),get()) }
+                factory { CDODashboardViewModel(get(),get(),get(),get()) }
                 factory { PromotionEntriesViewModel(get(),get(),get(),get()) }
                 factory { CDOFocusProductSummaryViewModel(get(),get(),get()) }
                 factory { LiquidationViewModel(get(),get(),get()) }
                 factory { LoginInfoViewModel(get(),get(),get()) }
                 factory { TestScreenViewModel(get(),get(),get()) }
                 factory { WeatherViewModel(get(),get(),get()) }
-                factory { ParticipationViewModel(get(),get(),get()) }
+                factory { ParticipationViewModel(get(),get(),get(),get()) }
             }
         )
     }

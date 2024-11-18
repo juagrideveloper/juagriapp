@@ -1,6 +1,5 @@
 package com.juagri.shared.ui.components.base
 
-import Constants
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.juagri.shared.data.local.session.SessionPreference
@@ -23,6 +22,7 @@ import com.juagri.shared.ui.components.layouts.MessageData
 import com.juagri.shared.ui.components.layouts.PermissionData
 import com.juagri.shared.ui.navigation.AppScreens
 import com.juagri.shared.utils.AppUtils
+import com.juagri.shared.utils.Constants
 import com.juagri.shared.utils.JUError
 import com.juagri.shared.utils.ResponseState
 import com.juagri.shared.utils.UIState
@@ -267,6 +267,28 @@ open class BaseViewModel(private val session: SessionPreference,private val data
                                         FilterType.VILLAGE(it)
                                     )
                                 },
+                                mutableStateOf(true)
+                            )
+                        }
+                        is FilterType.USER -> {
+                            val userList = mutableListOf<FilterItem>()
+                            userList.add(
+                                FilterItem(
+                                    names().all,
+                                    names().all,
+                                    FilterType.USER(JUEmployee(code = names().all, name = names().all))
+                                )
+                            )
+                            userList.addAll((response.data as List<JUEmployee>).map {
+                                FilterItem(
+                                    code = it.code.value(),
+                                    name = "${it.name.value()} (${it.code.value()})",
+                                    data = FilterType.USER(it)
+                                )
+                            })
+                            FilterDataItem(
+                                names().select,
+                                userList,
                                 mutableStateOf(true)
                             )
                         }

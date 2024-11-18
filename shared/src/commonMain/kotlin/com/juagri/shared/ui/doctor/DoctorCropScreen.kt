@@ -1,6 +1,6 @@
 package com.juagri.shared.ui.doctor
 
-import Constants
+import com.juagri.shared.utils.Constants
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn

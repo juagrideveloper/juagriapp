@@ -1,9 +1,7 @@
 package com.juagri.shared.data.remote.login
 
-import Constants
+import com.juagri.shared.utils.Constants
 import com.juagri.shared.domain.model.employee.JUEmployee
-import com.juagri.shared.domain.model.menu.ChildSlideMenu
-import com.juagri.shared.domain.model.menu.HeaderSlideMenu
 import com.juagri.shared.domain.model.user.JURegion
 import com.juagri.shared.domain.model.user.JUTerritory
 import com.juagri.shared.domain.model.user.LoginInfo
