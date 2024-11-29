@@ -1,6 +1,6 @@
 package com.juagri.shared.ui
 
-import Constants
+import com.juagri.shared.utils.Constants
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.juagri.shared.data.local.session.SessionPreference

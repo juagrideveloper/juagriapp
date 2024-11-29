@@ -1,6 +1,6 @@
 package com.juagri.shared.ui.liquidation
 
-import Constants
+import com.juagri.shared.utils.Constants
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement

@@ -1,6 +1,6 @@
 package com.juagri.shared.utils
 
-import Constants
+import com.juagri.shared.utils.Constants
 import dev.gitlive.firebase.firestore.CollectionReference
 import dev.gitlive.firebase.firestore.DocumentSnapshot
 import dev.gitlive.firebase.firestore.Timestamp

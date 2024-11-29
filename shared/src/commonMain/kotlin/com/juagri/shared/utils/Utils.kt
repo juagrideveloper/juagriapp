@@ -1,6 +1,6 @@
 package com.juagri.shared.utils
 
-import Constants
+import com.juagri.shared.utils.Constants
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState

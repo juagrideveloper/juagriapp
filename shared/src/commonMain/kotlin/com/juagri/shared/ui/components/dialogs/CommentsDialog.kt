@@ -1,6 +1,6 @@
 package com.juagri.shared.ui.components.dialogs
 
-import Constants
+import com.juagri.shared.utils.Constants
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

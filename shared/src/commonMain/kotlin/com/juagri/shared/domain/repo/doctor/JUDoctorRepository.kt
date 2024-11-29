@@ -5,5 +5,5 @@ import com.juagri.shared.utils.ResponseState
 import kotlinx.coroutines.flow.Flow
 
 interface JUDoctorRepository {
-    suspend fun getJUDoctorItems(parentId: String): Flow<ResponseState<List<JUDoctorDataItem>>>
+     fun getJUDoctorItems(parentId: String): Flow<ResponseState<List<JUDoctorDataItem>>>
 }

@@ -1,6 +1,6 @@
 package com.juagri.shared.ui.home
 
-import Constants
+import com.juagri.shared.utils.Constants
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf

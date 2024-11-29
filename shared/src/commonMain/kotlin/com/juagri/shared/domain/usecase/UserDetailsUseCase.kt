@@ -1,5 +1,6 @@
 package com.juagri.shared.domain.usecase
 
+import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.domain.repo.user.UserRepository
 import dev.gitlive.firebase.firestore.Timestamp
 
@@ -13,4 +14,6 @@ class UserDetailsUseCase(private val repository: UserRepository) {
     suspend fun getFinYear() = repository.getFinYear()
 
     suspend fun getFinMonth(startDate: Timestamp, endDate: Timestamp) = repository.getFinMonth(startDate, endDate)
+
+    suspend fun getUserList(employee: JUEmployee) = repository.getUserList(employee)
 }

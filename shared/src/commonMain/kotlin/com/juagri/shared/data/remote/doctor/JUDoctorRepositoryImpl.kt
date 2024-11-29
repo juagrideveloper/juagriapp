@@ -14,7 +14,7 @@ class JUDoctorRepositoryImpl(
     private val doctorDB: CollectionReference,
     private val doctorDao: JUDoctorDao
 ): JUDoctorRepository {
-    override suspend fun getJUDoctorItems(parentId: String): Flow<ResponseState<List<JUDoctorDataItem>>> = callbackFlow{
+    override fun getJUDoctorItems(parentId: String): Flow<ResponseState<List<JUDoctorDataItem>>> = callbackFlow{
         trySend(ResponseState.Loading(true))
         val result = doctorDB.filterUpdatedTime(doctorDao.getDoctorLastUpdatedTime())
         try {
