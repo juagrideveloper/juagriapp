@@ -17,6 +17,7 @@ import com.juagri.shared.domain.model.promotion.ParticipateDialogData
 import com.juagri.shared.ui.components.base.BaseViewModel
 import com.juagri.shared.ui.components.dialogs.FilterDialog
 import com.juagri.shared.ui.components.dialogs.ParticipatedDialog
+import com.juagri.shared.ui.components.dialogs.SuccessDialog
 import com.juagri.shared.ui.components.fields.ButtonNormal
 import com.juagri.shared.ui.components.fields.ColumnSpaceSmall
 import com.juagri.shared.ui.components.fields.PromotionContent
@@ -77,8 +78,16 @@ fun PromotionEntriesScreen() {
             }
             when (participationEntry.collectAsState().value) {
                 is UIState.Success -> {
-                    getPromotionEntries(selectedTerritory.value?.tCode.value())
-                    resetParticipationEntry()
+                    val showSuccessDialog = mutableStateOf(true)
+                    SuccessDialog(
+                        showSuccessDialog,
+                        title = "Success",
+                        desc = "Files are being uploaded in the background. No action is required."
+                    ){
+                        getPromotionEntries(selectedTerritory.value?.tCode.value())
+                        resetParticipationEntry()
+                        showSuccessDialog.value = false
+                    }
                 }
 
                 else -> {}

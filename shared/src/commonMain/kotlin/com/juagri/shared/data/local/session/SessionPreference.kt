@@ -65,6 +65,15 @@ class SessionPreference(private val context: SessionContext) {
         context.clearAll()
     }
 
+    fun setOTPCount(otpMobile: String){
+        context.putInt(otpMobile,otpCount(otpMobile) + 1)
+    }
+
+    private fun otpCount(otpMobile: String): Int = context.getInt(otpMobile, 0).value()
+
+    fun isEligibleForSendOTP(otpMobile: String): Boolean = otpCount(otpMobile) <5
+
+
     private companion object {
         const val IS_FIRESTORE_PERSISTENCE_DONE = "isFirestorePersistenceDone"
         const val IS_ALREADY_LOGGED_IN = "isAlreadyLoggedIn"

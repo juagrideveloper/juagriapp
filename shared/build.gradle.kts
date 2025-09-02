@@ -54,16 +54,23 @@ kotlin {
                 api(libs.precompose.koin)
                 api(libs.kamel.image)
 
-                implementation("network.chaintech:compose-multiplatform-media-player:1.0.0")
+                implementation(libs.compose.multiplatform.media.player)
 
                 implementation(libs.sqldelight.coroutines)
                 implementation(libs.koalaplot.chart.core)
                 implementation(libs.peekaboo.image.ui)
                 implementation(libs.peekaboo.image.picker)
 
-                implementation("io.github.alexzhirkevich:compottie:2.0.0-beta02")
-                implementation("io.github.alexzhirkevich:compottie-dot:2.0.0-beta02")
-                implementation("io.github.alexzhirkevich:compottie-network:2.0.0-beta02")
+                implementation(libs.compottie)
+                implementation(libs.compottie.dot)
+                implementation(libs.compottie.network)
+
+                // Enables FileKit without Compose dependencies
+                implementation(libs.filekit.core)
+
+                // Enables FileKit with Composable utilities
+                implementation(libs.filekit.compose)
+
                 //implementation("io.github.alexzhirkevich:compottie-resources:2.0.0-beta02")
             }
         }
@@ -86,6 +93,9 @@ kotlin {
                 implementation(libs.sqldelight.android)
                 api(libs.kotlinx.coroutines.android)
                 implementation(libs.ktor.okhttp)
+
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
+                implementation("androidx.work:work-runtime-ktx:2.9.0")
             }
         }
         val iosX64Main by getting

@@ -19,7 +19,7 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -158,10 +158,10 @@ fun FilterTitleItem(
     color: Color = getColors().onBackground,
     onItemClick: () -> Unit
 ) {
-    Divider(color = getColors().onBackground, thickness = 0.2.dp)
+    HorizontalDivider(thickness = 0.2.dp, color = getColors().onBackground)
     ClickableText(
         text = AnnotatedString(text),
-        onClick = { onItemClick.invoke() },
+        onClick = { onItemClick() },
         style = TextStyle(
             color = color,
             fontSize = 12.sp,
@@ -483,5 +483,69 @@ fun PromotionContent(
     style = AppTypography.titleSmall,
     modifier = modifier.padding(bottom = 4.dp),
     color = color,
+    textAlign = textAlign
+)
+
+
+@Composable
+fun NotificationHeading(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.Center,
+    color: Color = getColors().onBackground,
+    maxLines: Int = 2
+) = Text(
+    text,
+    style = AppTypography.titleLarge,
+    modifier = Modifier.fillMaxWidth(),
+    color = color,
+    fontWeight = FontWeight.Bold,
+    textAlign = textAlign,
+    maxLines = maxLines
+)
+
+@Composable
+fun NotificationTitle(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.Start,
+    color: Color = getColors().onBackground,
+    maxLines: Int = 2
+) = Text(
+    text,
+    style = AppTypography.labelLarge,
+    modifier = Modifier.fillMaxWidth(),
+    color = color,
+    fontWeight = FontWeight.Bold,
+    textAlign = textAlign,
+    maxLines = maxLines
+)
+
+@Composable
+fun NotificationContent(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.Start,
+    color: Color = getColors().onBackground,
+    maxLines: Int? = null
+) = Text(
+    text,
+    style = AppTypography.labelMedium,
+    modifier = Modifier.fillMaxWidth(),
+    color = color,
+    fontWeight = FontWeight.Normal,
+    textAlign = textAlign,
+    maxLines = maxLines ?: Int.MAX_VALUE
+)
+
+@Composable
+fun LabelTimeStamp(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.End,
+    modifier: Modifier = Modifier.fillMaxWidth(),
+    color: Color = getColors().onBackground
+) = Text(
+    text,
+    style = AppTypography.titleSmall,
+    modifier = modifier,
+    color = color,
+    fontWeight = FontWeight.Normal,
     textAlign = textAlign
 )

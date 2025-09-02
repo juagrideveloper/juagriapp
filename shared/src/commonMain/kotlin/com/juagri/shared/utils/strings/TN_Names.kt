@@ -3,7 +3,7 @@ package com.juagri.shared.utils.strings
 object TN_Names: Names {
     override val login: String get() = "உள்நுழைய"
     override val otp: String get() = "ஓடிபி"
-    override val home: String get() = "வீடு"
+    override val home: String get() = "முகப்பு"
     override val dashboard: String get() = "டாஷ்போர்டு"
     override val region: String get() = "பிராந்தியம்"
     override val territory: String get() = "பிரதேசம்"
@@ -59,8 +59,15 @@ object TN_Names: Names {
     override val participation: String get() = "பங்கேற்பு"
 
     override val loginInfo: String get() = "உள்நுழைவு தகவல்"
+    override val sendNotification: String get() = "அறிவிப்பை அனுப்பவும்"
+    override val notificationList: String get() = "அறிவிப்புகள் பட்டியல்"
+    override val notificationDetails: String get() = "அறிவிப்பு விவரங்கள்"
 
+    override val title: String get() = "Title"
+    override val content: String get() = "Content"
+    override val attachments: String get() = "Attachment"
 
+    override val selectRole: String get() = "$select $role"
     override val selectRegion: String get() = "$select $region"
     override val selectTerritory: String get() = "$select $territory"
     override val selectDealer: String get() = "$select $dealer"

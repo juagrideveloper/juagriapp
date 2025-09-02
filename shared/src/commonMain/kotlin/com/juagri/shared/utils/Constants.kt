@@ -25,8 +25,10 @@ object Constants {
     const val TABLE_LIQUIDATION_CONFIG = "DealerLiquidation"
     const val TABLE_LOGIN_INFO = "LoginInfo"
     const val TABLE_APP = "App"
+    const val TABLE_NOTIFICATIONS = "Notifications"
 
     const val FOLDER_PROMOTION_ENTRY_IMAGES = "PromotionEntryImages"
+    const val FOLDER_NOTIFICATION_FILES = "NotificationFiles"
 
     const val EMP_MENU_CDO = "CDO_Menu"
     const val EMP_MENU_DM = "DM_Menu"
@@ -63,6 +65,9 @@ object Constants {
     const val SCREEN_CDO_LIQUIDATION = "C_012"
     const val SCREEN_LOGIN_INFO = "C_013"
     const val SCREEN_PARTICIPATION = "C_014"
+    const val SCREEN_SEND_NOTIFICATION = "C_015"
+    const val SCREEN_NOTIFICATION_LIST = "C_016"
+    const val SCREEN_NOTIFICATION_DETAILS = "C_017"
 
 
     const val FIELD_C_CODE = "ccode"

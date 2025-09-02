@@ -1,10 +1,10 @@
 package com.juagri.shared.utils
 
-import com.juagri.shared.utils.Constants
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toLowerCase
 import com.juagri.shared.domain.model.promotion.PromotionEventItem
@@ -12,6 +12,7 @@ import com.juagri.shared.domain.model.user.FinMonth
 import com.juagri.shared.domain.model.user.FinYear
 import com.juagri.shared.domain.model.user.JUDealer
 import com.juagri.shared.domain.model.user.JURegion
+import com.juagri.shared.domain.model.user.JURole
 import com.juagri.shared.domain.model.user.JUTerritory
 import com.juagri.shared.utils.strings.Names
 import dev.gitlive.firebase.firestore.Timestamp
@@ -28,6 +29,9 @@ fun String?.isEqualTo(compare: String) = (this.value().lowerCase() == compare.lo
 
 fun String?.isNotEqualTo(compare: String) = (this.value().lowerCase() != compare.lowerCase())
 
+fun String.extension() = this.substringAfterLast('.', "")
+
+fun JURole?.selectedValue(label:Names): String = this?.roleName ?: label.selectRole
 fun JURegion?.selectedValue(label:Names): String = this?.regName ?: label.selectRegion
 fun JUTerritory?.selectedValue(label:Names): String = this?.tName ?: label.selectTerritory
 fun JUDealer?.selectedValue(label:Names): String = this?.cName ?: label.selectDealer
@@ -148,6 +152,11 @@ fun getBackgroundGradient() = Brush.horizontalGradient(
         getColors().secondary,
         getColors().primary
     )
+)
+
+@Composable
+fun getButtonGradient(enabled: Boolean = true) = Brush.horizontalGradient(
+    colors = if(enabled) listOf(getColors().secondary, getColors().primary) else listOf(Color.LightGray, Color.LightGray)
 )
 
 @Composable

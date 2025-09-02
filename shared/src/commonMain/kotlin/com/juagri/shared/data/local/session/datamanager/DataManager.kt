@@ -63,6 +63,9 @@ class DataManager(private val dataStore: DataStore) {
             Constants.SCREEN_CDO_LIQUIDATION->names.value.liquidation
             Constants.SCREEN_LOGIN_INFO ->names.value.loginInfo
             Constants.SCREEN_PARTICIPATION ->names.value.participation
+            Constants.SCREEN_SEND_NOTIFICATION ->names.value.sendNotification
+            Constants.SCREEN_NOTIFICATION_LIST ->names.value.notificationList
+            Constants.SCREEN_NOTIFICATION_DETAILS ->names.value.notificationDetails
             else -> ""
         }
 }

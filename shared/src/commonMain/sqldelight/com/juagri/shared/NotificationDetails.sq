@@ -1,0 +1,32 @@
+
+createNotifications:
+CREATE TABLE IF NOT EXISTS Notifications (
+    id TEXT NOT NULL PRIMARY KEY,
+    regCode TEXT,
+    regName TEXT,
+    roleId TEXT,
+    roleName TEXT,
+    title TEXT,
+    content TEXT,
+    filename TEXT,
+    unread REAL,
+    updatedTime REAL
+);
+
+insertNotifications:
+INSERT OR REPLACE INTO Notifications(
+id, regCode, regName, roleId, roleName, title, content, filename, unread, updatedTime
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+getUnreadNotificationsCount:
+SELECT count(updatedTime) FROM Notifications WHERE unread < 1;
+
+getNotificationsLastUpdatedTime:
+SELECT max(updatedTime) FROM Notifications;
+
+getNotifications:
+SELECT id, regCode, regName, roleId, roleName, title, content, filename, unread, updatedTime
+FROM Notifications ORDER BY updatedTime DESC;
+
+updateNotifications:
+UPDATE Notifications SET unread = 1 WHERE id=?;

@@ -51,6 +51,10 @@ fun OTPScreen(otpValue: String,onNext: (validUser: Boolean) -> Unit) {
                         validOTP.value = it.otp
                     }
                 }
+                is UIState.Error -> {
+                    viewModel.showErrorMessage(result.error)
+                    viewModel.resetOTP()
+                }
                 else -> {}
             }
             val showTimerText = remember { mutableStateOf(-1) }

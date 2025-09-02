@@ -23,5 +23,19 @@ sealed class AppScreens: Parcelable {
   data class JUDoctorChild(val parentId:String): AppScreens()
   data class JUDoctorSolution(val parentId:String): AppScreens()
   data object Participation: AppScreens()
+  data object SendNotification: AppScreens()
+  data object NotificationList: AppScreens()
+  data class NotificationDetails(
+    val id: String = "",
+    val regCode: String = "",
+    val regName: String = "",
+    val roleId: String = "",
+    val roleName: String = "",
+    val title: String = "",
+    val content: String = "",
+    var filename: String = "",
+    var unread: Int = 0,
+    var updatedTime: Double? = null
+  ): AppScreens()
 }
 

@@ -3,9 +3,12 @@ agp = "8.7.3"
 androidx-activity ="1.10.0"
 androidx-fragment ="1.8.6"
 compose-multiplatform = "1.5.11"
+compose-multiplatform-media-player = "1.0.0"
 compose-test-rule = "1.7.8"
+compottie = "2.0.0-beta02"
 decompose = "2.1.0-compose-experimental"
 essenty = "1.2.0"
+filekit-core = "0.8.8"
 horologist = "0.5.7"
 kotlin = "1.9.21"
 kotlinx-coroutines = "1.8.0"
@@ -28,11 +31,24 @@ androidx-activity-compose = { module = "androidx.activity:activity-compose", ver
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "androidx-fragment" }
 compose-multiplatform = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-multiplatform" }
+compose-multiplatform-media-player = { module = "network.chaintech:compose-multiplatform-media-player", version.ref = "compose-multiplatform-media-player" }
 compose-ui-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose-test-rule" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose-test-rule" }
+compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
+compottie-dot = { module = "io.github.alexzhirkevich:compottie-dot", version.ref = "compottie" }
+compottie-network = { module = "io.github.alexzhirkevich:compottie-network", version.ref = "compottie" }
 decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 decompose-compose-multiplatform = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose" }
 essenty-parcelable = { module = "com.arkivanov.essenty:parcelable", version.ref = "essenty" }
+filekit-compose = { module = "io.github.vinceglb:filekit-compose", version.ref = "filekit-core" }
+filekit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "filekit-core" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx" }
+google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+google-firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx" }
+google-firebase-storage = { module = "com.google.firebase:firebase-storage" }
 horologist-compose-layouts = { module = "com.google.android.horologist:horologist-compose-layout", version.ref = "horologist" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }

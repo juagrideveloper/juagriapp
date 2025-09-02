@@ -3,23 +3,42 @@ package com.juagri.shared.ui.components.fields
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.juagri.shared.data.remote.chat.ChatButtonContent
+import com.juagri.shared.ui.components.layouts.CardLayout
 import com.juagri.shared.utils.getBackgroundGradient
+import com.juagri.shared.utils.getButtonGradient
 import com.juagri.shared.utils.getColors
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun ButtonNormal(
@@ -37,6 +56,32 @@ fun ButtonNormal(
                 .background(getBackgroundGradient())
                 .then(Modifier)
                 .wrapContentWidth()
+                .padding(horizontal = 24.dp, vertical = 12.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            TextMedium(text = text, color = getColors().background)
+        }
+    }
+}
+
+@Composable
+fun ButtonFullWidth(
+    text: String,
+    isEnabled: MutableState<Boolean> = mutableStateOf(true),
+    onClick: () -> Unit = { },
+) {
+    Button(
+        modifier = Modifier.fillMaxWidth(),
+        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+        contentPadding = PaddingValues(),
+        enabled = isEnabled.value,
+        onClick = { onClick() },
+    ) {
+        Box(
+            modifier = Modifier
+                .background( getButtonGradient(isEnabled.value))
+                .then(Modifier)
+                .fillMaxWidth()
                 .padding(horizontal = 24.dp, vertical = 12.dp),
             contentAlignment = Alignment.Center,
         ) {
@@ -65,6 +110,68 @@ fun ButtonChatOption(content: ChatButtonContent, isEnabled: MutableState<Boolean
         )
     ) {
         TextMedium(text = content.title, color = getColors().background)
+    }
+}
+
+@OptIn(ExperimentalResourceApi::class)
+@Composable
+fun SquareBorderedCard(text: String, image: String, onClick: ()->Unit) {
+    Box (
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)// Making it a square
+            .border(0.5.dp, Color.Black, RoundedCornerShape(8.dp)) // Square border
+            .padding(8.dp) // Padding inside the border
+            .clickable { onClick() }
+    ) {
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            LabelHeading(
+                text = text,
+                modifier = Modifier.padding(start = 8.dp)
+            )
+
+            Image(
+                painter = painterResource(DrawableResource(image)),
+                contentDescription = "",
+                modifier = Modifier
+                    .size(50.dp) // Adjust image size
+                    .padding(end = 8.dp)
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun FilenameCard(text: String, onClick: ()->Unit) {
+    CardLayout {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(40.dp)
+                .clickable { onClick() },
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            LabelHeading(
+                text = text,
+                modifier = Modifier.padding(start = 8.dp).drawBehind {
+                    val strokeWidthPx = 1.dp.toPx()
+                    val verticalOffset = size.height - 5.sp.toPx()
+                    drawLine(
+                        color = Color.Blue,
+                        strokeWidth = strokeWidthPx,
+                        start = Offset(0f, verticalOffset),
+                        end = Offset(size.width, verticalOffset)
+                    )
+                },
+                color = Color.Blue
+            )
+        }
     }
 }
 

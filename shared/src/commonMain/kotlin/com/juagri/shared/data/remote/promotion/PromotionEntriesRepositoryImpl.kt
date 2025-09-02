@@ -9,9 +9,13 @@ import dev.gitlive.firebase.firestore.Timestamp
 import dev.gitlive.firebase.firestore.fromMilliseconds
 import dev.gitlive.firebase.firestore.toMilliseconds
 import dev.gitlive.firebase.firestore.where
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.launch
 
 class PromotionEntriesRepositoryImpl(
     private val promotionEntryDB: CollectionReference,
@@ -59,11 +63,13 @@ class PromotionEntriesRepositoryImpl(
                 val participantUpdatedDetails = updatedDetails.toMutableMap()
                 val filenames = List(entry.images.size) { index -> "${entry.entryId}_${roleId}_sub_"+index+".jpg" }
                 participantUpdatedDetails["participant_"+roleId+"_filenames"] = filenames.joinToString(",")
-                promotionEntryDB.document(entry.entryId)
-                    .update(participantUpdatedDetails)
                 uploadImages(entry.images, filenames) {
-                    trySend(ResponseState.Loading())
-                    trySend(ResponseState.Success(entry.entryId))
+                    CoroutineScope(Dispatchers.IO).launch {
+                        promotionEntryDB.document(entry.entryId)
+                            .update(participantUpdatedDetails)
+                        trySend(ResponseState.Loading())
+                        trySend(ResponseState.Success(entry.entryId))
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

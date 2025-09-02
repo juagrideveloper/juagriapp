@@ -2,6 +2,7 @@ package com.juagri.shared.data.remote.login
 
 import com.juagri.shared.utils.Constants
 import com.juagri.shared.domain.model.employee.JUEmployee
+import com.juagri.shared.domain.model.menu.ChildSlideMenu
 import com.juagri.shared.domain.model.user.JURegion
 import com.juagri.shared.domain.model.user.JUTerritory
 import com.juagri.shared.domain.model.user.LoginInfo
@@ -36,6 +37,14 @@ class EmployeeRepositoryImpl(
                 if (withMenu) {
                     employee.menuId?.let {
                         employee.menuItems = menuDB.document(it).get().reference.get().data()
+//                        employee.menuItems!![Constants.HEADING_MENU_0002]?.childMenus?.add(
+//                            ChildSlideMenu(
+//                                Constants.SCREEN_SEND_NOTIFICATION,
+//                                3,
+//                                "Promotion Activity",
+//                                true
+//                            )
+//                        )
                         /*employee.menuItems?.forEach { menu ->
                             if (menu.value.id.value() == "H_001") {
                                 when (employee.roleId.value()) {

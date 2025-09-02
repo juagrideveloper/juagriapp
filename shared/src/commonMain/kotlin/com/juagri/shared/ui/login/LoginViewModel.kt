@@ -8,7 +8,9 @@ import com.juagri.shared.domain.usecase.EmployeeUseCase
 import com.juagri.shared.domain.usecase.OTPUseCase
 import com.juagri.shared.ui.components.base.BaseViewModel
 import com.juagri.shared.utils.UIState
+import com.juagri.shared.utils.toDDMMYYYY
 import com.juagri.shared.utils.value
+import io.ktor.util.date.GMTDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -29,6 +31,10 @@ class LoginViewModel(
     fun reset(){
         _employee.value = UIState.Init
     }
+
+    fun resetOTP(){
+        _otpResponse.value = UIState.Init
+    }
     fun getEmployeeDetails(mobileNo: String) {
         backgroundScope{
             employeeUseCase.getEmployeeDetails(mobileNo).collect { response ->
@@ -38,11 +44,19 @@ class LoginViewModel(
     }
 
     fun sendOTP() {
-        dataManager.getEmployee()?.let {otp->
-            backgroundScope{
-                otpUseCase.sendOTP(otp).collect { response ->
-                    uiScope(response,_otpResponse)
+        dataManager.getEmployee()?.let {emp->
+            val otpMobile = "${emp.mobile.value()}_"+ GMTDate().toDDMMYYYY()
+            println("OTP Mobile: $otpMobile")
+            if(session.isEligibleForSendOTP(otpMobile)) {
+                session.setOTPCount(otpMobile)
+                println("OTP Mobile: true")
+                backgroundScope {
+                    otpUseCase.sendOTP(emp).collect { response ->
+                        uiScope(response, _otpResponse)
+                    }
                 }
+            } else {
+                _otpResponse.value = UIState.Error("OTP limit reached (5/day). Try again tomorrow or contact support.")
             }
         }
     }

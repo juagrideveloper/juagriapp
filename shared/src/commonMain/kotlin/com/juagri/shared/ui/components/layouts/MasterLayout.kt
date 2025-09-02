@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
@@ -106,7 +106,7 @@ fun ScreenLayoutWithMenuActionBar(
     ) {
         Scaffold(
             topBar = {
-                ActionBarLayout(title,Icons.Default.Menu,viewModel) {
+                ActionBarLayout(title,Icons.Default.Menu,viewModel, router) {
                     updateDrawerState(scope,drawerState)
                     onBackPressed?.invoke()
                 }
@@ -177,7 +177,7 @@ fun ScreenLayoutWithActionBar(
 ) {
     Scaffold(
         topBar = {
-            ActionBarLayout(title,Icons.Default.ArrowBack, viewModel) { onBackPressed?.invoke() }
+            ActionBarLayout(title, Icons.AutoMirrored.Filled.ArrowBack, viewModel) { onBackPressed?.invoke() }
         }) { paddingValues ->
         Layout(
             modifier = modifier.padding(paddingValues)

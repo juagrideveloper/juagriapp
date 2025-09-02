@@ -163,7 +163,10 @@ fun LoginScreen(onNext: (String?) -> Unit) {
                                     onNext.invoke(it.otp)
                                 }
                             }
-
+                            is UIState.Error -> {
+                                showErrorMessage(result.error)
+                                viewModel.resetOTP()
+                            }
                             else -> {}
                         }
                         ConfirmDialog(

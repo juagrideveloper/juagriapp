@@ -4,7 +4,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.juagri.shared.data.local.session.SessionPreference
 import com.juagri.shared.data.local.session.datamanager.DataManager
-import com.juagri.shared.domain.model.promotion.PromotionFilterDataItem
 import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.domain.model.filter.FilterDataItem
 import com.juagri.shared.domain.model.filter.FilterItem
@@ -12,11 +11,13 @@ import com.juagri.shared.domain.model.filter.FilterType
 import com.juagri.shared.domain.model.promotion.DistrictItem
 import com.juagri.shared.domain.model.promotion.ParticipateDialogData
 import com.juagri.shared.domain.model.promotion.PromotionEventItem
+import com.juagri.shared.domain.model.promotion.PromotionFilterDataItem
 import com.juagri.shared.domain.model.promotion.VillageItem
 import com.juagri.shared.domain.model.user.FinMonth
 import com.juagri.shared.domain.model.user.FinYear
 import com.juagri.shared.domain.model.user.JUDealer
 import com.juagri.shared.domain.model.user.JURegion
+import com.juagri.shared.domain.model.user.JURole
 import com.juagri.shared.domain.model.user.JUTerritory
 import com.juagri.shared.ui.components.layouts.MessageData
 import com.juagri.shared.ui.components.layouts.PermissionData
@@ -53,12 +54,16 @@ open class BaseViewModel(private val session: SessionPreference,private val data
     val showPromotionDialog = mutableStateOf(PromotionFilterDataItem())
     val showParticipateDialog = mutableStateOf(ParticipateDialogData())
 
+    val notificationCount: MutableState<Int> = mutableStateOf(0)
+
+    val selectedRole: MutableState<JURole?> = mutableStateOf(null)
     val selectedRegion: MutableState<JURegion?> = mutableStateOf(null)
     val selectedTerritory: MutableState<JUTerritory?> = mutableStateOf(null)
     val selectedDealer: MutableState<JUDealer?> = mutableStateOf(null)
     val selectedFinYear: MutableState<FinYear?> = mutableStateOf(null)
     val selectedFinMonth: MutableState<FinMonth?> = mutableStateOf(null)
 
+    fun getRoleLabel() = selectedRole.value.selectedValue(names())
     fun getRegionLabel() = selectedRegion.value.selectedValue(names())
     fun getTerritoryLabel() = selectedTerritory.value.selectedValue(names())
     fun getDealerLabel() = selectedDealer.value.selectedValue(names())
@@ -90,6 +95,9 @@ open class BaseViewModel(private val session: SessionPreference,private val data
             Constants.SCREEN_CDO_LIQUIDATION-> AppScreens.CDOLiquidation
             Constants.SCREEN_LOGIN_INFO-> AppScreens.LoginInfoScreen
             Constants.SCREEN_PARTICIPATION-> AppScreens.Participation
+            Constants.SCREEN_SEND_NOTIFICATION-> AppScreens.SendNotification
+            Constants.SCREEN_NOTIFICATION_LIST-> AppScreens.NotificationList
+            Constants.SCREEN_NOTIFICATION_DETAILS-> AppScreens.NotificationDetails()
             else -> AppScreens.DummyScreen
         }
 
@@ -111,6 +119,31 @@ open class BaseViewModel(private val session: SessionPreference,private val data
         viewModelScope.launch(Dispatchers.IO) {
             block.invoke()
         }
+    }
+
+    fun getRoles() {
+        showDialog.value = getRolesList()
+    }
+
+    fun getRolesList(): FilterDataItem {
+        val roles = listOf(
+            JURole(names().all, names().all),
+            JURole("CDO", "Consultant Development Manager"),
+            JURole("SO", "Sales Officer"),
+            JURole("RM", "Regional Manager"),
+            JURole("DM", "Development Manager")
+        )
+        return FilterDataItem(
+            names().selectRole,
+            roles.map {
+                FilterItem(
+                    it.roleId.value(),
+                    it.roleName.value(),
+                    FilterType.ROLE(it)
+                )
+            },
+            mutableStateOf(true)
+        )
     }
 
     suspend fun <T> uiScope(response: ResponseState<T>,mutableState: MutableStateFlow<UIState<T>>){
@@ -147,15 +180,28 @@ open class BaseViewModel(private val session: SessionPreference,private val data
                 is ResponseState.Success -> {
                     showDialog.value = when(filterType){
                         is FilterType.REGION -> {
-                            FilterDataItem(
-                                names().selectRegion,
+                            val regionList = mutableListOf<FilterItem>()
+                            if(addAll){
+                                regionList.add(
+                                    FilterItem(
+                                        names().all,
+                                        names().all,
+                                        FilterType.REGION(JURegion(regCode = names().all, regName = names().all))
+                                    )
+                                )
+                            }
+                            regionList.addAll(
                                 (response.data as List<JURegion>) .map {
                                     FilterItem(
                                         it.regCode.value(),
                                         it.regName.value(),
                                         FilterType.REGION(it)
                                     )
-                                },
+                                }
+                            )
+                            FilterDataItem(
+                                names().selectRegion,
+                                regionList,
                                 mutableStateOf(true)
                             )
                         }
@@ -292,6 +338,7 @@ open class BaseViewModel(private val session: SessionPreference,private val data
                                 mutableStateOf(true)
                             )
                         }
+                        else -> getRolesList()
                     }
                 }
                 is ResponseState.Error -> processError(response.e)
@@ -350,5 +397,9 @@ open class BaseViewModel(private val session: SessionPreference,private val data
             setEmpRoleId("DL")
             setAlreadyLoggedIn(true)
         }
+    }
+
+    fun updateNotificationCount(count: Int){
+        notificationCount.value = count
     }
 }

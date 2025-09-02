@@ -6,13 +6,10 @@ import com.juagri.shared.domain.model.liquidation.DealerLiquidationData
 import com.juagri.shared.domain.model.liquidation.DealerLiquidationItem
 import com.juagri.shared.domain.repo.liquidation.DealerLiquidationRepository
 import com.juagri.shared.utils.Constants
-import com.juagri.shared.utils.JUError
 import com.juagri.shared.utils.ResponseState
-import com.juagri.shared.utils.uploadImages
 import com.juagri.shared.utils.value
 import dev.gitlive.firebase.firestore.CollectionReference
 import dev.gitlive.firebase.firestore.FieldValue
-import dev.gitlive.firebase.firestore.Timestamp
 import dev.gitlive.firebase.firestore.where
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow

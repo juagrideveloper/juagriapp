@@ -2,12 +2,14 @@ package com.juagri.shared.ui.home
 
 import com.juagri.shared.utils.Constants
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalUriHandler
 import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.juagri.shared.domain.model.employee.JUEmployee
+import com.juagri.shared.domain.model.notification.NotificationItem
 import com.juagri.shared.ui.components.dialogs.ProgressDialog
 import com.juagri.shared.ui.components.dialogs.SuccessDialog
 import com.juagri.shared.ui.components.layouts.ScreenLayoutWithMenuActionBar
@@ -19,6 +21,9 @@ import com.juagri.shared.ui.ledger.LedgerScreen
 import com.juagri.shared.ui.liquidation.LiquidationScreen
 import com.juagri.shared.ui.loginInfo.LoginInfoScreen
 import com.juagri.shared.ui.navigation.AppScreens
+import com.juagri.shared.ui.notifications.NotificationDetailsScreen
+import com.juagri.shared.ui.notifications.NotificationListScreen
+import com.juagri.shared.ui.notifications.SendNotificationScreen
 import com.juagri.shared.ui.participation.ParticipationScreen
 import com.juagri.shared.ui.profile.ProfileScreen
 import com.juagri.shared.ui.promotion.PromotionEntryScreen
@@ -26,6 +31,7 @@ import com.juagri.shared.ui.promotionEntries.PromotionEntriesScreen
 import com.juagri.shared.ui.weather.WeatherScreen
 import com.juagri.shared.utils.AppUtils
 import com.juagri.shared.utils.UIState
+import com.juagri.shared.utils.toTimeStamp
 import io.github.xxfast.decompose.router.Router
 import io.github.xxfast.decompose.router.content.RoutedContent
 import io.github.xxfast.decompose.router.rememberRouter
@@ -39,6 +45,7 @@ fun HomeScreen(onBack: () -> Unit) {
     val employee = remember { mutableStateOf(JUEmployee()) }
     val showAppUpdateDialog = mutableStateOf(false)
     var initCallNotDone = true
+    var initNotificationsNotDone = true
     ScreenLayoutWithMenuActionBar(title = viewModel.getScreenTitle(),router=router, employee = employee, viewModel = viewModel) {
         ProgressDialog(viewModel.z0001)
         when (val result = viewModel.employee.collectAsState().value) {
@@ -46,6 +53,10 @@ fun HomeScreen(onBack: () -> Unit) {
                 viewModel.setJUEmployee(result.data)
                 employee.value = result.data
                 initScreen(router, viewModel)
+                if(initNotificationsNotDone) {
+                    viewModel.getNotificationsCount()
+                    initNotificationsNotDone = false
+                }
             }
             else -> {}
         }
@@ -113,6 +124,22 @@ private fun initScreen(router: Router<AppScreens>,viewModel: HomeViewModel){
             AppScreens.CDOLiquidation -> LiquidationScreen()
             AppScreens.LoginInfoScreen -> LoginInfoScreen()
             AppScreens.Participation -> ParticipationScreen()
+            AppScreens.SendNotification -> SendNotificationScreen()
+            AppScreens.NotificationList -> NotificationListScreen(router, viewModel.notificationCount)
+            is AppScreens.NotificationDetails -> NotificationDetailsScreen(
+                NotificationItem(
+                    id = screen.id,
+                    regCode = screen.regCode,
+                    regName = screen.regName,
+                    roleId = screen.roleId,
+                    roleName = screen.roleName,
+                    title = screen.title,
+                    content = screen.content,
+                    filename = screen.filename,
+                    unread = screen.unread,
+                    updatedTime = screen.updatedTime.toTimeStamp()
+                )
+            )
             else -> DummyScreen()
         }
     }

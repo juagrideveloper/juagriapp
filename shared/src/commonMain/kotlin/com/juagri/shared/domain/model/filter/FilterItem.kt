@@ -10,6 +10,7 @@ import com.juagri.shared.domain.model.user.FinMonth
 import com.juagri.shared.domain.model.user.FinYear
 import com.juagri.shared.domain.model.user.JUDealer
 import com.juagri.shared.domain.model.user.JURegion
+import com.juagri.shared.domain.model.user.JURole
 import com.juagri.shared.domain.model.user.JUTerritory
 
 data class FilterItem(var code: String,var name: String,  var data: FilterType)
@@ -30,4 +31,5 @@ sealed class FilterType {
     data class DISTRICT(val data: DistrictItem) : FilterType()
     data class VILLAGE(val data: VillageItem) : FilterType()
     data class USER(val data: JUEmployee) : FilterType()
+    data class ROLE(val data: JURole) : FilterType()
 }

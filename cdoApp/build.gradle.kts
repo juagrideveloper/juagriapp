@@ -19,9 +19,10 @@ kotlin {
                 implementation(project(":decomposerouter"))
 
                 implementation(project.dependencies.platform("com.google.firebase:firebase-bom:31.3.0"))
-                implementation("com.google.firebase:firebase-firestore-ktx")
-                implementation("com.google.firebase:firebase-crashlytics")
-                implementation("com.google.firebase:firebase-analytics")
+                implementation(libs.google.firebase.firestore.ktx)
+                implementation(libs.google.firebase.crashlytics)
+                implementation(libs.google.firebase.analytics)
+                implementation(libs.google.firebase.storage)
             }
         }
     }

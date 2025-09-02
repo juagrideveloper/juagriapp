@@ -59,8 +59,15 @@ object HI_Names: Names {
     override val participation: String get() = "भाग लेना"
 
     override val loginInfo: String get() = "लॉगिन जानकारी"
+    override val sendNotification: String get() = "अधिसूचना भेजें"
+    override val notificationList: String get() = "अधिसूचना सूची"
+    override val notificationDetails: String get() = "अधिसूचना विवरण"
 
+    override val title: String get() = "Title"
+    override val content: String get() = "Content"
+    override val attachments: String get() = "Attachment"
 
+    override val selectRole: String get() = "$select $role"
     override val selectRegion: String get() = "$select $region"
     override val selectTerritory: String get() = "$select $territory"
     override val selectDealer: String get() = "$select $dealer"

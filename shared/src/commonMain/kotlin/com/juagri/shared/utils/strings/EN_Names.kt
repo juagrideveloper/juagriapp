@@ -59,8 +59,15 @@ object EN_Names: Names {
     override val participation: String get() = "Participation Dashboard"
 
     override val loginInfo: String get() = "Login Info"
+    override val sendNotification: String get() = "Send Notification"
+    override val notificationList: String get() = "Notifications List"
+    override val notificationDetails: String get() = "Notification Details"
 
+    override val title: String get() = "Title"
+    override val content: String get() = "Content"
+    override val attachments: String get() = "Attachment"
 
+    override val selectRole: String get() = "$select $role"
     override val selectRegion: String get() = "$select $region"
     override val selectTerritory: String get() = "$select $territory"
     override val selectDealer: String get() = "$select $dealer"

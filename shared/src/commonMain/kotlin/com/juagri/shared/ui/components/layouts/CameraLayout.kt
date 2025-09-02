@@ -20,6 +20,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,8 +32,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.juagri.shared.ui.components.dialogs.ProgressDialog
+import com.juagri.shared.utils.reduceImage
 import com.preat.peekaboo.ui.camera.PeekabooCamera
 import com.preat.peekaboo.ui.camera.rememberPeekabooCameraState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.launch
 
 @Composable
 fun PeekabooCameraView(
@@ -39,14 +46,27 @@ fun PeekabooCameraView(
     openCamera: MutableState<Boolean>,
     onCapture: (ByteArray?) -> Unit
 ) {
+    val showLoading = mutableStateOf(false)
     if (openCamera.value) {
+        val scope = rememberCoroutineScope()
         Dialog(
             properties = DialogProperties(usePlatformDefaultWidth = false),
             onDismissRequest = {}
         ) {
             Surface(modifier = Modifier.fillMaxSize()) {
-                val state = rememberPeekabooCameraState(onCapture = {
-                    onCapture.invoke(it)
+                val state = rememberPeekabooCameraState(onCapture = { byteArray ->
+                    showLoading.value = true
+                    byteArray?.let {
+                        scope.launch(Dispatchers.IO) {
+                            // e.g. max 1280x1280, 70% JPEG quality
+                            val reduced = reduceImage(it, 1280, 1280, 0.5f)
+                            onCapture.invoke(reduced)
+                            showLoading.value = false
+                        }
+                    } ?: {
+                        onCapture.invoke(byteArray)
+                        showLoading.value = false
+                    }
                 })
                 Box(modifier = modifier) {
                     PeekabooCamera(
@@ -69,6 +89,7 @@ fun PeekabooCameraView(
             }
         }
     }
+    ProgressDialog(showLoading)
 }
 
 @Composable

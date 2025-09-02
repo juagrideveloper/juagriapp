@@ -21,9 +21,13 @@ import dev.gitlive.firebase.firestore.Timestamp
 import dev.gitlive.firebase.firestore.fromMilliseconds
 import dev.gitlive.firebase.firestore.where
 import io.ktor.util.date.GMTDate
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.launch
 
 class PromotionRepositoryImpl(
     private val promotionEventDB: CollectionReference,
@@ -129,9 +133,9 @@ class PromotionRepositoryImpl(
             }else ""
 
             var isMobileNumberUnique = true
-            if(phoneNo.isNotEmpty() && entryItems["activity_code"]?.toString().value() != "PM_DFD" && entryItems["activity_code"]?.toString().value() != "PM_NDS"){
+            /*if(phoneNo.isNotEmpty() && entryItems["activity_code"]?.toString().value() == "PM_FI"){
                 isMobileNumberUnique = !promotionMobileNumbersDB.document(phoneNo).get().exists
-            }
+            }*/
 
             if(isMobileNumberUnique) {
                 var farmerCountNotMet = true
@@ -148,18 +152,25 @@ class PromotionRepositoryImpl(
                         entryItems["updated_empcode"].toString() + "-" + GMTDate().timestamp
                     entryItems["entryId"] = entryId
                     println("JUAgriAppTestLogs: PromotionRepositoryImpl setPromotionEntry")
-                    promotionEntryDB.document(entryId).set(entryItems)
                     val filenames = List(files.size) { index -> "${entryId}_" + index + ".jpg" }
+                    entryItems["filenames"] = filenames.joinToString(",")
                     if (files.isNotEmpty()) {
-                        promotionEntryDB.document(entryId)
-                            .update(mapOf("filenames" to filenames.joinToString(",")))
                         uploadImages(files, filenames) {
-                            trySend(ResponseState.Loading())
-                            trySend(ResponseState.Success(true))
+                            println("JUAgriAppTestLogs: PromotionRepositoryImpl files uploaded")
+                            CoroutineScope(Dispatchers.IO).launch {
+                                promotionEntryDB.document(entryId).set(entryItems)
+                                trySend(ResponseState.Loading())
+                                trySend(ResponseState.Success(true))
+                                println("JUAgriAppTestLogs: Data updated")
+                            }
                         }
                     } else {
-                        trySend(ResponseState.Loading())
-                        trySend(ResponseState.Success(true))
+                        CoroutineScope(Dispatchers.IO).launch {
+                            promotionEntryDB.document(entryId).set(entryItems)
+                            trySend(ResponseState.Loading())
+                            trySend(ResponseState.Success(true))
+                            println("JUAgriAppTestLogs: Data updated")
+                        }
                     }
                 }else{
                     trySend(ResponseState.Loading())
@@ -167,7 +178,7 @@ class PromotionRepositoryImpl(
                 }
             }else{
                 trySend(ResponseState.Loading())
-                trySend(ResponseState.Error(JUError.CustomError("Mobile number already exist!")))
+                trySend(ResponseState.Error(JUError.CustomError("This number already exists in the system. Please enter a different contact number.")))
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -203,14 +214,14 @@ class PromotionRepositoryImpl(
                                 it.yPlan += count.toDouble()
                             }
                         } else {
-                            if(entriesCount["cdoid"] != employee.code.value()) {
+                            //if(entriesCount["cdoid"] != employee.code.value()) {
                                 entriesCount[it.actId + "_Mon_act"]?.let { count ->
                                     it.mActual += count.toDouble()
                                 }
                                 entriesCount[it.actId + "_Yr_act"]?.let { count ->
                                     it.yActual += count.toDouble()
                                 }
-                            }
+                            //}
                             if(entriesCount["cdoid"] == employee.code.value()) {
                                 entriesCount[it.actId + "_Mon_plan"]?.let { count ->
                                     it.mPlan += count.toDouble()

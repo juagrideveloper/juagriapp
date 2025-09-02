@@ -1,10 +1,10 @@
 package com.juagri.shared.di
 
-import com.juagri.shared.utils.Constants
 import app.cash.sqldelight.db.SqlDriver
 import com.juagri.shared.JUDatabase
 import com.juagri.shared.data.local.dao.cdo.PromotionDao
 import com.juagri.shared.data.local.dao.common.JUDoctorDao
+import com.juagri.shared.data.local.dao.common.NotificationsDao
 import com.juagri.shared.data.local.dao.common.UserDetailsDao
 import com.juagri.shared.data.local.dao.dealer.DealerDashboardDao
 import com.juagri.shared.data.local.dao.dealer.DealerLedgerDao
@@ -18,11 +18,12 @@ import com.juagri.shared.data.remote.focusProduct.CDOFocusProductRepositoryImpl
 import com.juagri.shared.data.remote.ledger.DealerLedgerRepositoryImpl
 import com.juagri.shared.data.remote.liquidation.DealerLiquidationRepositoryImpl
 import com.juagri.shared.data.remote.login.EmployeeRepositoryImpl
-import com.juagri.shared.data.remote.user.LoginInfoRepositoryImpl
 import com.juagri.shared.data.remote.login.OTPRepositoryImpl
+import com.juagri.shared.data.remote.notification.NotificationRepositoryImpl
 import com.juagri.shared.data.remote.participation.ParticipationRepositoryImpl
 import com.juagri.shared.data.remote.promotion.PromotionEntriesRepositoryImpl
 import com.juagri.shared.data.remote.promotion.PromotionRepositoryImpl
+import com.juagri.shared.data.remote.user.LoginInfoRepositoryImpl
 import com.juagri.shared.data.remote.user.UserRepositoryImpl
 import com.juagri.shared.data.remote.weather.WeatherRepositoryImpl
 import com.juagri.shared.domain.repo.app.AppConfigRepository
@@ -33,6 +34,7 @@ import com.juagri.shared.domain.repo.ledger.DealerLedgerRepository
 import com.juagri.shared.domain.repo.liquidation.DealerLiquidationRepository
 import com.juagri.shared.domain.repo.login.EmployeeRepository
 import com.juagri.shared.domain.repo.login.OTPRepository
+import com.juagri.shared.domain.repo.notification.NotificationRepository
 import com.juagri.shared.domain.repo.participation.ParticipationRepository
 import com.juagri.shared.domain.repo.promotion.PromotionEntriesRepository
 import com.juagri.shared.domain.repo.promotion.PromotionRepository
@@ -47,6 +49,7 @@ import com.juagri.shared.domain.usecase.DealerLiquidationUseCase
 import com.juagri.shared.domain.usecase.EmployeeUseCase
 import com.juagri.shared.domain.usecase.JUDoctorUseCase
 import com.juagri.shared.domain.usecase.LoginInfoUseCase
+import com.juagri.shared.domain.usecase.NotificationUseCase
 import com.juagri.shared.domain.usecase.OTPUseCase
 import com.juagri.shared.domain.usecase.ParticipationUseCase
 import com.juagri.shared.domain.usecase.PromotionEntriesUseCase
@@ -63,12 +66,14 @@ import com.juagri.shared.ui.ledger.LedgerViewModel
 import com.juagri.shared.ui.liquidation.LiquidationViewModel
 import com.juagri.shared.ui.login.LoginViewModel
 import com.juagri.shared.ui.loginInfo.LoginInfoViewModel
+import com.juagri.shared.ui.notifications.NotificationViewModel
 import com.juagri.shared.ui.participation.ParticipationViewModel
 import com.juagri.shared.ui.profile.ProfileViewModel
 import com.juagri.shared.ui.promotion.PromotionEntryViewModel
 import com.juagri.shared.ui.promotionEntries.PromotionEntriesViewModel
 import com.juagri.shared.ui.splash.SplashViewModel
 import com.juagri.shared.ui.weather.WeatherViewModel
+import com.juagri.shared.utils.Constants
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.firestore.firestore
 import io.ktor.client.HttpClient
@@ -117,6 +122,9 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
             createDistrictMaster()
             createVillageMaster()
         }
+        notificationDetailsQueries.apply {
+            createNotifications()
+        }
     }
     startKoin {
         modules(
@@ -129,6 +137,7 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                 single { DealerLedgerDao(JUDatabase(sqlDriver).dealerDetailsQueries) }
                 single { JUDoctorDao(JUDatabase(sqlDriver).jUDoctorDetailsQueries) }
                 single { PromotionDao(JUDatabase(sqlDriver).promotionDetailsQueries) }
+                single { NotificationsDao(JUDatabase(sqlDriver).notificationDetailsQueries) }
                 single<EmployeeRepository> {
                     EmployeeRepositoryImpl(
                         Firebase.firestore.collection(Constants.TABLE_EMP_ACCESS),
@@ -219,6 +228,12 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                         get()
                     )
                 }
+                single<NotificationRepository> {
+                    NotificationRepositoryImpl(
+                        Firebase.firestore.collection(Constants.TABLE_NOTIFICATIONS),
+                        get()
+                    )
+                }
 
                 single { EmployeeUseCase(get()) }
                 single { DealerDashboardUseCase(get()) }
@@ -234,10 +249,11 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                 single { AppConfigUseCase(get()) }
                 single { WeatherUseCase(get()) }
                 single { ParticipationUseCase(get()) }
+                single { NotificationUseCase(get()) }
 
                 factory { SplashViewModel(get(),get()) }
                 factory { LoginViewModel(get(),get(),get(),get()) }
-                factory { HomeViewModel(get(),get(),get(),get()) }
+                factory { HomeViewModel(get(),get(),get(),get(), get()) }
                 factory { DealerDashboardViewModel(get(),get(),get()) }
                 factory { LedgerViewModel(get(),get(),get(),get()) }
                 factory { DoctorViewModel(get(),get(),get()) }
@@ -251,6 +267,7 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                 factory { TestScreenViewModel(get(),get(),get()) }
                 factory { WeatherViewModel(get(),get(),get()) }
                 factory { ParticipationViewModel(get(),get(),get(),get()) }
+                factory { NotificationViewModel(get(),get(),get(),get()) }
             }
         )
     }

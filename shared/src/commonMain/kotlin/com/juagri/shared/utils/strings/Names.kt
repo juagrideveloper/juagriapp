@@ -59,8 +59,15 @@ interface Names {
     val participation: String
 
     val loginInfo: String
+    val sendNotification: String
+    val notificationList: String
+    val notificationDetails: String
 
+    val title: String
+    val content: String
+    val attachments: String
 
+    val selectRole: String
     val selectRegion: String
     val selectTerritory: String
     val selectDealer: String

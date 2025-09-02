@@ -48,6 +48,7 @@ import com.juagri.shared.domain.model.promotion.PromotionValue
 import com.juagri.shared.domain.model.promotion.VillageItem
 import com.juagri.shared.ui.components.dialogs.FilterDialog
 import com.juagri.shared.ui.components.dialogs.PromotionFilterDialog
+import com.juagri.shared.ui.components.dialogs.SuccessDialog
 import com.juagri.shared.ui.components.fields.ButtonNormal
 import com.juagri.shared.ui.components.fields.LabelHeading
 import com.juagri.shared.ui.components.layouts.CardLayout
@@ -111,7 +112,15 @@ fun PromotionEntryScreen() {
                 when (val result = viewModel.setPromotionEntryData.collectAsState().value) {
                     is UIState.Success -> {
                         if (result.data) {
-                            resetFields()
+                            val showSuccessDialog = mutableStateOf(true)
+                            SuccessDialog(
+                                showSuccessDialog,
+                                title = "Success",
+                                desc = "Files are being uploaded in the background. No action is required."
+                            ){
+                                resetFields()
+                                showSuccessDialog.value = false
+                            }
                         }
                     }
                     else -> {}
