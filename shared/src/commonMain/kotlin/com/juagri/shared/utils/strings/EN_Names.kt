@@ -18,7 +18,7 @@ object EN_Names: Names {
     override val pleaseSelectValidTerritory: String get() = "Please select territory"
     override val pleaseSelectValidDealer: String get() = "Please select dealer"
     override val pleaseSelectValidFinYear: String get() = "Please select financial year"
-    override val pleaseSelectValidFinMonth: String get() = "Please select financial year"
+    override val pleaseSelectValidFinMonth: String get() = "Please select financial month"
     override val openingBalance: String get() = "Opening Balance"
     override val closingBalance: String get() = "Closing Balance"
     override val debit: String get() = "Debit"

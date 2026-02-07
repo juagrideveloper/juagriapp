@@ -45,7 +45,7 @@ object Constants {
     const val APP_MODE_DEALER = "Dealer"
     const val APP_MODE_STAFF = "Staff"
 
-    const val CURRENT_APP_MODE = APP_MODE_CDO
+    const val CURRENT_APP_MODE = APP_MODE_DEALER
 
     const val HEADING_MENU_0001 = "H_001"
     const val HEADING_MENU_0002 = "H_002"
