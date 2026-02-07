@@ -14,12 +14,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.juagri.shared.ui.components.dialogs.ProgressDialog
+import com.juagri.shared.utils.Constants
 import com.juagri.shared.utils.UIState
 import moe.tlaster.precompose.koin.koinViewModel
 
 @Composable
 fun DealerLedgerOldExportToPDFScreen(onClose: () -> Unit) {
     val viewModel = koinViewModel(DealerLedgerOldExportToPDFViewModel::class)
+    viewModel.setScreenId(Constants.SCREEN_DEALER_LEDGER_EXPORT)
     val pdfState by viewModel.pdfFile.collectAsState()
     LaunchedEffect(Unit) {
         viewModel.createPdf()

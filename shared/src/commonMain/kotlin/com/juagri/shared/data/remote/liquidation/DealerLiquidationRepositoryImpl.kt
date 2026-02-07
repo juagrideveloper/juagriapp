@@ -24,7 +24,10 @@ class DealerLiquidationRepositoryImpl(
             trySend(ResponseState.Loading(true))
             try {
                 val configItem = config.document(Constants.TABLE_LIQUIDATION_CONFIG).get().data<DealerLiquidationConfig>()
-                val liquidationItems = liquidationDB.where { "cdocode" equalTo cdoCode }.get().documents.map { it.data<DealerLiquidationItem>() }
+                val condition = if(Constants.CURRENT_APP_MODE == Constants.APP_MODE_DEALER) "ccode" else "cdocode"
+                val liquidationItems = liquidationDB.where {
+                    condition  equalTo cdoCode
+                }.get().documents.map { it.data<DealerLiquidationItem>() }
                 trySend(ResponseState.Loading())
                 trySend(
                     ResponseState.Success(

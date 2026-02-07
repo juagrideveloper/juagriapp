@@ -28,6 +28,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.juagri.shared.domain.model.dashboard.OSChartItem
@@ -197,6 +198,21 @@ fun LabelHeading(
     modifier = modifier.padding(bottom = 4.dp),
     color = color,
     fontWeight = FontWeight.Bold,
+    textAlign = textAlign
+)
+
+@Composable
+fun LabelContentLink(
+    text: String = "",
+    textAlign: TextAlign = TextAlign.Start,
+    modifier: Modifier = Modifier,
+    color: Color = Color(0xFF0083EC)
+) = Text(
+    text,
+    style = AppTypography.labelSmall.copy(textDecoration = TextDecoration.Underline),
+    modifier = modifier,
+    color = color,
+    fontWeight = FontWeight.Normal,
     textAlign = textAlign
 )
 

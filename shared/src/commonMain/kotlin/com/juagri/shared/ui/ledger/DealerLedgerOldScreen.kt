@@ -1,9 +1,6 @@
 package com.juagri.shared.ui.ledger
 
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,7 +19,6 @@ import com.juagri.shared.ui.components.layouts.ScreenLayoutWithoutActionBar
 import com.juagri.shared.ui.components.layouts.getModifier
 import com.juagri.shared.utils.Constants
 import com.juagri.shared.utils.UIState
-import com.juagri.shared.utils.value
 import moe.tlaster.precompose.koin.koinViewModel
 
 @Composable
@@ -71,7 +67,7 @@ fun DealerLedgerOldScreen(
                         ) { getFinMonthList() }
                     }
                     ColumnSpaceSmall()
-                    Row(modifier = Modifier.fillMaxWidth()) {
+                    /*Row(modifier = Modifier.fillMaxWidth()) {
                         Button(
                             onClick = {
                                 val dealer = selectedDealer.value ?: return@Button
@@ -96,7 +92,7 @@ fun DealerLedgerOldScreen(
                         ) {
                             Text("Export to PDF")
                         }
-                    }
+                    }*/
                 }
                 ColumnSpaceSmall()
                 when (ledgerState) {
@@ -104,7 +100,7 @@ fun DealerLedgerOldScreen(
                         LedgerOldLayout(
                             names = names(),
                             dealerLedgerItem = it,
-                            onInvoiceClick = { docno -> getLedgerInvoice(docno) }
+                            onInvoiceClick = { docNo -> getLedgerInvoice(docNo) }
                         )
                     }
                     else -> {}

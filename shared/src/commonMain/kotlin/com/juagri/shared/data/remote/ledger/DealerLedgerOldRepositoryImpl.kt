@@ -118,7 +118,7 @@ class DealerLedgerOldRepositoryImpl(
         try {
             val snap = ledgerInvoiceOld.document(invoiceNo).get()
             val item = snap.data<LedgerInvoiceItemOld>()
-            println("DealerLedgerOldRepository: getInvoiceDetails success=${item != null}")
+            println("DealerLedgerOldRepository: getInvoiceDetails success=$item")
             trySend(item)
         } catch (e: Exception) {
             println("DealerLedgerOldRepository: getInvoiceDetails failed: ${e.message}")

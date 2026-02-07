@@ -73,6 +73,7 @@ object Constants {
     const val SCREEN_NOTIFICATION_LIST = "C_016"
     const val SCREEN_NOTIFICATION_DETAILS = "C_017"
     const val SCREEN_DEALER_LEDGER_OLD = "C_018"
+    const val SCREEN_DEALER_LEDGER_EXPORT = "C_019"
 
 
     const val FIELD_C_CODE = "ccode"

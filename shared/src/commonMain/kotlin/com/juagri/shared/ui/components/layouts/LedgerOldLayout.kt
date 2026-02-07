@@ -13,6 +13,7 @@ import com.juagri.shared.ui.components.fields.ColumnSpaceMedium
 import com.juagri.shared.ui.components.fields.ColumnSpaceSmall
 import com.juagri.shared.ui.components.fields.LabelAmount
 import com.juagri.shared.ui.components.fields.LabelContent
+import com.juagri.shared.ui.components.fields.LabelContentLink
 import com.juagri.shared.ui.components.fields.LabelHeading
 import com.juagri.shared.ui.components.fields.LedgerIcon
 import com.juagri.shared.ui.components.fields.RowSpaceExtraSmall
@@ -51,37 +52,45 @@ fun LedgerOldLayout(
     ColumnSpaceMedium()
     dealerLedgerItem.ledgerItems.forEach { item ->
         val clickModifier = if (onInvoiceClick != null) {
-            Modifier.clickable { onInvoiceClick(item.docno.value().replace("/", "___")) }
+            Modifier.clickable {
+                if (item.cramt.value() > 0) {
+                    onInvoiceClick(item.docno.value().replace("/", "___"))
+                }
+            }
         } else Modifier
         Column(modifier = clickModifier) {
-        CardLayout {
-            Row {
-                LabelHeading(item.invdate.value(), modifier = Modifier.weight(1f))
-                LabelHeading(names.debit, modifier = Modifier.weight(1f))
-                LabelHeading(names.credit, modifier = Modifier.weight(1f))
-                LabelHeading(names.balance, modifier = Modifier.weight(1f))
-            }
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Column(modifier = Modifier.weight(1f).padding(end = 4.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        LedgerIcon(getColors().ledger_invoice)
-                        RowSpaceExtraSmall()
-                        LabelContent(item.docno.value(), modifier = Modifier.weight(1f))
-                    }
-                    if (item.chqno.value().isNotEmpty()) {
-                        ColumnSpaceSmall()
+            CardLayout {
+                Row {
+                    LabelHeading(item.invdate.value(), modifier = Modifier.weight(1f))
+                    LabelHeading(names.debit, modifier = Modifier.weight(1f))
+                    LabelHeading(names.credit, modifier = Modifier.weight(1f))
+                    LabelHeading(names.balance, modifier = Modifier.weight(1f))
+                }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(modifier = Modifier.weight(1f).padding(end = 4.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            LedgerIcon(getColors().ledger_cheque)
+                            LedgerIcon(getColors().ledger_invoice)
                             RowSpaceExtraSmall()
-                            LabelContent(item.chqno.value(), modifier = Modifier.weight(1f))
+                            if (item.cramt.value() > 0) {
+                                LabelContentLink(item.docno.value(), modifier = Modifier.weight(1f))
+                            } else {
+                                LabelContent(item.docno.value(), modifier = Modifier.weight(1f))
+                            }
+                        }
+                        if (item.chqno.value().isNotEmpty()) {
+                            ColumnSpaceSmall()
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                LedgerIcon(getColors().ledger_cheque)
+                                RowSpaceExtraSmall()
+                                LabelContent(item.chqno.value(), modifier = Modifier.weight(1f))
+                            }
                         }
                     }
+                    LabelContent(item.dbamt.toMoneyFormat(), modifier = Modifier.weight(1f))
+                    LabelContent(item.cramt.toMoneyFormat(), modifier = Modifier.weight(1f))
+                    LabelContent(item.balamt.toMoneyFormat(), modifier = Modifier.weight(1f))
                 }
-                LabelContent(item.dbamt.toMoneyFormat(), modifier = Modifier.weight(1f))
-                LabelContent(item.cramt.toMoneyFormat(), modifier = Modifier.weight(1f))
-                LabelContent(item.balamt.toMoneyFormat(), modifier = Modifier.weight(1f))
             }
-        }
         }
         ColumnSpaceSmall()
     }

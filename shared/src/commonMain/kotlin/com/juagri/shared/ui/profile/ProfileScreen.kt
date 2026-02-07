@@ -1,6 +1,5 @@
 package com.juagri.shared.ui.profile
 
-import com.juagri.shared.utils.Constants
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -15,10 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.rounded.Lock
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -27,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.juagri.shared.ui.components.fields.ColumnSpaceExtraSmall
@@ -41,11 +36,8 @@ import com.juagri.shared.ui.components.layouts.CardLayout
 import com.juagri.shared.ui.components.layouts.ProfileImageLayout
 import com.juagri.shared.ui.components.layouts.ScreenLayout
 import com.juagri.shared.ui.components.layouts.ScreenLayoutWithoutActionBar
-import com.juagri.shared.ui.components.layouts.SnackbarMessage
-import com.juagri.shared.utils.getColors
+import com.juagri.shared.utils.Constants
 import com.juagri.shared.utils.value
-import io.kamel.image.KamelImage
-import io.kamel.image.asyncPainterResource
 import moe.tlaster.precompose.koin.koinViewModel
 
 @Composable
@@ -74,25 +66,27 @@ fun ProfileScreen() {
                                 ColumnSpaceSmall()
                                 TextProfileContent(it.role.value())
                                 ColumnSpaceSmall()
-                                Row(modifier = Modifier.height(IntrinsicSize.Min)) {
-                                    Column(modifier = Modifier.weight(1f)) {
-                                        TextProfileHeading(names().region)
-                                        ColumnSpaceSmall()
-                                        TextProfileContent(it.regionList.first().regName.value())
+                                if (Constants.CURRENT_APP_MODE != Constants.APP_MODE_DEALER) {
+                                    Row(modifier = Modifier.height(IntrinsicSize.Min)) {
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            TextProfileHeading(names().region)
+                                            ColumnSpaceSmall()
+                                            TextProfileContent(it.regionList.first().regName.value())
+                                        }
+                                        Divider(
+                                            color = Color.LightGray,
+                                            modifier = Modifier
+                                                .fillMaxHeight()
+                                                .width(0.3.dp)
+                                        )
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            TextProfileHeading(names().territory)
+                                            ColumnSpaceSmall()
+                                            TextProfileContent(it.territoryList.first().tName.value())
+                                        }
                                     }
-                                    Divider(
-                                        color = Color.LightGray,
-                                        modifier = Modifier
-                                            .fillMaxHeight()
-                                            .width(0.3.dp)
-                                    )
-                                    Column(modifier = Modifier.weight(1f)) {
-                                        TextProfileHeading(names().territory)
-                                        ColumnSpaceSmall()
-                                        TextProfileContent(it.territoryList.first().tName.value())
-                                    }
+                                    ColumnSpaceSmall()
                                 }
-                                ColumnSpaceSmall()
                             }
                             ColumnSpaceSmall()
                             it.regionList.forEach { region ->

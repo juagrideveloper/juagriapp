@@ -133,9 +133,10 @@ class DealerLedgerOldViewModel(
     }
 
     fun getLedgerInvoice(invoiceNo: String) {
+        //"BS/AK/2526/00989"
         backgroundScope {
             showProgressBar(true)
-            ledgerOldUseCase.getInvoiceDetails("BS/AK/2526/00989".value().replace("/", "___")).collect { item ->
+            ledgerOldUseCase.getInvoiceDetails(invoiceNo.value().replace("/", "___")).collect { item ->
                 uiScope {
                     showProgressBar(false)
                     _ledgerInvoice.value = UIState.Success(item)
