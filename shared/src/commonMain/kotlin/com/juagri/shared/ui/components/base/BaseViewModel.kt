@@ -98,6 +98,7 @@ open class BaseViewModel(private val session: SessionPreference,private val data
             Constants.SCREEN_SEND_NOTIFICATION-> AppScreens.SendNotification
             Constants.SCREEN_NOTIFICATION_LIST-> AppScreens.NotificationList
             Constants.SCREEN_NOTIFICATION_DETAILS-> AppScreens.NotificationDetails()
+            Constants.SCREEN_DEALER_LEDGER_OLD-> AppScreens.DealerLedgerOld
             else -> AppScreens.DummyScreen
         }
 

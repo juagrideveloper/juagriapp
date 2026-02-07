@@ -15,6 +15,7 @@ import com.juagri.shared.data.remote.app.AppConfigRepositoryImpl
 import com.juagri.shared.data.remote.dashboard.DealerDashboardRepositoryImpl
 import com.juagri.shared.data.remote.doctor.JUDoctorRepositoryImpl
 import com.juagri.shared.data.remote.focusProduct.CDOFocusProductRepositoryImpl
+import com.juagri.shared.data.remote.ledger.DealerLedgerOldRepositoryImpl
 import com.juagri.shared.data.remote.ledger.DealerLedgerRepositoryImpl
 import com.juagri.shared.data.remote.liquidation.DealerLiquidationRepositoryImpl
 import com.juagri.shared.data.remote.login.EmployeeRepositoryImpl
@@ -30,6 +31,7 @@ import com.juagri.shared.domain.repo.app.AppConfigRepository
 import com.juagri.shared.domain.repo.dashboard.DealerDashboardRepository
 import com.juagri.shared.domain.repo.doctor.JUDoctorRepository
 import com.juagri.shared.domain.repo.focusProduct.CDOFocusProductRepository
+import com.juagri.shared.domain.repo.ledger.DealerLedgerOldRepository
 import com.juagri.shared.domain.repo.ledger.DealerLedgerRepository
 import com.juagri.shared.domain.repo.liquidation.DealerLiquidationRepository
 import com.juagri.shared.domain.repo.login.EmployeeRepository
@@ -44,6 +46,7 @@ import com.juagri.shared.domain.repo.weather.WeatherRepository
 import com.juagri.shared.domain.usecase.AppConfigUseCase
 import com.juagri.shared.domain.usecase.CDOFocusProductUseCase
 import com.juagri.shared.domain.usecase.DealerDashboardUseCase
+import com.juagri.shared.domain.usecase.DealerLedgerOldUseCase
 import com.juagri.shared.domain.usecase.DealerLedgerUseCase
 import com.juagri.shared.domain.usecase.DealerLiquidationUseCase
 import com.juagri.shared.domain.usecase.EmployeeUseCase
@@ -62,6 +65,8 @@ import com.juagri.shared.ui.dashboard.dealer.DealerDashboardViewModel
 import com.juagri.shared.ui.doctor.DoctorViewModel
 import com.juagri.shared.ui.focusProduct.CDOFocusProductSummaryViewModel
 import com.juagri.shared.ui.home.HomeViewModel
+import com.juagri.shared.ui.ledger.DealerLedgerOldExportToPDFViewModel
+import com.juagri.shared.ui.ledger.DealerLedgerOldViewModel
 import com.juagri.shared.ui.ledger.LedgerViewModel
 import com.juagri.shared.ui.liquidation.LiquidationViewModel
 import com.juagri.shared.ui.login.LoginViewModel
@@ -175,6 +180,12 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                         get()
                     )
                 }
+                single<DealerLedgerOldRepository> {
+                    DealerLedgerOldRepositoryImpl(
+                        Firebase.firestore.collection(Constants.TABLE_DEALER_LEDGER_OLD),
+                        Firebase.firestore.collection(Constants.TABLE_LEDGER_INVOICE_OLD)
+                    )
+                }
                 single<JUDoctorRepository> {
                     JUDoctorRepositoryImpl(
                         Firebase.firestore.collection(Constants.TABLE_JU_DOCTOR),
@@ -238,6 +249,7 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                 single { EmployeeUseCase(get()) }
                 single { DealerDashboardUseCase(get()) }
                 single { DealerLedgerUseCase(get()) }
+                single { DealerLedgerOldUseCase(get()) }
                 single { OTPUseCase(get()) }
                 single { UserDetailsUseCase(get()) }
                 single { JUDoctorUseCase(get()) }
@@ -256,6 +268,8 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                 factory { HomeViewModel(get(),get(),get(),get(), get()) }
                 factory { DealerDashboardViewModel(get(),get(),get()) }
                 factory { LedgerViewModel(get(),get(),get(),get()) }
+                factory { DealerLedgerOldViewModel(get(),get(),get(),get()) }
+                factory { DealerLedgerOldExportToPDFViewModel(get(),get()) }
                 factory { DoctorViewModel(get(),get(),get()) }
                 factory { ProfileViewModel(get(),get()) }
                 factory { PromotionEntryViewModel(get(),get(),get()) }

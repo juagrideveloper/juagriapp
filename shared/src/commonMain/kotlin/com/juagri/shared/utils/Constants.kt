@@ -11,6 +11,10 @@ object Constants {
     const val TABLE_FIN_MONTH_MASTER = "V1_FinMonth"
     const val TABLE_LEDGER_OPENING_BALANCE = "V1_LedgerOpeningBalance"
     const val TABLE_DEALER_LEDGER = "V1_DealerLedger"
+    /** Old Firestore: dealerLedger.doc(dealerCode).collection(finYear).doc(month) with monopenbal, monclosebal, and ledger row keys */
+    const val TABLE_DEALER_LEDGER_OLD = "CustomerLedger"
+    /** Old Firestore: ledgerInvoice.doc(invoiceNo) for invoice details */
+    const val TABLE_LEDGER_INVOICE_OLD = "CustomerInvoice"
     const val TABLE_JU_DOCTOR = "V1_JUDoctorItems"
     const val TABLE_PROMOTION_ACTIVITY_LIST = "PromotionActivityList"
     const val TABLE_PROMOTION_ACTIVITY_FIELDS = "PromotionActivityFields"
@@ -68,6 +72,7 @@ object Constants {
     const val SCREEN_SEND_NOTIFICATION = "C_015"
     const val SCREEN_NOTIFICATION_LIST = "C_016"
     const val SCREEN_NOTIFICATION_DETAILS = "C_017"
+    const val SCREEN_DEALER_LEDGER_OLD = "C_018"
 
 
     const val FIELD_C_CODE = "ccode"

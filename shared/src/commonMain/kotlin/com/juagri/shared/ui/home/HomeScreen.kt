@@ -1,13 +1,13 @@
 package com.juagri.shared.ui.home
 
-import com.juagri.shared.utils.Constants
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalUriHandler
 import com.arkivanov.decompose.ExperimentalDecomposeApi
+import com.arkivanov.decompose.router.stack.pop
+import com.arkivanov.decompose.router.stack.push
 import com.juagri.shared.domain.model.employee.JUEmployee
 import com.juagri.shared.domain.model.notification.NotificationItem
 import com.juagri.shared.ui.components.dialogs.ProgressDialog
@@ -17,7 +17,9 @@ import com.juagri.shared.ui.dashboard.cdo.CDODashboardScreen
 import com.juagri.shared.ui.dashboard.dealer.DealerDashboardScreen
 import com.juagri.shared.ui.doctor.DoctorCropScreen
 import com.juagri.shared.ui.focusProduct.CDOFocusProductSummary
-import com.juagri.shared.ui.ledger.LedgerScreen
+import com.juagri.shared.ui.ledger.DealerLedgerOldExportHolder
+import com.juagri.shared.ui.ledger.DealerLedgerOldExportToPDFScreen
+import com.juagri.shared.ui.ledger.DealerLedgerOldScreen
 import com.juagri.shared.ui.liquidation.LiquidationScreen
 import com.juagri.shared.ui.loginInfo.LoginInfoScreen
 import com.juagri.shared.ui.navigation.AppScreens
@@ -30,6 +32,7 @@ import com.juagri.shared.ui.promotion.PromotionEntryScreen
 import com.juagri.shared.ui.promotionEntries.PromotionEntriesScreen
 import com.juagri.shared.ui.weather.WeatherScreen
 import com.juagri.shared.utils.AppUtils
+import com.juagri.shared.utils.Constants
 import com.juagri.shared.utils.UIState
 import com.juagri.shared.utils.toTimeStamp
 import io.github.xxfast.decompose.router.Router
@@ -108,7 +111,19 @@ private fun initScreen(router: Router<AppScreens>,viewModel: HomeViewModel){
                     else -> ProfileScreen()
                 }
             }
-            AppScreens.Ledger -> LedgerScreen()
+            //AppScreens.Ledger -> LedgerScreen()
+            AppScreens.Ledger,
+            AppScreens.DealerLedgerOld -> DealerLedgerOldScreen(
+                onExportToPdf = { data ->
+                    DealerLedgerOldExportHolder.exportData = data
+                    router.push(AppScreens.DealerLedgerOldExportToPDF)
+                }
+            )
+            AppScreens.DealerLedgerOldExportToPDF -> DealerLedgerOldExportToPDFScreen(
+                onClose = {
+                    router.pop()
+                }
+            )
             is AppScreens.JUDoctorCrop -> DoctorCropScreen(router, screen.parentId)
             is AppScreens.JUDoctorManagement -> DoctorCropScreen(router, screen.parentId)
             is AppScreens.JUDoctorChild -> DoctorCropScreen(router, screen.parentId)

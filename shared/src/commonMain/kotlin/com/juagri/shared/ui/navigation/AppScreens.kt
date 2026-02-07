@@ -25,6 +25,8 @@ sealed class AppScreens: Parcelable {
   data object Participation: AppScreens()
   data object SendNotification: AppScreens()
   data object NotificationList: AppScreens()
+  data object DealerLedgerOld: AppScreens()
+  data object DealerLedgerOldExportToPDF: AppScreens()
   data class NotificationDetails(
     val id: String = "",
     val regCode: String = "",
