@@ -24,6 +24,7 @@ import com.juagri.shared.data.remote.notification.NotificationRepositoryImpl
 import com.juagri.shared.data.remote.participation.ParticipationRepositoryImpl
 import com.juagri.shared.data.remote.promotion.PromotionEntriesRepositoryImpl
 import com.juagri.shared.data.remote.promotion.PromotionRepositoryImpl
+import com.juagri.shared.data.remote.starclub.StarClubRepositoryImpl
 import com.juagri.shared.data.remote.user.LoginInfoRepositoryImpl
 import com.juagri.shared.data.remote.user.UserRepositoryImpl
 import com.juagri.shared.data.remote.weather.WeatherRepositoryImpl
@@ -40,6 +41,7 @@ import com.juagri.shared.domain.repo.notification.NotificationRepository
 import com.juagri.shared.domain.repo.participation.ParticipationRepository
 import com.juagri.shared.domain.repo.promotion.PromotionEntriesRepository
 import com.juagri.shared.domain.repo.promotion.PromotionRepository
+import com.juagri.shared.domain.repo.starclub.StarClubRepository
 import com.juagri.shared.domain.repo.user.LoginInfoRepository
 import com.juagri.shared.domain.repo.user.UserRepository
 import com.juagri.shared.domain.repo.weather.WeatherRepository
@@ -57,6 +59,7 @@ import com.juagri.shared.domain.usecase.OTPUseCase
 import com.juagri.shared.domain.usecase.ParticipationUseCase
 import com.juagri.shared.domain.usecase.PromotionEntriesUseCase
 import com.juagri.shared.domain.usecase.PromotionUseCase
+import com.juagri.shared.domain.usecase.StarClubUseCase
 import com.juagri.shared.domain.usecase.UserDetailsUseCase
 import com.juagri.shared.domain.usecase.WeatherUseCase
 import com.juagri.shared.ui.TestScreenViewModel
@@ -246,6 +249,11 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                         get()
                     )
                 }
+                single<StarClubRepository> {
+                    StarClubRepositoryImpl(
+                        Firebase.firestore.collection(Constants.TABLE_STAR_CLUB)
+                    )
+                }
 
                 single { EmployeeUseCase(get()) }
                 single { DealerDashboardUseCase(get()) }
@@ -262,6 +270,7 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                 single { AppConfigUseCase(get()) }
                 single { WeatherUseCase(get()) }
                 single { ParticipationUseCase(get()) }
+                single { StarClubUseCase(get()) }
                 single { NotificationUseCase(get()) }
 
                 factory { SplashViewModel(get(),get()) }
@@ -282,7 +291,7 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                 factory { TestScreenViewModel(get(),get(),get()) }
                 factory { WeatherViewModel(get(),get(),get()) }
                 factory { ParticipationViewModel(get(),get(),get(),get()) }
-                factory { StarClubViewModel(get(), get()) }
+                factory { StarClubViewModel(get(), get(), get()) }
                 factory { NotificationViewModel(get(),get(),get(),get()) }
             }
         )

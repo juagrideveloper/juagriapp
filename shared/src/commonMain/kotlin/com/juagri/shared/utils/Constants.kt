@@ -30,6 +30,8 @@ object Constants {
     const val TABLE_LOGIN_INFO = "LoginInfo"
     const val TABLE_APP = "App"
     const val TABLE_NOTIFICATIONS = "Notifications"
+    /** Star Club: document id = ccode, fields ccode, cname, metrics (TotalSales, FocusProduct, DSO, PayDec25, PayJan26, PayJun26) */
+    const val TABLE_STAR_CLUB = "DealerStarClub"
 
     const val FOLDER_PROMOTION_ENTRY_IMAGES = "PromotionEntryImages"
     const val FOLDER_NOTIFICATION_FILES = "NotificationFiles"
