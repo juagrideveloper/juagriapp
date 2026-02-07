@@ -30,6 +30,7 @@ import com.juagri.shared.ui.participation.ParticipationScreen
 import com.juagri.shared.ui.profile.ProfileScreen
 import com.juagri.shared.ui.promotion.PromotionEntryScreen
 import com.juagri.shared.ui.promotionEntries.PromotionEntriesScreen
+import com.juagri.shared.ui.starclub.StarClubScreen
 import com.juagri.shared.ui.weather.WeatherScreen
 import com.juagri.shared.utils.AppUtils
 import com.juagri.shared.utils.Constants
@@ -141,6 +142,7 @@ private fun initScreen(router: Router<AppScreens>,viewModel: HomeViewModel){
             AppScreens.Participation -> ParticipationScreen()
             AppScreens.SendNotification -> SendNotificationScreen()
             AppScreens.NotificationList -> NotificationListScreen(router, viewModel.notificationCount)
+            AppScreens.StarClub -> StarClubScreen()
             is AppScreens.NotificationDetails -> NotificationDetailsScreen(
                 NotificationItem(
                     id = screen.id,

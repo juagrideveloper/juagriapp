@@ -73,4 +73,5 @@ object HI_Names: Names {
     override val selectDealer: String get() = "$select $dealer"
     override val selectFinYear: String get() = "$select $finYear"
     override val selectFinMonth: String get() = "$select $finMonth"
+    override val starClub: String get() = "स्टार क्लब"
 }

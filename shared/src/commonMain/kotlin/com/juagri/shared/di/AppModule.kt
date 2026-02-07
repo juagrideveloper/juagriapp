@@ -77,6 +77,7 @@ import com.juagri.shared.ui.profile.ProfileViewModel
 import com.juagri.shared.ui.promotion.PromotionEntryViewModel
 import com.juagri.shared.ui.promotionEntries.PromotionEntriesViewModel
 import com.juagri.shared.ui.splash.SplashViewModel
+import com.juagri.shared.ui.starclub.StarClubViewModel
 import com.juagri.shared.ui.weather.WeatherViewModel
 import com.juagri.shared.utils.Constants
 import dev.gitlive.firebase.Firebase
@@ -281,6 +282,7 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                 factory { TestScreenViewModel(get(),get(),get()) }
                 factory { WeatherViewModel(get(),get(),get()) }
                 factory { ParticipationViewModel(get(),get(),get(),get()) }
+                factory { StarClubViewModel(get(), get()) }
                 factory { NotificationViewModel(get(),get(),get(),get()) }
             }
         )
