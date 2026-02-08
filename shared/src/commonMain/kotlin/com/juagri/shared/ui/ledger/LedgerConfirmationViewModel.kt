@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class LedgerConfirmationViewModel(
-    private val session: SessionPreference,
+    session: SessionPreference,
     dataManager: DataManager,
     private val osConfirmUseCase: OsConfirmUseCase
 ) : BaseViewModel(session, dataManager) {
@@ -68,5 +68,5 @@ class LedgerConfirmationViewModel(
         }
     }
 
-    private fun empCode() = "CAP-0065" //session.empCode()
+    private fun empCode() = getJUEmployee()?.code.value()
 }

@@ -7,6 +7,7 @@ import com.juagri.shared.domain.model.starclub.StarClubMetric
 import com.juagri.shared.domain.usecase.StarClubUseCase
 import com.juagri.shared.ui.components.base.BaseViewModel
 import com.juagri.shared.utils.Constants
+import com.juagri.shared.utils.value
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -56,7 +57,7 @@ class StarClubViewModel(
     }
 
     private fun loadStarClub() {
-        val ccode = "CAP-0022" //getJUEmployee()?.code.value()
+        val ccode = getJUEmployee()?.code.value()
         if (ccode.isBlank()) {
             _starClubState.value = StarClubUiState(
                 canWinTierImages = STAR_CLUB_TIER_IMAGES
