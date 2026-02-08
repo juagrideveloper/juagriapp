@@ -26,5 +26,7 @@ data class OsConfirmCustomer(
     @SerialName("tcode")
     val tcode: String = "",
     @SerialName("totalos")
-    val totalos: Double = 0.0
+    val totalos: Double = 0.0,
+    @SerialName("status")
+    val status: Int? = null
 )

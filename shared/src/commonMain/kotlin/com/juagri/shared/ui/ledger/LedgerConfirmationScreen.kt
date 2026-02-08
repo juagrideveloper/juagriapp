@@ -22,6 +22,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.juagri.shared.ui.components.dialogs.SuccessDialog
 import com.juagri.shared.ui.components.fields.ColumnSpaceSmall
 import com.juagri.shared.ui.components.fields.RowSpaceSmall
 import com.juagri.shared.ui.components.fields.TextDropdown
@@ -46,19 +48,21 @@ import com.juagri.shared.utils.getIndianCurrencyFormat
 import moe.tlaster.precompose.koin.koinViewModel
 
 @Composable
-fun LedgerConfirmationScreen() {
+fun LedgerConfirmationScreen(onBack: ()-> Unit) {
     val viewModel = koinViewModel(LedgerConfirmationViewModel::class)
     viewModel.setScreenId(Constants.SCREEN_LEDGER_CONFIRMATION)
-
+    val showSuccessDialog: MutableState<Boolean> = mutableStateOf(false)
     val financialPeriod = remember { mutableStateOf("-") }
     val osAmount = remember { mutableStateOf("0") }
     val comments = remember { mutableStateOf("") }
     val notes = remember { mutableStateOf("") }
     val osMonthAsOn = remember { mutableStateOf("") }
     val isEditable = remember { mutableStateOf(true) }
+    var successDialogMessage = "Your OS related comments has been updated successfully..."
 
     val configState = viewModel.osConfirmConfig.collectAsState().value
     val customerState = viewModel.osConfirmCustomer.collectAsState().value
+    val osConfirmUpdate = viewModel.osConfirmUpdate.collectAsState().value
 
     LaunchedEffect(Unit) {
         viewModel.loadOsConfirmData()
@@ -74,8 +78,18 @@ fun LedgerConfirmationScreen() {
         }
     }
 
+    LaunchedEffect(osConfirmUpdate) {
+        if (osConfirmUpdate is UIState.Success) {
+            showSuccessDialog.value = true
+        }
+    }
+
     LaunchedEffect(customerState) {
         if (customerState is UIState.Success) {
+            if (customerState.data?.status == 0 || customerState.data?.status == 1) {
+                showSuccessDialog.value = true
+                successDialogMessage = "Already you have submitted your OS related comments..."
+            }
             customerState.data?.let { customer ->
                 osAmount.value = if (customer.totalos % 1.0 == 0.0) {
                     customer.totalos.toInt().toString()
@@ -185,7 +199,7 @@ fun LedgerConfirmationScreen() {
                 ) {
                     Button(
                         enabled = comments.value.isNotEmpty(),
-                        onClick = { /* TODO: confirm action */ },
+                        onClick = { viewModel.updateOsConfirmStatus(1) },
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                         contentPadding = PaddingValues(),
                         modifier = Modifier.weight(1f)
@@ -204,7 +218,7 @@ fun LedgerConfirmationScreen() {
                     RowSpaceSmall()
                     Button(
                         enabled = comments.value.isNotEmpty(),
-                        onClick = { /* TODO: not confirm action */ },
+                        onClick = { viewModel.updateOsConfirmStatus(0) },
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                         contentPadding = PaddingValues(),
                         modifier = Modifier.weight(1f)
@@ -237,5 +251,13 @@ fun LedgerConfirmationScreen() {
                 }
             }
         }
+    }
+
+    SuccessDialog(
+        showSuccessDialog,
+        title = "Success",
+        successDialogMessage
+    ) {
+        onBack()
     }
 }

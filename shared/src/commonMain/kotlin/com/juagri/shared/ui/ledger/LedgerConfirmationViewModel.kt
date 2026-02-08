@@ -7,6 +7,7 @@ import com.juagri.shared.domain.model.ledger.OsConfirmCustomer
 import com.juagri.shared.domain.usecase.OsConfirmUseCase
 import com.juagri.shared.ui.components.base.BaseViewModel
 import com.juagri.shared.utils.UIState
+import com.juagri.shared.utils.value
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -23,6 +24,10 @@ class LedgerConfirmationViewModel(
         MutableStateFlow(UIState.Init)
     val osConfirmCustomer = _osConfirmCustomer.asStateFlow()
 
+    private val _osConfirmUpdate: MutableStateFlow<UIState<Boolean>> =
+        MutableStateFlow(UIState.Init)
+    val osConfirmUpdate = _osConfirmUpdate.asStateFlow()
+
     fun loadOsConfirmData() {
         backgroundScope {
             osConfirmUseCase.getOsConfirmConfig().collect { response ->
@@ -37,6 +42,28 @@ class LedgerConfirmationViewModel(
                 }
             } else {
                 _osConfirmCustomer.value = UIState.Success(OsConfirmCustomer())
+            }
+        }
+    }
+
+    fun updateOsConfirmStatus(status: Int) {
+        val employee = getJUEmployee()
+        if (employee == null) {
+            showErrorMessage("Employee details not found.")
+            return
+        }
+        val ccode = (osConfirmCustomer.value as? UIState.Success)?.data?.ccode.value()
+            .ifBlank { empCode() }
+        if (ccode.isBlank()) {
+            showErrorMessage("Customer code not found.")
+            return
+        }
+        backgroundScope {
+            osConfirmUseCase.updateOsConfirmStatus(ccode, status, employee).collect { response ->
+                uiScope(response, _osConfirmUpdate)
+                if (response is com.juagri.shared.utils.ResponseState.Success) {
+                    showSuccessMessage("Status updated.")
+                }
             }
         }
     }

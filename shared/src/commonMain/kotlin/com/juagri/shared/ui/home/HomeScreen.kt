@@ -144,7 +144,9 @@ private fun initScreen(router: Router<AppScreens>,viewModel: HomeViewModel){
             AppScreens.SendNotification -> SendNotificationScreen()
             AppScreens.NotificationList -> NotificationListScreen(router, viewModel.notificationCount)
             AppScreens.StarClub -> StarClubScreen()
-            AppScreens.LedgerConfirmation -> LedgerConfirmationScreen()
+            AppScreens.LedgerConfirmation -> LedgerConfirmationScreen{
+                router.pop()
+            }
             is AppScreens.NotificationDetails -> NotificationDetailsScreen(
                 NotificationItem(
                     id = screen.id,
