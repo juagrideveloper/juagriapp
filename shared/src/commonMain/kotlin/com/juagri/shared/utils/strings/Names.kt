@@ -74,4 +74,5 @@ interface Names {
     val selectFinYear: String
     val selectFinMonth: String
     val starClub: String
+    val ledgerConfirmation: String
 }

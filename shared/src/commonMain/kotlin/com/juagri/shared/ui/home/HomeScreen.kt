@@ -20,6 +20,7 @@ import com.juagri.shared.ui.focusProduct.CDOFocusProductSummary
 import com.juagri.shared.ui.ledger.DealerLedgerOldExportHolder
 import com.juagri.shared.ui.ledger.DealerLedgerOldExportToPDFScreen
 import com.juagri.shared.ui.ledger.DealerLedgerOldScreen
+import com.juagri.shared.ui.ledger.LedgerConfirmationScreen
 import com.juagri.shared.ui.liquidation.LiquidationScreen
 import com.juagri.shared.ui.loginInfo.LoginInfoScreen
 import com.juagri.shared.ui.navigation.AppScreens
@@ -143,6 +144,7 @@ private fun initScreen(router: Router<AppScreens>,viewModel: HomeViewModel){
             AppScreens.SendNotification -> SendNotificationScreen()
             AppScreens.NotificationList -> NotificationListScreen(router, viewModel.notificationCount)
             AppScreens.StarClub -> StarClubScreen()
+            AppScreens.LedgerConfirmation -> LedgerConfirmationScreen()
             is AppScreens.NotificationDetails -> NotificationDetailsScreen(
                 NotificationItem(
                     id = screen.id,

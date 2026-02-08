@@ -27,6 +27,7 @@ object Constants {
     const val TABLE_DEALER_LIQUIDATION = "V1_DealerLiquidation"
     const val TABLE_CONFIG = "Config"
     const val TABLE_LIQUIDATION_CONFIG = "DealerLiquidation"
+    const val TABLE_OS_CONFIRM = "OSConfirm"
     const val TABLE_LOGIN_INFO = "LoginInfo"
     const val TABLE_APP = "App"
     const val TABLE_NOTIFICATIONS = "Notifications"
@@ -77,6 +78,7 @@ object Constants {
     const val SCREEN_DEALER_LEDGER_OLD = "C_018"
     const val SCREEN_DEALER_LEDGER_EXPORT = "C_019"
     const val SCREEN_STAR_CLUB = "C_020"
+    const val SCREEN_LEDGER_CONFIRMATION = "C_021"
 
 
     const val FIELD_C_CODE = "ccode"

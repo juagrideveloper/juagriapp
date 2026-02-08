@@ -101,6 +101,7 @@ open class BaseViewModel(private val session: SessionPreference,private val data
             Constants.SCREEN_DEALER_LEDGER_OLD-> AppScreens.DealerLedgerOld
             Constants.SCREEN_DEALER_LEDGER_EXPORT-> AppScreens.DealerLedgerOldExportToPDF
             Constants.SCREEN_STAR_CLUB -> AppScreens.StarClub
+            Constants.SCREEN_LEDGER_CONFIRMATION -> AppScreens.LedgerConfirmation
             else -> AppScreens.DummyScreen
         }
 

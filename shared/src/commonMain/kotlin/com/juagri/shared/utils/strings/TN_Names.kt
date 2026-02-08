@@ -74,4 +74,5 @@ object TN_Names: Names {
     override val selectFinYear: String get() = "$select $finYear"
     override val selectFinMonth: String get() = "$select $finMonth"
     override val starClub: String get() = "ஸ்டார் கிளப்"
+    override val ledgerConfirmation: String get() = "Ledger Confirmation"
 }

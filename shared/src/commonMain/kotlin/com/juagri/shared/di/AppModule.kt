@@ -17,6 +17,7 @@ import com.juagri.shared.data.remote.doctor.JUDoctorRepositoryImpl
 import com.juagri.shared.data.remote.focusProduct.CDOFocusProductRepositoryImpl
 import com.juagri.shared.data.remote.ledger.DealerLedgerOldRepositoryImpl
 import com.juagri.shared.data.remote.ledger.DealerLedgerRepositoryImpl
+import com.juagri.shared.data.remote.ledger.OsConfirmRepositoryImpl
 import com.juagri.shared.data.remote.liquidation.DealerLiquidationRepositoryImpl
 import com.juagri.shared.data.remote.login.EmployeeRepositoryImpl
 import com.juagri.shared.data.remote.login.OTPRepositoryImpl
@@ -34,6 +35,7 @@ import com.juagri.shared.domain.repo.doctor.JUDoctorRepository
 import com.juagri.shared.domain.repo.focusProduct.CDOFocusProductRepository
 import com.juagri.shared.domain.repo.ledger.DealerLedgerOldRepository
 import com.juagri.shared.domain.repo.ledger.DealerLedgerRepository
+import com.juagri.shared.domain.repo.ledger.OsConfirmRepository
 import com.juagri.shared.domain.repo.liquidation.DealerLiquidationRepository
 import com.juagri.shared.domain.repo.login.EmployeeRepository
 import com.juagri.shared.domain.repo.login.OTPRepository
@@ -56,6 +58,7 @@ import com.juagri.shared.domain.usecase.JUDoctorUseCase
 import com.juagri.shared.domain.usecase.LoginInfoUseCase
 import com.juagri.shared.domain.usecase.NotificationUseCase
 import com.juagri.shared.domain.usecase.OTPUseCase
+import com.juagri.shared.domain.usecase.OsConfirmUseCase
 import com.juagri.shared.domain.usecase.ParticipationUseCase
 import com.juagri.shared.domain.usecase.PromotionEntriesUseCase
 import com.juagri.shared.domain.usecase.PromotionUseCase
@@ -70,6 +73,7 @@ import com.juagri.shared.ui.focusProduct.CDOFocusProductSummaryViewModel
 import com.juagri.shared.ui.home.HomeViewModel
 import com.juagri.shared.ui.ledger.DealerLedgerOldExportToPDFViewModel
 import com.juagri.shared.ui.ledger.DealerLedgerOldViewModel
+import com.juagri.shared.ui.ledger.LedgerConfirmationViewModel
 import com.juagri.shared.ui.ledger.LedgerViewModel
 import com.juagri.shared.ui.liquidation.LiquidationViewModel
 import com.juagri.shared.ui.login.LoginViewModel
@@ -190,6 +194,12 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                         Firebase.firestore.collection(Constants.TABLE_LEDGER_INVOICE_OLD)
                     )
                 }
+                single<OsConfirmRepository> {
+                    OsConfirmRepositoryImpl(
+                        Firebase.firestore.collection(Constants.TABLE_CONFIG),
+                        Firebase.firestore.collection(Constants.TABLE_OS_CONFIRM)
+                    )
+                }
                 single<JUDoctorRepository> {
                     JUDoctorRepositoryImpl(
                         Firebase.firestore.collection(Constants.TABLE_JU_DOCTOR),
@@ -272,6 +282,7 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                 single { ParticipationUseCase(get()) }
                 single { StarClubUseCase(get()) }
                 single { NotificationUseCase(get()) }
+                single { OsConfirmUseCase(get()) }
 
                 factory { SplashViewModel(get(),get()) }
                 factory { LoginViewModel(get(),get(),get(),get()) }
@@ -280,6 +291,7 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                 factory { LedgerViewModel(get(),get(),get(),get()) }
                 factory { DealerLedgerOldViewModel(get(),get(),get(),get()) }
                 factory { DealerLedgerOldExportToPDFViewModel(get(),get()) }
+                factory { LedgerConfirmationViewModel(get(), get(), get()) }
                 factory { DoctorViewModel(get(),get(),get()) }
                 factory { ProfileViewModel(get(),get()) }
                 factory { PromotionEntryViewModel(get(),get(),get()) }
