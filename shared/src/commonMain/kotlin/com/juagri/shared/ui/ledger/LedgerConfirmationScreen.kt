@@ -22,7 +22,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,7 +50,7 @@ import moe.tlaster.precompose.koin.koinViewModel
 fun LedgerConfirmationScreen(onBack: ()-> Unit) {
     val viewModel = koinViewModel(LedgerConfirmationViewModel::class)
     viewModel.setScreenId(Constants.SCREEN_LEDGER_CONFIRMATION)
-    val showSuccessDialog: MutableState<Boolean> = mutableStateOf(false)
+    val showSuccessDialog = remember { mutableStateOf(false) }
     val financialPeriod = remember { mutableStateOf("-") }
     val osAmount = remember { mutableStateOf("0") }
     val comments = remember { mutableStateOf("") }
@@ -62,7 +61,6 @@ fun LedgerConfirmationScreen(onBack: ()-> Unit) {
 
     val configState = viewModel.osConfirmConfig.collectAsState().value
     val customerState = viewModel.osConfirmCustomer.collectAsState().value
-    val osConfirmUpdate = viewModel.osConfirmUpdate.collectAsState().value
 
     LaunchedEffect(Unit) {
         viewModel.loadOsConfirmData()
@@ -78,15 +76,10 @@ fun LedgerConfirmationScreen(onBack: ()-> Unit) {
         }
     }
 
-    LaunchedEffect(osConfirmUpdate) {
-        if (osConfirmUpdate is UIState.Success) {
-            showSuccessDialog.value = true
-        }
-    }
-
     LaunchedEffect(customerState) {
         if (customerState is UIState.Success) {
             if (customerState.data?.status == 0 || customerState.data?.status == 1) {
+                println("asdasdasdasdasdasdd")
                 showSuccessDialog.value = true
                 successDialogMessage = "Already you have submitted your OS related comments..."
             }

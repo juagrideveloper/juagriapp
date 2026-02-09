@@ -11,6 +11,9 @@ import kotlinx.serialization.Serializable
 data class StarClubCustomer(
     @SerialName("ccode") val ccode: String? = null,
     @SerialName("cname") val cname: String? = null,
+    @SerialName("achievedClub") val achievedClub: String? = null,
+    @SerialName("clubs") val clubs: Map<String, Map<String, StarClubMetric>>? = null,
+    // Legacy fallback (older schema)
     @SerialName("metrics") val metrics: Map<String, StarClubMetric>? = null
 )
 

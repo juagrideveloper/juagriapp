@@ -2,11 +2,13 @@ package com.juagri.shared.ui.ledger
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.juagri.shared.domain.model.filter.FilterType
 import com.juagri.shared.domain.model.ledger.ExportPDFOld
+import com.juagri.shared.domain.model.user.FinYear
 import com.juagri.shared.ui.components.dialogs.FilterDialog
 import com.juagri.shared.ui.components.dialogs.ProgressDialog
 import com.juagri.shared.ui.components.fields.ColumnSpaceSmall
@@ -19,6 +21,8 @@ import com.juagri.shared.ui.components.layouts.ScreenLayoutWithoutActionBar
 import com.juagri.shared.ui.components.layouts.getModifier
 import com.juagri.shared.utils.Constants
 import com.juagri.shared.utils.UIState
+import dev.gitlive.firebase.firestore.Timestamp
+import dev.gitlive.firebase.firestore.fromMilliseconds
 import moe.tlaster.precompose.koin.koinViewModel
 
 @Composable
@@ -30,6 +34,10 @@ fun DealerLedgerOldScreen(
     viewModel.setScreenId(Constants.SCREEN_DEALER_LEDGER_OLD)
     val ledgerState by viewModel.dealerLedgerItem.collectAsState()
     val invoiceState by viewModel.ledgerInvoice.collectAsState()
+    LaunchedEffect(Unit) {
+        viewModel.selectedFinYear.value = FinYear(fYear = "2025-2026", startDate = Timestamp.fromMilliseconds(1743462000000.0),  endDate = Timestamp.fromMilliseconds(1774997999000.0))
+        viewModel.getLedgerDetails()
+    }
     ScreenLayoutWithoutActionBar {
         ScreenLayout(viewModel, true) {
             viewModel.apply {

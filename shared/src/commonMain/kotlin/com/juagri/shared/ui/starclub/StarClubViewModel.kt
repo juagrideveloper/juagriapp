@@ -24,16 +24,7 @@ val STAR_CLUB_TIER_IMAGES = listOf(
     "img_star_club_diamond.png"
 )
 
-/** Tier thresholds: (min TotalSales, min FocusProduct). DSO must be < 135 for all tiers. */
-private val TIER_THRESHOLDS = listOf(
-    Pair(18.0, 7.5),   // Bronze
-    Pair(30.0, 12.0),  // Silver
-    Pair(55.0, 22.0),  // Gold
-    Pair(80.0, 32.0),  // Platinum
-    Pair(110.0, 44.0)  // Diamond
-)
-
-private const val DSO_MAX = 135.0
+private val STAR_CLUB_TIERS = listOf("Bronze", "Silver", "Gold", "Platinum", "Diamond")
 
 data class StarClubUiState(
     val wonTierImages: List<String> = emptyList(),
@@ -76,38 +67,33 @@ class StarClubViewModel(
             .launchIn(viewModelScope)
     }
 
-    /**
-     * Tiers are won based on achieved thresholds (and DSO < 135):
-     * Bronze: TotalSales >= 18, FocusProduct >= 7.5
-     * Silver: TotalSales >= 30, FocusProduct >= 12
-     * Gold: TotalSales >= 55, FocusProduct >= 22
-     * Platinum: TotalSales >= 80, FocusProduct >= 32
-     * Diamond: TotalSales >= 110, FocusProduct >= 44
-     */
     private fun computeWonAndCanWin(customer: StarClubCustomer?): StarClubUiState {
-        println("computeWonAndCanWin: $customer")
-        val metrics = customer?.metrics ?: emptyMap()
-        val totalSales = metrics["TotalSales"]?.achieved ?: 0.0
-        val focusProduct = metrics["FocusProduct"]?.achieved ?: 0.0
-        val dso = metrics["DSO"]?.achieved ?: 0.0
-
+        val achievedClub = customer?.achievedClub?.trim().orEmpty()
         val wonTierImages = mutableListOf<String>()
         val canWinTierImages = mutableListOf<String>()
-        for (i in STAR_CLUB_TIER_IMAGES.indices) {
-            val (minSales, minFocus) = TIER_THRESHOLDS[i]
-            val isWon = totalSales >= minSales &&
-                focusProduct >= minFocus &&
-                dso < DSO_MAX
-            if (isWon) {
-                wonTierImages.add(STAR_CLUB_TIER_IMAGES[i])
-            } else {
-                canWinTierImages.add(STAR_CLUB_TIER_IMAGES[i])
+
+        val achievedIndex = STAR_CLUB_TIERS.indexOfFirst { it.equals(achievedClub, ignoreCase = true) }
+        if (achievedClub.isNotBlank() && !achievedClub.equals("Not Qualified", ignoreCase = true) && achievedIndex >= 0) {
+            for (i in STAR_CLUB_TIER_IMAGES.indices) {
+                if (i <= achievedIndex) {
+                    wonTierImages.add(STAR_CLUB_TIER_IMAGES[i])
+                } else {
+                    canWinTierImages.add(STAR_CLUB_TIER_IMAGES[i])
+                }
             }
+        } else {
+            canWinTierImages.addAll(STAR_CLUB_TIER_IMAGES)
         }
+
+        val metrics = when {
+            achievedIndex >= 0 -> customer?.clubs?.get(STAR_CLUB_TIERS[achievedIndex])
+            else -> customer?.metrics
+        }
+        val metricsOrNull = if (metrics.isNullOrEmpty()) null else metrics
         return StarClubUiState(
             wonTierImages = wonTierImages,
             canWinTierImages = canWinTierImages,
-            metrics = metrics.ifEmpty { null },
+            metrics = metricsOrNull,
             customerName = customer?.cname
         )
     }

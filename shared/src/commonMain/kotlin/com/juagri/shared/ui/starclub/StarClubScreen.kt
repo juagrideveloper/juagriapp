@@ -52,17 +52,15 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
-private val METRIC_DISPLAY_NAMES = mapOf(
-    "TotalSales" to "Total Sales",
-    "FocusProduct" to "Focus Product",
-    "DSO" to "DSO",
-    "PayDec25" to "Payment by Dec. 25",
-    "PayJan26" to "Payment by Jan. 26",
-    "PayJun26" to "Payment by Jun. 26"
-)
+private data class MetricKey(val displayName: String, val keys: List<String>)
 
-private val METRIC_ORDER = listOf(
-    "TotalSales", "FocusProduct", "DSO", "PayDec25", "PayJan26", "PayJun26"
+private val METRIC_KEYS = listOf(
+    MetricKey("Total Sales", listOf("Total Sales", "TotalSales")),
+    MetricKey("Focus Product", listOf("Focus Product", "FocusProduct")),
+    MetricKey("DSO", listOf("DSO")),
+    MetricKey("Payment by Dec 25", listOf("Payment by Dec 25", "PayDec25")),
+    MetricKey("Payment by Jan 26", listOf("Payment by Jan 26", "PayJan26")),
+    MetricKey("Payment by Jun 26", listOf("Payment by Jun 26", "PayJun26"))
 )
 
 @OptIn(ExperimentalResourceApi::class)
@@ -249,8 +247,9 @@ private fun CalculationDetailsTable(metrics: Map<String, StarClubMetric>) {
             thickness = 1.dp
         )
         Spacer(modifier = Modifier.height(8.dp))
-        METRIC_ORDER.forEach { key ->
-            metrics[key]?.let { m ->
+        METRIC_KEYS.forEach { metricKey ->
+            val m = metricKey.keys.firstNotNullOfOrNull { metrics[it] }
+            if (m != null) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -258,7 +257,7 @@ private fun CalculationDetailsTable(metrics: Map<String, StarClubMetric>) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = METRIC_DISPLAY_NAMES[key] ?: key,
+                        text = metricKey.displayName,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.weight(1f)
