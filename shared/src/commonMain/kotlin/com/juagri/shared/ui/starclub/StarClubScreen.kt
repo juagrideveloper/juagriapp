@@ -69,10 +69,13 @@ fun StarClubScreen() {
     val viewModel = koinViewModel<StarClubViewModel>()
     val state by viewModel.starClubState.collectAsState()
     var showMetricsDialog by remember { mutableStateOf(false) }
+    var selectedTier by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(Unit) { viewModel.initScreen() }
 
-    val onImageClick: () -> Unit = {
+    val onImageClick: (String) -> Unit = { imageName ->
+        val index = STAR_CLUB_TIER_IMAGES.indexOf(imageName)
+        selectedTier = STAR_CLUB_TIERS.getOrNull(index)
         showMetricsDialog = true
     }
 
@@ -88,7 +91,7 @@ fun StarClubScreen() {
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable(onClick = onImageClick)
+                            .clickable { onImageClick(imageName) }
                     )
                     Spacer(modifier = Modifier.height(14.dp))
                 }
@@ -102,7 +105,7 @@ fun StarClubScreen() {
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable(onClick = onImageClick)
+                            .clickable { onImageClick(imageName) }
                     )
                     Spacer(modifier = Modifier.height(14.dp))
                 }
@@ -112,7 +115,7 @@ fun StarClubScreen() {
 
     if (showMetricsDialog) {
         StarClubMetricsDialog(
-            metrics = state.metrics,
+            metrics = selectedTier?.let { state.metricsByTier?.get(it) } ?: state.metrics,
             onDismiss = { showMetricsDialog = false }
         )
     }
@@ -159,7 +162,7 @@ private fun StarClubMetricsDialog(
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
-                            text = "Calculation details",
+                            text = "Achievement details",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = Color.White

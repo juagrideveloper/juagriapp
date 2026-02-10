@@ -24,12 +24,13 @@ val STAR_CLUB_TIER_IMAGES = listOf(
     "img_star_club_diamond.png"
 )
 
-private val STAR_CLUB_TIERS = listOf("Bronze", "Silver", "Gold", "Platinum", "Diamond")
+val STAR_CLUB_TIERS = listOf("Bronze", "Silver", "Gold", "Platinum", "Diamond")
 
 data class StarClubUiState(
     val wonTierImages: List<String> = emptyList(),
     val canWinTierImages: List<String> = emptyList(),
     val metrics: Map<String, StarClubMetric>? = null,
+    val metricsByTier: Map<String, Map<String, StarClubMetric>>? = null,
     val customerName: String? = null
 )
 
@@ -94,6 +95,7 @@ class StarClubViewModel(
             wonTierImages = wonTierImages,
             canWinTierImages = canWinTierImages,
             metrics = metricsOrNull,
+            metricsByTier = customer?.clubs,
             customerName = customer?.cname
         )
     }
