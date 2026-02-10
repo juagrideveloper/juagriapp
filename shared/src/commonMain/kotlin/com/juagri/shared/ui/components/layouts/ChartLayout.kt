@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
-import com.juagri.shared.utils.getColors
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -42,6 +41,8 @@ import com.juagri.shared.ui.components.fields.TextMedium
 import com.juagri.shared.ui.components.fields.TextPieLegend
 import com.juagri.shared.ui.components.fields.TextSmall
 import com.juagri.shared.ui.components.fields.TextTitle
+import com.juagri.shared.utils.getColors
+import com.juagri.shared.utils.getIndianCurrencyFormat
 import com.juagri.shared.utils.theme.chart_m_actual_end
 import com.juagri.shared.utils.theme.chart_m_actual_start
 import com.juagri.shared.utils.theme.chart_y_actual_end
@@ -125,7 +126,7 @@ fun OSChartLayout(osItems: List<OSChartItem>,enableLegend: Boolean = true,onItem
                         ) {
                             TextMedium("Total")
                             TextSmall(
-                                ((osItems.map { it.value }.sum() * 100F).roundToInt() / 100F).toString()
+                                getIndianCurrencyFormat(((osItems.map { it.value }.sum() * 100F).roundToInt() / 100).toString())
                             )
                         }
                     }

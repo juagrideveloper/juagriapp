@@ -53,7 +53,7 @@ fun LedgerOldLayout(
     dealerLedgerItem.ledgerItems.forEach { item ->
         val clickModifier = if (onInvoiceClick != null) {
             Modifier.clickable {
-                if (item.cramt.value() > 0) {
+                if (item.cramt.value() == 0.0) {
                     onInvoiceClick(item.docno.value().replace("/", "___"))
                 }
             }
@@ -71,7 +71,7 @@ fun LedgerOldLayout(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             LedgerIcon(getColors().ledger_invoice)
                             RowSpaceExtraSmall()
-                            if (item.cramt.value() > 0) {
+                            if (item.cramt.value() == 0.0) {
                                 LabelContentLink(item.docno.value(), modifier = Modifier.weight(1f))
                             } else {
                                 LabelContent(item.docno.value(), modifier = Modifier.weight(1f))

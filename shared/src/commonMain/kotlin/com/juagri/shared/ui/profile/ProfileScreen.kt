@@ -176,12 +176,12 @@ fun ProfileScreen() {
                                     RowSpaceMedium()
                                     Column(modifier = Modifier.weight(1f)) {
                                         TextProfileHeading(
-                                            "JU CDO APP",
+                                            Constants.getAppName(),
                                             textAlign = TextAlign.Start
                                         )
                                         ColumnSpaceExtraSmall()
                                         TextProfileContent(
-                                            "Sign Out",
+                                            names().logout,
                                             textAlign = TextAlign.Start
                                         )
                                     }

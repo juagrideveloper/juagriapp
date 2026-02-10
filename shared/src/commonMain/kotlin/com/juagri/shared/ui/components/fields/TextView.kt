@@ -133,7 +133,7 @@ fun TextPieLegend(
     Spacer(modifier = Modifier.width(16.dp).height(16.dp).background(osItem.color))
     RowSpaceSmall()
     Text(
-        "${osItem.label} ${getIndianCurrencyFormat(osItem.value.value().toString())}",
+        "${osItem.label} (${getIndianCurrencyFormat(osItem.value.value().toString())})",
         style = AppTypography.titleSmall,
         color = getColors().onBackground
     )

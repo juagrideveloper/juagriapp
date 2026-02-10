@@ -32,7 +32,7 @@ object Constants {
     const val TABLE_APP = "App"
     const val TABLE_NOTIFICATIONS = "Notifications"
     /** Star Club: document id = ccode, fields ccode, cname, metrics (TotalSales, FocusProduct, DSO, PayDec25, PayJan26, PayJun26) */
-    const val TABLE_STAR_CLUB = "DealerStarClub"
+    const val TABLE_STAR_CLUB = "V1_DealerStarClub"
 
     const val FOLDER_PROMOTION_ENTRY_IMAGES = "PromotionEntryImages"
     const val FOLDER_NOTIFICATION_FILES = "NotificationFiles"
@@ -117,4 +117,13 @@ object Constants {
     const val FType_Buttons = 20
 
     const val DIVIDED_BY = 100000.0
+
+    fun getAppName(): String {
+        return when(CURRENT_APP_MODE) {
+            APP_MODE_CDO -> "JU CDO App"
+            APP_MODE_DEALER -> "JU Dealer App"
+            APP_MODE_STAFF -> "JU Staff App"
+            else -> ""
+        }
+    }
 }
