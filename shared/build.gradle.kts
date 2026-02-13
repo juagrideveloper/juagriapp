@@ -89,6 +89,7 @@ kotlin {
                 implementation("com.google.android.gms:play-services-location:21.2.0")
                 implementation("com.google.firebase:firebase-crashlytics")
                 implementation("com.google.firebase:firebase-analytics")
+                implementation(libs.itextpdf)
 
                 implementation(libs.sqldelight.android)
                 api(libs.kotlinx.coroutines.android)

@@ -44,14 +44,19 @@ fun DealerLedgerOldExportToPDFScreen(onClose: () -> Unit) {
                             "PDF export is not available on this device."
                     }
                 )
-                Button(
-                    onClick = {
-                        viewModel.clearExportData()
-                        onClose()
-                    },
-                    modifier = Modifier.padding(top = 16.dp)
-                ) {
-                    Text("Close")
+                when (result) {
+                    is DealerLedgerOldPdfResult.FilePath ->
+                        Button(
+                            onClick = {
+                                //viewModel.clearExportData()
+                                viewModel.shareLedgerPDF(result.path)
+                                onClose()
+                            },
+                            modifier = Modifier.padding(top = 16.dp)
+                        ) {
+                            Text("Share")
+                        }
+                    else -> {}
                 }
             }
         }

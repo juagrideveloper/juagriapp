@@ -5,11 +5,13 @@ import com.juagri.shared.data.local.database.DriverFactory
 import com.juagri.shared.data.local.session.SessionContext
 import com.juagri.shared.data.local.session.SessionPreference
 import com.juagri.shared.di.initKoin
+import com.juagri.shared.utils.AppContextHolder
 
 //@Composable fun MainView(kamelConfig: KamelConfig) = JUAgriAppContent()
 
 @Composable fun MainView() {
     val context = LocalContext.current.applicationContext
+    AppContextHolder.init(context)
     initKoin(
         SessionPreference(context as SessionContext),
         DriverFactory(context).createDriver()

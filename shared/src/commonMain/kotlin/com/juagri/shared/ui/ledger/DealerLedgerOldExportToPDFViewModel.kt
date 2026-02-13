@@ -29,9 +29,12 @@ class DealerLedgerOldExportToPDFViewModel(
             _pdfFile.value = UIState.Success(DealerLedgerOldPdfResult.NotAvailable)
             return
         }
-        //_pdfFile.value = UIState.Loading()
         val result = createLedgerPdf(data)
         _pdfFile.value = UIState.Success(result)
+    }
+
+    fun shareLedgerPDF(path: String) {
+        shareLedger(path)
     }
 
     fun clearExportData() {
@@ -43,3 +46,5 @@ class DealerLedgerOldExportToPDFViewModel(
  * Platform-specific PDF creation. Android: iText; iOS: NotAvailable.
  */
 expect fun createLedgerPdf(exportPDF: ExportPDFOld): DealerLedgerOldPdfResult
+
+expect fun shareLedger(path: String)

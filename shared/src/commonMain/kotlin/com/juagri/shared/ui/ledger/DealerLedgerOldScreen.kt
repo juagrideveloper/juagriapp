@@ -1,6 +1,8 @@
 package com.juagri.shared.ui.ledger
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -9,10 +11,12 @@ import androidx.compose.ui.Modifier
 import com.juagri.shared.domain.model.filter.FilterType
 import com.juagri.shared.domain.model.ledger.ExportPDFOld
 import com.juagri.shared.domain.model.user.FinYear
+import com.juagri.shared.domain.model.user.JUDealer
 import com.juagri.shared.ui.components.dialogs.FilterDialog
 import com.juagri.shared.ui.components.dialogs.ProgressDialog
 import com.juagri.shared.ui.components.fields.ColumnSpaceSmall
 import com.juagri.shared.ui.components.fields.RowSpaceSmall
+import com.juagri.shared.ui.components.fields.TextMedium
 import com.juagri.shared.ui.components.layouts.CardLayout
 import com.juagri.shared.ui.components.layouts.DropDownLayout
 import com.juagri.shared.ui.components.layouts.LedgerOldLayout
@@ -21,6 +25,7 @@ import com.juagri.shared.ui.components.layouts.ScreenLayoutWithoutActionBar
 import com.juagri.shared.ui.components.layouts.getModifier
 import com.juagri.shared.utils.Constants
 import com.juagri.shared.utils.UIState
+import com.juagri.shared.utils.value
 import dev.gitlive.firebase.firestore.Timestamp
 import dev.gitlive.firebase.firestore.fromMilliseconds
 import moe.tlaster.precompose.koin.koinViewModel
@@ -75,15 +80,29 @@ fun DealerLedgerOldScreen(
                         ) { getFinMonthList() }
                     }
                     ColumnSpaceSmall()
-                    /*Row(modifier = Modifier.fillMaxWidth()) {
+                    Row(modifier = Modifier.fillMaxWidth()) {
                         Button(
                             onClick = {
-                                val dealer = selectedDealer.value ?: return@Button
+                                writeLog("ExportToPDF: click")
+                                //val dealer = selectedDealer.value ?: return@Button
+                                val emp = getJUEmployee()
+                                val dealer = JUDealer(
+                                    cCode = emp?.code,
+                                    cName = emp?.name,
+                                    mailId = emp?.mailId,
+                                    address = "",
+                                    phoneNo = emp?.mobile,
+                                    tCode = emp?.territoryCode
+                                )
                                 val finYear = selectedFinYear.value ?: return@Button
                                 val finMonth = selectedFinMonth.value
+                                writeLog(
+                                    "ExportToPDF: dealer=${dealer.cCode.value()} finYear=${finYear.fYear.value()} finMonth=${finMonth?.fMonth.value()}"
+                                )
                                 when (val s = ledgerState) {
                                     is UIState.Success -> s.data?.let { ledger ->
                                         if (ledger.ledgerItems.isNotEmpty()) {
+                                            writeLog("ExportToPDF: ledgerItems=${ledger.ledgerItems.size}")
                                             onExportToPdf(
                                                 ExportPDFOld(
                                                     finYear = finYear.fYear.value(),
@@ -98,9 +117,9 @@ fun DealerLedgerOldScreen(
                                 }
                             }
                         ) {
-                            Text("Export to PDF")
+                            TextMedium("Export to PDF")
                         }
-                    }*/
+                    }
                 }
                 ColumnSpaceSmall()
                 when (ledgerState) {
