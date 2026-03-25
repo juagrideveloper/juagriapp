@@ -75,4 +75,5 @@ interface Names {
     val selectFinMonth: String
     val starClub: String
     val ledgerConfirmation: String
+    val exportToPDF: String
 }

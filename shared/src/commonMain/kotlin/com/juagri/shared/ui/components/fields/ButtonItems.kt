@@ -68,10 +68,11 @@ fun ButtonNormal(
 fun ButtonFullWidth(
     text: String,
     isEnabled: MutableState<Boolean> = mutableStateOf(true),
+    modifier: Modifier = Modifier,
     onClick: () -> Unit = { },
 ) {
     Button(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
         contentPadding = PaddingValues(),
         enabled = isEnabled.value,

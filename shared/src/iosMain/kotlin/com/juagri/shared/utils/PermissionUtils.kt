@@ -14,6 +14,11 @@ actual object PermissionUtils {
     }
 
     @Composable
+    actual fun StoragePermission(result: (Boolean)-> Unit){
+
+    }
+
+    @Composable
     actual fun GetCurrentLocation(latLong: (Double,Double)-> Unit){
 
     }

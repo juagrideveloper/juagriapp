@@ -59,6 +59,32 @@ actual object PermissionUtils {
         }
     }
 
+    @Composable
+    actual fun StoragePermission(result: (Boolean) -> Unit) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // No runtime permission is required for app-owned storage on Android 13+.
+            result.invoke(true)
+            return
+        }
+        val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            listOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+        } else {
+            listOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+        }
+        val permissionStatus: MutableList<Boolean> = mutableListOf()
+        permissions.forEach { permission ->
+            checkPermission(permission) { status ->
+                permissionStatus.add(status)
+                if (permissionStatus.size == permissions.size) {
+                    result.invoke(permissionStatus.none { granted -> !granted })
+                }
+            }
+        }
+    }
+
     @SuppressLint("MissingPermission")
     @Composable
     actual fun GetCurrentLocation(latLong: (Double,Double)-> Unit){

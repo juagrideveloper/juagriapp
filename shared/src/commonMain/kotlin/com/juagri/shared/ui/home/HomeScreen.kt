@@ -119,6 +119,8 @@ private fun initScreen(router: Router<AppScreens>,viewModel: HomeViewModel){
                 onExportToPdf = { data ->
                     DealerLedgerOldExportHolder.exportData = data
                     router.push(AppScreens.DealerLedgerOldExportToPDF)
+                }, onBack = {
+                    router.pop()
                 }
             )
             AppScreens.DealerLedgerOldExportToPDF -> DealerLedgerOldExportToPDFScreen(

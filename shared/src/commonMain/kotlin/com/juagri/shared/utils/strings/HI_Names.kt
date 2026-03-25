@@ -75,4 +75,5 @@ object HI_Names: Names {
     override val selectFinMonth: String get() = "$select $finMonth"
     override val starClub: String get() = "स्टार क्लब"
     override val ledgerConfirmation: String get() = "Ledger Confirmation"
+    override val exportToPDF: String get() = "Export to PDF"
 }

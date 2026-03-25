@@ -2,11 +2,13 @@ package com.juagri.shared.ui.ledger
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.juagri.shared.domain.model.filter.FilterType
 import com.juagri.shared.domain.model.ledger.ExportPDFOld
@@ -14,9 +16,10 @@ import com.juagri.shared.domain.model.user.FinYear
 import com.juagri.shared.domain.model.user.JUDealer
 import com.juagri.shared.ui.components.dialogs.FilterDialog
 import com.juagri.shared.ui.components.dialogs.ProgressDialog
+import com.juagri.shared.ui.components.fields.ButtonFullWidth
 import com.juagri.shared.ui.components.fields.ColumnSpaceSmall
+import com.juagri.shared.ui.components.fields.RowSpaceMedium
 import com.juagri.shared.ui.components.fields.RowSpaceSmall
-import com.juagri.shared.ui.components.fields.TextMedium
 import com.juagri.shared.ui.components.layouts.CardLayout
 import com.juagri.shared.ui.components.layouts.DropDownLayout
 import com.juagri.shared.ui.components.layouts.LedgerOldLayout
@@ -24,6 +27,7 @@ import com.juagri.shared.ui.components.layouts.ScreenLayout
 import com.juagri.shared.ui.components.layouts.ScreenLayoutWithoutActionBar
 import com.juagri.shared.ui.components.layouts.getModifier
 import com.juagri.shared.utils.Constants
+import com.juagri.shared.utils.PermissionUtils
 import com.juagri.shared.utils.UIState
 import com.juagri.shared.utils.value
 import dev.gitlive.firebase.firestore.Timestamp
@@ -48,6 +52,21 @@ fun DealerLedgerOldScreen(
             viewModel.apply {
                 ProgressDialog(z0001)
                 CardLayout {
+                    val requestStoragePermission = remember { mutableStateOf(false) }
+                    val pendingExport = remember { mutableStateOf<ExportPDFOld?>(null) }
+                    if (requestStoragePermission.value) {
+                        PermissionUtils.StoragePermission { granted ->
+                            requestStoragePermission.value = false
+                            if (granted) {
+                                pendingExport.value?.let {
+                                    onExportToPdf(it)
+                                }
+                            } else {
+                                showErrorMessage("Storage permission denied.")
+                            }
+                            pendingExport.value = null
+                        }
+                    }
                     if (Constants.CURRENT_APP_MODE != Constants.APP_MODE_DEALER) {
                         Row {
                             DropDownLayout(
@@ -81,7 +100,9 @@ fun DealerLedgerOldScreen(
                     }
                     ColumnSpaceSmall()
                     Row(modifier = Modifier.fillMaxWidth()) {
-                        Button(
+                        ButtonFullWidth(
+                            text = "Export to PDF",
+                            modifier = Modifier.weight(1f),
                             onClick = {
                                 writeLog("ExportToPDF: click")
                                 //val dealer = selectedDealer.value ?: return@Button
@@ -94,7 +115,7 @@ fun DealerLedgerOldScreen(
                                     phoneNo = emp?.mobile,
                                     tCode = emp?.territoryCode
                                 )
-                                val finYear = selectedFinYear.value ?: return@Button
+                                val finYear = selectedFinYear.value ?: return@ButtonFullWidth
                                 val finMonth = selectedFinMonth.value
                                 writeLog(
                                     "ExportToPDF: dealer=${dealer.cCode.value()} finYear=${finYear.fYear.value()} finMonth=${finMonth?.fMonth.value()}"
@@ -103,22 +124,24 @@ fun DealerLedgerOldScreen(
                                     is UIState.Success -> s.data?.let { ledger ->
                                         if (ledger.ledgerItems.isNotEmpty()) {
                                             writeLog("ExportToPDF: ledgerItems=${ledger.ledgerItems.size}")
-                                            onExportToPdf(
-                                                ExportPDFOld(
-                                                    finYear = finYear.fYear.value(),
-                                                    finMonth = finMonth?.fMonth.value(),
-                                                    dealerItem = dealer,
-                                                    dealerLedgerItem = ledger
-                                                )
+                                            pendingExport.value = ExportPDFOld(
+                                                finYear = finYear.fYear.value(),
+                                                finMonth = finMonth?.fMonth.value(),
+                                                dealerItem = dealer,
+                                                dealerLedgerItem = ledger
                                             )
+                                            requestStoragePermission.value = true
                                         } else showErrorMessage("Your ledger is empty!")
                                     } ?: showErrorMessage("Your ledger is empty!")
                                     else -> showErrorMessage("Please load ledger first.")
                                 }
                             }
-                        ) {
-                            TextMedium("Export to PDF")
-                        }
+                        )
+                        RowSpaceMedium()
+                        Text("", modifier = Modifier.weight(1f))
+                        /*ButtonFullWidth("Back", modifier = Modifier.weight(1f)){
+                            onBack()
+                        }*/
                     }
                 }
                 ColumnSpaceSmall()

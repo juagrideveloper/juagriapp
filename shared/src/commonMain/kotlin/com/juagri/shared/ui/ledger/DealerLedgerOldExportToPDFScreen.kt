@@ -1,9 +1,9 @@
 package com.juagri.shared.ui.ledger
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -12,8 +12,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.juagri.shared.ui.components.dialogs.ProgressDialog
+import com.juagri.shared.ui.components.fields.ButtonFullWidth
+import com.juagri.shared.ui.components.fields.ColumnSpaceMedium
+import com.juagri.shared.ui.components.fields.HeadingText
+import com.juagri.shared.ui.components.fields.RowSpaceMedium
 import com.juagri.shared.utils.Constants
 import com.juagri.shared.utils.UIState
 import moe.tlaster.precompose.koin.koinViewModel
@@ -33,30 +38,42 @@ fun DealerLedgerOldExportToPDFScreen(onClose: () -> Unit) {
         is UIState.Success -> {
             val result = state.data
             Column(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.fillMaxSize().padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    when (result) {
-                        is DealerLedgerOldPdfResult.FilePath ->
-                            "PDF saved: ${result.fileName}\n${result.path}"
-                        is DealerLedgerOldPdfResult.NotAvailable ->
-                            "PDF export is not available on this device."
-                    }
-                )
                 when (result) {
-                    is DealerLedgerOldPdfResult.FilePath ->
-                        Button(
-                            onClick = {
-                                //viewModel.clearExportData()
-                                viewModel.shareLedgerPDF(result.path)
-                                onClose()
-                            },
-                            modifier = Modifier.padding(top = 16.dp)
-                        ) {
-                            Text("Share")
+                    is DealerLedgerOldPdfResult.FilePath -> {
+                        HeadingText("Ledger PDF file has been created successfully!\nPlease find the file in below path:\n\nDocuments/JU_Agri_Files/Ledger/${result.fileName}", textAlign = TextAlign.Center)
+                        ColumnSpaceMedium()
+                        Row {
+                            ButtonFullWidth(
+                                text = "Share",
+                                modifier = Modifier.weight(1f),
+                                onClick = {
+                                    viewModel.shareLedgerPDF(result.path)
+                                    onClose()
+                                }
+                            )
+                            RowSpaceMedium()
+                            ButtonFullWidth(
+                                text = "Back",
+                                modifier = Modifier.weight(1f),
+                                onClick = {
+                                    onClose()
+                                }
+                            )
                         }
-                    else -> {}
+
+                    }
+                    is DealerLedgerOldPdfResult.NotAvailable -> {
+                        HeadingText("PDF export is not available on this device.", textAlign = TextAlign.Center)
+                        ButtonFullWidth(
+                            text = "Back",
+                            onClick = {
+                                onClose()
+                            }
+                        )
+                    }
                 }
             }
         }

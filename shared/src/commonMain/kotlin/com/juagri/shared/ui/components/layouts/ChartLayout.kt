@@ -61,7 +61,7 @@ fun HorizontalBarChartLayout(
         var size by remember { mutableStateOf(IntSize.Zero) }
         val maxValue = itemsList.maxBy { it.value }.value
         Column {
-            itemsList.forEachIndexed { index, barItem ->
+            itemsList.sortedBy { it.name }.forEachIndexed { index, barItem ->
                 Row {
                     Text(
                         barItem.name,
@@ -151,7 +151,7 @@ fun OSChartLayout(osItems: List<OSChartItem>,enableLegend: Boolean = true,onItem
 
 @Composable
 fun ProductSalesReport(productSales: List<DealerSales>){
-    var checked by remember { mutableStateOf(true) }
+    var checked by remember { mutableStateOf(false) }
     RowSpaceMedium()
     Row(verticalAlignment = Alignment.CenterVertically) {
         TextTitle("Product Sales", modifier = Modifier.weight(1f))

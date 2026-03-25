@@ -6,6 +6,8 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Environment
+import android.provider.MediaStore
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.itextpdf.text.Document
@@ -35,6 +37,11 @@ import java.util.Date
  */
 @SuppressLint("SimpleDateFormat", "UseCompatLoadingForDrawables")
 actual fun createLedgerPdf(exportPDF: ExportPDFOld): DealerLedgerOldPdfResult {
+    println("JUAgriAppTestLogs: ExportToPDF: start")
+    println("JUAgriAppTestLogs: ExportToPDF: finYear=${exportPDF.finYear} finMonth=${exportPDF.finMonth}")
+    println(
+        "JUAgriAppTestLogs: ExportToPDF: dealer=${exportPDF.dealerItem.cCode} name=${exportPDF.dealerItem.cName}"
+    )
     val catFont = Font(Font.FontFamily.TIMES_ROMAN, 14f, Font.BOLD)
     val subFont = Font(Font.FontFamily.TIMES_ROMAN, 12f, Font.BOLD)
     val smallBold = Font(Font.FontFamily.TIMES_ROMAN, 10f, Font.BOLD)
@@ -50,15 +57,37 @@ actual fun createLedgerPdf(exportPDF: ExportPDFOld): DealerLedgerOldPdfResult {
         append(".pdf")
     }
     return try {
-        val juBaseDir = File(context.getExternalFilesDir(null), "JU_Agri_Files")
-        if (!juBaseDir.exists()) {
-            juBaseDir.mkdirs()
+        val outputUri: Uri?
+        val outputStream = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            val values = android.content.ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
+                put(MediaStore.MediaColumns.RELATIVE_PATH, "Documents/JU_Agri_Files/Ledger/")
+            }
+            outputUri = context.contentResolver.insert(
+                MediaStore.Files.getContentUri("external"),
+                values
+            )
+            outputUri?.let { context.contentResolver.openOutputStream(it) }
+        } else {
+            val publicDir = File(Environment.getExternalStorageDirectory(), "Documents/JU_Agri_Files/Ledger")
+            if (!publicDir.exists() && !publicDir.mkdirs()) {
+                println("JUAgriAppTestLogs: ExportToPDF: failed to create ${publicDir.absolutePath}")
+                return DealerLedgerOldPdfResult.NotAvailable
+            }
+            val pdfFile = File(publicDir, filename)
+            outputUri = Uri.fromFile(pdfFile)
+            FileOutputStream(pdfFile)
         }
-        val pdfFile = File(juBaseDir, filename)
-        PdfWriter.getInstance(document, FileOutputStream(pdfFile))
+        if (outputStream == null) {
+            println("JUAgriAppTestLogs: ExportToPDF: output stream null")
+            return DealerLedgerOldPdfResult.NotAvailable
+        }
+        println("JUAgriAppTestLogs: ExportToPDF: output=${outputUri}")
+        PdfWriter.getInstance(document, outputStream)
         document.open()
         addMetaData(document)
-        println("JUAgriAppTestLogs: ExportToPDF: ${pdfFile.absolutePath}")
+        println("JUAgriAppTestLogs: ExportToPDF: ${outputUri}")
         val juLogo: Drawable? = ContextCompat.getDrawable(context, R.drawable.ju_logo)
         val bitDw = juLogo as BitmapDrawable
         val bmp = bitDw.bitmap
@@ -137,12 +166,16 @@ actual fun createLedgerPdf(exportPDF: ExportPDFOld): DealerLedgerOldPdfResult {
 
         document.add(table)
         document.close()
-        DealerLedgerOldPdfResult.FilePath(pdfFile.absolutePath, pdfFile.name)
+        println("JUAgriAppTestLogs: ExportToPDF: completed")
+        outputStream.close()
+        DealerLedgerOldPdfResult.FilePath(outputUri.toString(), filename)
     } catch (e: IOException) {
         e.printStackTrace()
+        println("JUAgriAppTestLogs: ExportToPDF: IOException=${e.message}")
         DealerLedgerOldPdfResult.NotAvailable
     } catch (e: Exception) {
         e.printStackTrace()
+        println("JUAgriAppTestLogs: ExportToPDF: Exception=${e.message}")
         DealerLedgerOldPdfResult.NotAvailable
     }
 }
@@ -193,20 +226,27 @@ private fun addMetaData(document: Document) {
 
 actual fun shareLedger(path: String) {
     val context = AppContextHolder.get() ?: return
-    val file = File(path)
-    if (!file.exists()) return
-
-    val uri: Uri = FileProvider.getUriForFile(
-        context,
-        "${context.packageName}.provider",
-        file
-    )
+    val uri = if (path.startsWith("content://")) {
+        Uri.parse(path)
+    } else {
+        val file = File(path)
+        if (!file.exists()) return
+        FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.provider",
+            file
+        )
+    }
 
     val shareIntent = Intent(Intent.ACTION_SEND).apply {
         type = "application/pdf"
         putExtra(Intent.EXTRA_STREAM, uri)
         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     }
 
-    context.startActivity(Intent.createChooser(shareIntent, "Share Ledger"))
+    val chooser = Intent.createChooser(shareIntent, "Share Ledger").apply {
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+    context.startActivity(chooser)
 }

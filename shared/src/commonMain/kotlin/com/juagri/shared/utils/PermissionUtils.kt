@@ -10,6 +10,9 @@ expect object PermissionUtils {
     fun LocationPermission(result: (Boolean)-> Unit)
 
     @Composable
+    fun StoragePermission(result: (Boolean)-> Unit)
+
+    @Composable
     fun GetCurrentLocation(latLong: (Double,Double)-> Unit)
 }
 /*

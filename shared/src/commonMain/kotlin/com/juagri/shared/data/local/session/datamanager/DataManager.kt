@@ -66,9 +66,10 @@ class DataManager(private val dataStore: DataStore) {
             Constants.SCREEN_SEND_NOTIFICATION ->names.value.sendNotification
             Constants.SCREEN_NOTIFICATION_LIST ->names.value.notificationList
             Constants.SCREEN_NOTIFICATION_DETAILS ->names.value.notificationDetails
-            Constants.SCREEN_DEALER_LEDGER_OLD -> names.value.dealerLedger + " (Old)"
+            Constants.SCREEN_DEALER_LEDGER_OLD -> names.value.dealerLedger
             Constants.SCREEN_STAR_CLUB -> names.value.starClub
             Constants.SCREEN_LEDGER_CONFIRMATION -> names.value.ledgerConfirmation
+            Constants.SCREEN_DEALER_LEDGER_EXPORT -> names.value.exportToPDF
             else -> ""
         }
 }
