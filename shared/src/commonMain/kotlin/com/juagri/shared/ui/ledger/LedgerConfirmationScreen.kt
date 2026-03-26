@@ -31,11 +31,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.juagri.shared.ui.components.dialogs.SuccessDialog
+import com.juagri.shared.ui.components.fields.ButtonNormal
 import com.juagri.shared.ui.components.fields.ColumnSpaceSmall
+import com.juagri.shared.ui.components.fields.OTPView
 import com.juagri.shared.ui.components.fields.RowSpaceSmall
 import com.juagri.shared.ui.components.fields.TextDropdown
 import com.juagri.shared.ui.components.fields.TextMedium
+import com.juagri.shared.ui.components.fields.TextSmall
 import com.juagri.shared.ui.components.layouts.CardLayout
 import com.juagri.shared.ui.components.layouts.ScreenLayout
 import com.juagri.shared.ui.components.layouts.ScreenLayoutWithoutActionBar
@@ -61,8 +66,16 @@ fun LedgerConfirmationScreen(onBack: ()-> Unit) {
 
     val configState = viewModel.osConfirmConfig.collectAsState().value
     val customerState = viewModel.osConfirmCustomer.collectAsState().value
+    val osConfirmUpdate = viewModel.osConfirmUpdate.collectAsState().value
+    val otpState = viewModel.otpResponse.collectAsState().value
+
+    val showOtpDialog = remember { mutableStateOf(false) }
+    val otpInput = remember { mutableStateOf("") }
+    val validOtp = remember { mutableStateOf("") }
+    val pendingStatus = remember { mutableStateOf<Int?>(null) }
 
     LaunchedEffect(Unit) {
+        viewModel.resetOtp()
         viewModel.loadOsConfirmData()
     }
 
@@ -79,7 +92,6 @@ fun LedgerConfirmationScreen(onBack: ()-> Unit) {
     LaunchedEffect(customerState) {
         if (customerState is UIState.Success) {
             if (customerState.data?.status == 0 || customerState.data?.status == 1) {
-                println("asdasdasdasdasdasdd")
                 showSuccessDialog.value = true
                 successDialogMessage = "Already you have submitted your OS related comments..."
             }
@@ -93,6 +105,25 @@ fun LedgerConfirmationScreen(onBack: ()-> Unit) {
                     "${customer.osmonth} as on (${customer.osdate})"
                 } else ""
             }
+        }
+    }
+
+    LaunchedEffect(osConfirmUpdate) {
+        if (osConfirmUpdate is UIState.Success) {
+            showSuccessDialog.value = true
+        }
+    }
+
+    LaunchedEffect(otpState) {
+        when (otpState) {
+            is UIState.Success -> {
+                validOtp.value = otpState.data.otp
+            }
+            is UIState.Error -> {
+                viewModel.showErrorMessage(otpState.error)
+                showOtpDialog.value = false
+            }
+            else -> {}
         }
     }
 
@@ -191,8 +222,17 @@ fun LedgerConfirmationScreen(onBack: ()-> Unit) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        enabled = comments.value.isNotEmpty(),
-                        onClick = { viewModel.updateOsConfirmStatus(1) },
+                        onClick = {
+                            if (comments.value.isNotEmpty()) {
+                                pendingStatus.value = 1
+                                otpInput.value = ""
+                                validOtp.value = ""
+                                showOtpDialog.value = true
+                                viewModel.sendOtp()
+                            } else {
+                                viewModel.showErrorMessage("Please enter valid comments!")
+                            }
+                        },
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                         contentPadding = PaddingValues(),
                         modifier = Modifier.weight(1f)
@@ -210,8 +250,17 @@ fun LedgerConfirmationScreen(onBack: ()-> Unit) {
                     }
                     RowSpaceSmall()
                     Button(
-                        enabled = comments.value.isNotEmpty(),
-                        onClick = { viewModel.updateOsConfirmStatus(0) },
+                        onClick = {
+                            if (comments.value.isNotEmpty()) {
+                                pendingStatus.value = 0
+                                otpInput.value = ""
+                                validOtp.value = ""
+                                showOtpDialog.value = true
+                                viewModel.sendOtp()
+                            } else {
+                                viewModel.showErrorMessage("Please enter valid comments!")
+                            }
+                        },
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                         contentPadding = PaddingValues(),
                         modifier = Modifier.weight(1f)
@@ -252,5 +301,54 @@ fun LedgerConfirmationScreen(onBack: ()-> Unit) {
         successDialogMessage
     ) {
         onBack()
+    }
+
+    if (showOtpDialog.value) {
+        Dialog(
+            onDismissRequest = { showOtpDialog.value = false },
+            properties = DialogProperties(usePlatformDefaultWidth = false)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.White, RoundedCornerShape(16.dp))
+                        .padding(16.dp)
+                ) {
+                    TextMedium("OTP Verification", textAlign = TextAlign.Center)
+                    ColumnSpaceSmall()
+                    TextSmall(
+                        "OTP has been sent to your registered mobile number. Please enter the OTP.",
+                        textAlign = TextAlign.Start
+                    )
+                    ColumnSpaceSmall()
+                    OTPView(codeLength = 6, initialCode = otpInput.value) {
+                        otpInput.value = it
+                    }
+                    ColumnSpaceSmall()
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        ButtonNormal("Cancel") {
+                            showOtpDialog.value = false
+                        }
+                        ButtonNormal("Verify") {
+                            if (otpInput.value == validOtp.value && otpInput.value.isNotBlank()) {
+                                showOtpDialog.value = false
+                                pendingStatus.value?.let { viewModel.updateOsConfirmStatus(it) }
+                            } else {
+                                viewModel.showErrorMessage("Please enter valid OTP!")
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

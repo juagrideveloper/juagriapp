@@ -31,10 +31,10 @@ class DealerDashboardViewModel(
             }
         }
 
-        backgroundScope{
+        /*backgroundScope{
             dealerDashboardUseCase.getProductSalesReport(session.empCode()).collect{response ->
                 uiScope(response,_productSalesReport)
             }
-        }
+        }*/
     }
 }

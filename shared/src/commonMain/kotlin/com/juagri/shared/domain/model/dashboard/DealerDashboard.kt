@@ -21,6 +21,7 @@ data class DealerDashboard(
     @SerialName("regcode") val regCode: String? = null,
     @SerialName("tcode") val tCode: String? = null,
     @SerialName("today") val today: String? = null,
+    @SerialName("product_sales_report") val productSalesReport: List<DealerSales>? = null,
     @SerialName("totalos") val totalOS: Double = 0.0,
     @SerialName("ysal_value") val ysalValue: Double = 0.0,
     @SerialName("updatedTime") val updatedTime: Timestamp? = null

@@ -20,15 +20,16 @@ class DealerDashboardRepositoryImpl(
         callbackFlow {
             try {
                 trySend(ResponseState.Loading(true))
-                val result = dashboard.filterCCodeUpdatedTime(
+                /*val result = dashboard.filterCCodeUpdatedTime(
                     cCode,
                     dealerDashboardDao.getDashboardLastUpdatedTime(cCode)
                 )
                 if (result.isNotEmpty()) {
                     dealerDashboardDao.setDealerDashboard(result.first().data())
-                }
+                }*/
+                val result = dashboard.document(cCode).get().data<DealerDashboard>()
                 trySend(ResponseState.Loading())
-                trySend(ResponseState.Success(dealerDashboardDao.getDealerDashboard(cCode)))
+                trySend(ResponseState.Success(result))
             } catch (e: Exception) {
                 e.printStackTrace()
                 trySend(ResponseState.Error())

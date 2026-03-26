@@ -102,7 +102,12 @@ fun HorizontalBarChartLayout(
 
 @OptIn(ExperimentalKoalaPlotApi::class)
 @Composable
-fun OSChartLayout(osItems: List<OSChartItem>,enableLegend: Boolean = true,onItemClicked:((OSChartItem)->Unit)?=null) {
+fun OSChartLayout(
+    osItems: List<OSChartItem>,
+    totalOS: Double = 0.0,
+    enableLegend: Boolean = true,
+    onItemClicked:((OSChartItem)->Unit)?=null
+) {
     Row {
         Box(modifier = Modifier.height(200.dp)) {
             PieChart(
@@ -126,7 +131,8 @@ fun OSChartLayout(osItems: List<OSChartItem>,enableLegend: Boolean = true,onItem
                         ) {
                             TextMedium("Total")
                             TextSmall(
-                                getIndianCurrencyFormat(((osItems.map { it.value }.sum() * 100F).roundToInt() / 100).toString())
+                                getIndianCurrencyFormat(((totalOS * 100F).roundToInt() / 100).toString()),
+                                textAlign = TextAlign.Center
                             )
                         }
                     }

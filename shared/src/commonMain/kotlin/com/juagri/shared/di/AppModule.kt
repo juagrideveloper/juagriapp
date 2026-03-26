@@ -291,7 +291,7 @@ fun initKoin(sessionPreference: SessionPreference,sqlDriver: SqlDriver) {
                 factory { LedgerViewModel(get(),get(),get(),get()) }
                 factory { DealerLedgerOldViewModel(get(),get(),get(),get()) }
                 factory { DealerLedgerOldExportToPDFViewModel(get(),get()) }
-                factory { LedgerConfirmationViewModel(get(), get(), get()) }
+                factory { LedgerConfirmationViewModel(get(), get(), get(), get()) }
                 factory { DoctorViewModel(get(),get(),get()) }
                 factory { ProfileViewModel(get(),get()) }
                 factory { PromotionEntryViewModel(get(),get(),get()) }

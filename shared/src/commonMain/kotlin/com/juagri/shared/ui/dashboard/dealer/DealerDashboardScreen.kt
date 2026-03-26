@@ -36,6 +36,7 @@ fun DealerDashboardScreen() {
                 is UIState.Success -> {
                     result.data.let {
                         OSChart(it)
+                        ProductSalesReport(it.productSalesReport.orEmpty())
                     }
                 }
 
@@ -44,7 +45,7 @@ fun DealerDashboardScreen() {
             when (val result = viewModel.productSalesReport.collectAsState().value) {
                 is UIState.Success -> {
                     result.data.let {
-                        ProductSalesReport(it)
+                        //ProductSalesReport(it)
                     }
                 }
 
@@ -89,7 +90,7 @@ private fun OSChart(dealerDashboard: DealerDashboard){
     CardLayout {
         TextTitle("OutStanding")
         RowSpaceSmall()
-        OSChartLayout(osItems)
+        OSChartLayout(osItems, dealerDashboard.totalOS)
     }
     RowSpaceSmall()
 }
