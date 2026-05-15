@@ -12,6 +12,7 @@ interface OsConfirmRepository {
     suspend fun updateOsConfirmStatus(
         ccode: String,
         status: Int,
-        employee: JUEmployee
+        employee: JUEmployee,
+        comments: String
     ): Flow<ResponseState<Boolean>>
 }

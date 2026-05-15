@@ -51,12 +51,14 @@ class OsConfirmRepositoryImpl(
     override suspend fun updateOsConfirmStatus(
         ccode: String,
         status: Int,
-        employee: JUEmployee
+        employee: JUEmployee,
+        comments: String
     ): Flow<ResponseState<Boolean>> = callbackFlow {
         trySend(ResponseState.Loading(true))
         try {
             val updatedItems = mapOf(
                 "status" to status.toDouble(),
+                "comments" to comments,
                 "updated_empcode" to employee.code.value(),
                 "updated_emprole" to employee.roleId.value(),
                 "updated_empname" to employee.name.value(),

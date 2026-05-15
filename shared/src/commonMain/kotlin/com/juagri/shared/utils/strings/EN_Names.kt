@@ -27,7 +27,7 @@ object EN_Names: Names {
     override val invoiceNo: String get() = "Invoice No"
     override val chequeNo: String get() = "Cheque No"
     override val all: String get() = "All"
-    override val dealerLedger: String get() = "Dealer Ledger"
+    override val dealerLedger: String get() = "Customer Ledger"
     override val menu: String get() = "Menu"
     override val services: String get() = "Service"
     override val weather: String get() = "Weather"

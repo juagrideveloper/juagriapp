@@ -84,6 +84,7 @@ fun NavDrawerUsername(text: String = "", modifier: Modifier = Modifier) = Text(
     style = AppTypography.titleLarge,
     modifier = modifier,
     color = getColors().background,
+    textAlign = TextAlign.Center,
     fontWeight = FontWeight.Bold
 )
 

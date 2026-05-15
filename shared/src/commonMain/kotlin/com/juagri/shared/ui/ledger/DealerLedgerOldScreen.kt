@@ -44,7 +44,7 @@ fun DealerLedgerOldScreen(
     val ledgerState by viewModel.dealerLedgerItem.collectAsState()
     val invoiceState by viewModel.ledgerInvoice.collectAsState()
     LaunchedEffect(Unit) {
-        viewModel.selectedFinYear.value = FinYear(fYear = "2025-2026", startDate = Timestamp.fromMilliseconds(1743462000000.0),  endDate = Timestamp.fromMilliseconds(1774997999000.0))
+        viewModel.selectedFinYear.value = FinYear(fYear = "2026-2027", startDate = Timestamp.fromMilliseconds(1774998000000.0),  endDate = Timestamp.fromMilliseconds(1774997999000.0))
         viewModel.getLedgerDetails()
     }
     ScreenLayoutWithoutActionBar {

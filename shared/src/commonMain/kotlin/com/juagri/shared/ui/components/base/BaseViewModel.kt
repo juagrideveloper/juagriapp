@@ -250,7 +250,7 @@ open class BaseViewModel(private val session: SessionPreference,private val data
                         }
                         is FilterType.FIN_YEAR -> {
                             FilterDataItem(
-                                names().selectTerritory,
+                                names().selectFinYear,
                                 (response.data as List<FinYear>) .map {
                                     FilterItem(
                                         it.fYear.value(),
@@ -276,7 +276,7 @@ open class BaseViewModel(private val session: SessionPreference,private val data
                                 )
                             })
                             FilterDataItem(
-                                names().selectTerritory,
+                                names().selectFinMonth,
                                 fMonthList,
                                 mutableStateOf(true)
                             )

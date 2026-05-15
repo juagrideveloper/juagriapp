@@ -37,12 +37,17 @@ android {
         applicationId = namespace
         minSdk = (findProperty("android.minSdk") as String).toInt()
         targetSdk = (findProperty("android.targetSdk") as String).toInt()
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = (findProperty("dealer.version.code") as String).toInt()
+        versionName = (findProperty("dealer.version.name") as String)
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
     }
     kotlin {
         jvmToolchain(17)

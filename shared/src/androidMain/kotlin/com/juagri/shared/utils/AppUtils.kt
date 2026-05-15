@@ -12,7 +12,7 @@ actual object AppUtils{
 
     actual fun getDeviceInfo(): Map<String,String> {
         return mapOf(
-            "app_version" to com.juagri.shared.BuildConfig.CDOVersion.toString(),
+            "app_version" to com.juagri.shared.BuildConfig.DealerVersion.toString(),
             "device_os" to Build.VERSION.CODENAME.toString(),
             "device_sdk" to Build.VERSION.SDK_INT.toString(),
             "device_mode" to "Android",
@@ -20,6 +20,6 @@ actual object AppUtils{
     }
 
     actual fun getAppVersion():Int{
-        return com.juagri.shared.BuildConfig.CDOVersion
+        return com.juagri.shared.BuildConfig.DealerVersion
     }
 }

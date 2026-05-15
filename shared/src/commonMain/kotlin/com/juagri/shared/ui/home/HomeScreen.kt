@@ -1,5 +1,6 @@
 package com.juagri.shared.ui.home
 
+import androidx.collection.mutableObjectListOf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -45,7 +46,7 @@ import moe.tlaster.precompose.koin.koinViewModel
 @Composable
 fun HomeScreen(onBack: () -> Unit) {
     val router: Router<AppScreens> =
-        rememberRouter(AppScreens::class) { listOf(AppScreens.Dashboard) }
+        rememberRouter(AppScreens::class) { mutableObjectListOf(AppScreens.Dashboard).asList() }
     val viewModel = koinViewModel(HomeViewModel::class)
     val employee = remember { mutableStateOf(JUEmployee()) }
     val showAppUpdateDialog = mutableStateOf(false)
@@ -67,7 +68,7 @@ fun HomeScreen(onBack: () -> Unit) {
         }
         when (val result = viewModel.appConfig.collectAsState().value) {
             is UIState.Success -> {
-                if(result.data.versionCode != AppUtils.getAppVersion()){
+                if(AppUtils.getAppVersion() < result.data.versionCode){
                     showAppUpdateDialog.value = true
                 }
             }
@@ -87,7 +88,8 @@ fun HomeScreen(onBack: () -> Unit) {
         ) {
             showAppUpdateDialog.value = false
             viewModel.resetAppUpdate()
-            urlHandler.openUri("https://play.google.com/store/apps/details?id=com.juagri.jucdo&hl=en")
+            //urlHandler.openUri("https://play.google.com/store/apps/details?id=com.juagri.jucdo&hl=en")
+            urlHandler.openUri("https://play.google.com/store/apps/details?id=com.juagri.judealer&hl=en")
             AppUtils.logout()
         }
     }

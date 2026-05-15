@@ -305,7 +305,7 @@ fun LedgerConfirmationScreen(onBack: ()-> Unit) {
 
     if (showOtpDialog.value) {
         Dialog(
-            onDismissRequest = { showOtpDialog.value = false },
+            onDismissRequest = {},
             properties = DialogProperties(usePlatformDefaultWidth = false)
         ) {
             Box(
@@ -341,7 +341,7 @@ fun LedgerConfirmationScreen(onBack: ()-> Unit) {
                         ButtonNormal("Verify") {
                             if (otpInput.value == validOtp.value && otpInput.value.isNotBlank()) {
                                 showOtpDialog.value = false
-                                pendingStatus.value?.let { viewModel.updateOsConfirmStatus(it) }
+                                pendingStatus.value?.let { viewModel.updateOsConfirmStatus(it, comments.value) }
                             } else {
                                 viewModel.showErrorMessage("Please enter valid OTP!")
                             }

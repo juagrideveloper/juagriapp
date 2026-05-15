@@ -55,7 +55,7 @@ class LedgerConfirmationViewModel(
         }
     }
 
-    fun updateOsConfirmStatus(status: Int) {
+    fun updateOsConfirmStatus(status: Int, comments: String) {
         val employee = getJUEmployee()
         if (employee == null) {
             showErrorMessage("Employee details not found.")
@@ -68,7 +68,7 @@ class LedgerConfirmationViewModel(
             return
         }
         backgroundScope {
-            osConfirmUseCase.updateOsConfirmStatus(ccode, status, employee).collect { response ->
+            osConfirmUseCase.updateOsConfirmStatus(ccode, status, employee, comments).collect { response ->
                 uiScope(response, _osConfirmUpdate)
                 if (response is com.juagri.shared.utils.ResponseState.Success) {
                     showSuccessMessage("Status updated.")
